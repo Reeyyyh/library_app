@@ -9,7 +9,7 @@ import 'package:library_app/app/controllers/auth_controller.dart';
 import 'package:library_app/firebase_options.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supa;
 import 'app/routes/app_pages.dart';
-
+// test
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
