@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
       return GetMaterialApp(
         debugShowCheckedModeBanner: false,
         title: "Library App",
-        initialRoute: isLoggedIn ? '/layout' : '/welcome',
+        initialRoute: isLoggedIn ? '/welcome' : '/welcome',
         getPages: AppPages.routes,
         theme: ThemeData(
           colorSchemeSeed: AppTheme.primaryColor,
