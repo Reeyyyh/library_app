@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 class CustomInput extends StatefulWidget {
   final bool isPassword;
   final String labelText;
+  final String? hintText;
   final TextEditingController controller;
   final String? errorMessage;
   final int? maxLines;
@@ -14,16 +15,17 @@ class CustomInput extends StatefulWidget {
   final bool readonly;
 
   const CustomInput({
-    Key? key,
+    super.key,
     this.isPassword = false,
     required this.labelText,
     required this.controller,
+    this.hintText,
     this.errorMessage,
     this.maxLines,
     this.keyboardType = TextInputType.text,
     this.isNumber = false,
     this.readonly = false,
-  }) : super(key: key);
+  });
 
   @override
   _CustomInputState createState() => _CustomInputState();
@@ -31,10 +33,21 @@ class CustomInput extends StatefulWidget {
 
 class _CustomInputState extends State<CustomInput> {
   bool _obscureText = true;
+  late FocusNode _focusNode;
 
   @override
   void initState() {
     super.initState();
+    _focusNode = FocusNode();
+    _focusNode.addListener(() {
+      setState(() {}); // rebuild saat fokus berubah
+    });
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
   }
 
   @override
@@ -43,14 +56,13 @@ class _CustomInputState extends State<CustomInput> {
 
     List<TextInputFormatter> inputFormatters = [];
     if (widget.isNumber) {
-      inputFormatters = [
-        FilteringTextInputFormatter.digitsOnly,
-      ];
+      inputFormatters = [FilteringTextInputFormatter.digitsOnly];
     }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // LABEL
         Text(
           widget.labelText,
           style: TextStyle(
@@ -60,51 +72,63 @@ class _CustomInputState extends State<CustomInput> {
           ),
         ),
         const SizedBox(height: 8.0),
+
+        // TEXT FIELD
         TextField(
-          controller: widget.controller,
-          obscureText: widget.isPassword && _obscureText,
-          maxLines: widget.isPassword ? 1 : widget.maxLines,
-          enabled: !widget.readonly,
-          keyboardType:
-              widget.isNumber ? TextInputType.number : widget.keyboardType,
-          inputFormatters: inputFormatters,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(
-                color: errorMessage.isNotEmpty ? Colors.red : Colors.grey,
-              ),
+  focusNode: _focusNode,
+  controller: widget.controller,
+  obscureText: widget.isPassword && _obscureText,
+  maxLines: widget.isPassword ? 1 : widget.maxLines,
+  enabled: !widget.readonly,
+  keyboardType:
+      widget.isNumber ? TextInputType.number : widget.keyboardType,
+  inputFormatters: inputFormatters,
+  decoration: InputDecoration(
+    hintText: widget.hintText,
+    fillColor: _focusNode.hasFocus
+        ? Colors.white
+        : Colors.grey.shade200, // background gelap saat blur
+    filled: true,
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10),
+      borderSide: BorderSide(
+        color: _focusNode.hasFocus
+            ? AppTheme.primaryColor
+            : Colors.transparent, // hilangkan outline saat blur
+      ),
+    ),
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10),
+      borderSide: BorderSide(
+        color: _focusNode.hasFocus
+            ? AppTheme.primaryColor
+            : Colors.transparent, // hilangkan outline saat blur
+      ),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10),
+      borderSide: BorderSide(
+        color: AppTheme.primaryColor, // tampilkan warna fokus
+        width: 2,
+      ),
+    ),
+    suffixIcon: widget.isPassword
+        ? IconButton(
+            icon: Icon(
+              _obscureText ? Icons.visibility : Icons.visibility_off,
             ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(
-                color: errorMessage.isNotEmpty ? Colors.red : Colors.grey,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(
-                color: errorMessage.isNotEmpty
-                    ? Colors.red
-                    : AppTheme.primaryColor,
-              ),
-            ),
-            suffixIcon: widget.isPassword
-                ? IconButton(
-                    icon: Icon(
-                      _obscureText ? Icons.visibility : Icons.visibility_off,
-                    ),
-                    color:
-                        errorMessage.isNotEmpty ? Colors.red : Colors.grey[700],
-                    onPressed: () {
-                      setState(() {
-                        _obscureText = !_obscureText;
-                      });
-                    },
-                  )
-                : null,
-          ),
-        ),
+            color: Colors.grey[700],
+            onPressed: () {
+              setState(() {
+                _obscureText = !_obscureText;
+              });
+            },
+          )
+        : null,
+  ),
+),
+
+        // ERROR MESSAGE
         if (errorMessage.isNotEmpty)
           Padding(
             padding: const EdgeInsets.only(top: 6.0),

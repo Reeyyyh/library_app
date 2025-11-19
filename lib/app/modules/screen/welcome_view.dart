@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:library_app/app/modules/auth/views/login_view.dart';
 import 'package:library_app/app/modules/config/theme.dart';
 
 class WelcomeView extends StatelessWidget {
@@ -48,7 +49,7 @@ class WelcomeView extends StatelessWidget {
                         width: Get.width,
                         child: ElevatedButton(
                           onPressed: () {
-                            
+                            Get.offAll(() => LoginView());
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppTheme.primaryColor,
@@ -75,7 +76,7 @@ class WelcomeView extends StatelessWidget {
               ),
             ),
             Text(
-              'SMP MA’ARIF KOTA BATU',
+              "SMP MA'ARIF KOTA BATU",
               style: AppTheme.heading3.copyWith(
                 fontSize: 16,
               ),
