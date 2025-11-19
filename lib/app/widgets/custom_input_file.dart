@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:library_app/app/modules/config/theme.dart';
+import 'package:library_app/app/modules/config/custom_app_theme.dart';
 
 class CustomFileInput extends StatelessWidget {
   final String labelText;
@@ -68,7 +68,7 @@ class CustomFileInput extends StatelessWidget {
                       const SizedBox(width: 4),
                       Text(
                         'Lihat PDF',
-                        style: AppTheme.heading2.copyWith(
+                        style: CustomAppTheme.heading2.copyWith(
                           fontSize: 14,
                         ),
                       ),

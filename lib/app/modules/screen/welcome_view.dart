@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:library_app/app/modules/auth/views/login_view.dart';
-import 'package:library_app/app/modules/config/theme.dart';
+import 'package:library_app/app/modules/config/custom_app_theme.dart';
 
 class WelcomeView extends StatelessWidget {
   const WelcomeView({super.key});
@@ -31,14 +31,14 @@ class WelcomeView extends StatelessWidget {
                       ),
                       Text(
                         'Selamat Datang',
-                        style: AppTheme.heading1.copyWith(
+                        style: CustomAppTheme.heading1.copyWith(
                           fontSize: 32,
                         ),
                       ),
                       const SizedBox(height: 12),
                       Text(
                         'Temukan koleksi buku sesuai dengan kebutuhan belajarmu dan pinjam dengan mudah melalui aplikasi ini.',
-                        style: AppTheme.caption.copyWith(
+                        style: CustomAppTheme.caption.copyWith(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
                         ),
@@ -52,7 +52,7 @@ class WelcomeView extends StatelessWidget {
                             Get.offAll(() => LoginView());
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: AppTheme.primaryColor,
+                            backgroundColor: CustomAppTheme.primaryColor,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
@@ -61,7 +61,7 @@ class WelcomeView extends StatelessWidget {
                             padding: const EdgeInsets.all(16),
                             child: Text(
                               'Mulai Sekarang!',
-                              style: AppTheme.bodyText.copyWith(
+                              style: CustomAppTheme.bodyText.copyWith(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
@@ -77,7 +77,7 @@ class WelcomeView extends StatelessWidget {
             ),
             Text(
               "SMP MA'ARIF KOTA BATU",
-              style: AppTheme.heading3.copyWith(
+              style: CustomAppTheme.heading3.copyWith(
                 fontSize: 16,
               ),
             ),

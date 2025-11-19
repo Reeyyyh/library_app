@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:library_app/app/modules/config/theme.dart'; 
+import 'package:library_app/app/modules/config/custom_app_theme.dart'; 
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -11,7 +11,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       title: Text(
         title,
-        style: AppTheme.heading2.copyWith(
+        style: CustomAppTheme.heading2.copyWith(
           color: Colors.black,
           fontSize: 20,
         ),

@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:library_app/app/modules/client/admin/pages/1_Dashboard/views/dashboard_view.dart';
 import 'package:library_app/app/modules/client/admin/pages/2_ListBook/views/listbook_view.dart';
 import 'package:library_app/app/modules/client/admin/pages/3_ListCategory/listcategory_view.dart';
-import 'package:library_app/app/modules/client/admin/pages/4_ListUser/views/listuser_view.dart';
+import 'package:library_app/app/modules/client/admin/pages/4_Other/views/other_view.dart';
 
 
 class AdminBotnavController extends GetxController {
@@ -13,7 +13,7 @@ class AdminBotnavController extends GetxController {
     {
       'title': 'Dashboard',
       'icon': Icons.home,
-      'page': Dashboard(),
+      'page': DashboardView(),
     },
     {
       'title': 'Buku',
@@ -26,9 +26,9 @@ class AdminBotnavController extends GetxController {
       'page': ListCategory(),
     },
     {
-      'title': 'Pengguna',
-      'icon': Icons.person,
-      'page': ListUser(),
+      'title': 'Lainnya',
+      'icon': Icons.more_horiz,
+      'page': Other(),
     },
   ];
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:library_app/app/modules/client/admin/botnav/controllers/admin_botnav_controller.dart';
-import 'package:library_app/app/modules/config/theme.dart';
+import 'package:library_app/app/modules/config/custom_app_theme.dart';
 
 class AdminBotNavView extends StatelessWidget {
   const AdminBotNavView({super.key});
@@ -35,7 +35,7 @@ class AdminBotNavView extends StatelessWidget {
                       padding: EdgeInsets.all(7),
                       decoration: BoxDecoration(
                         color: controller.selectedIndex.value == index
-                            ? AppTheme.primaryColor // atau AppTheme.primaryColor
+                            ? CustomAppTheme.primaryColor // atau AppTheme.primaryColor
                             : Colors.transparent,
                         borderRadius: BorderRadius.circular(8),
                       ),
@@ -54,7 +54,7 @@ class AdminBotNavView extends StatelessWidget {
                             ? FontWeight.bold
                             : FontWeight.normal,
                         color: controller.selectedIndex.value == index
-                            ? AppTheme.primaryColor
+                            ? CustomAppTheme.primaryColor
                             : Colors.black,
                       ),
                     ),

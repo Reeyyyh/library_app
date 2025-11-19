@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:library_app/app/modules/config/theme.dart';
+import 'package:library_app/app/modules/config/custom_app_theme.dart';
 
 class CardCollection extends StatelessWidget {
   const CardCollection({
@@ -79,7 +79,7 @@ class CardCollection extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     item['judul'],
-                    style: AppTheme.heading2.copyWith(
+                    style: CustomAppTheme.heading2.copyWith(
                       fontSize: 16,
                     ),
                     maxLines: 2,
@@ -92,14 +92,14 @@ class CardCollection extends StatelessWidget {
                         padding:
                             EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                         decoration: BoxDecoration(
-                          color: AppTheme.primaryColor.withOpacity(0.1),
+                          color: CustomAppTheme.primaryColor.withOpacity(0.1),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(
                           categoryData['name'] ?? 'No Category',
-                          style: AppTheme.bodyText.copyWith(
+                          style: CustomAppTheme.bodyText.copyWith(
                             fontSize: 12,
-                            color: AppTheme.primaryColor,
+                            color: CustomAppTheme.primaryColor,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -108,14 +108,14 @@ class CardCollection extends StatelessWidget {
                         padding:
                             EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                         decoration: BoxDecoration(
-                          color: AppTheme.primaryColor.withOpacity(0.1),
+                          color: CustomAppTheme.primaryColor.withOpacity(0.1),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(
                           item['tahun'],
-                          style: AppTheme.bodyText.copyWith(
+                          style: CustomAppTheme.bodyText.copyWith(
                             fontSize: 12,
-                            color: AppTheme.primaryColor,
+                            color: CustomAppTheme.primaryColor,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -124,7 +124,7 @@ class CardCollection extends StatelessWidget {
                         padding:
                             EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                         decoration: BoxDecoration(
-                          color: AppTheme.primaryColor.withOpacity(0.1),
+                          color: CustomAppTheme.primaryColor.withOpacity(0.1),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Row(
@@ -153,9 +153,9 @@ class CardCollection extends StatelessWidget {
                             const SizedBox(width: 4),
                             Text(
                               item['status'],
-                              style: AppTheme.bodyText.copyWith(
+                              style: CustomAppTheme.bodyText.copyWith(
                                 fontSize: 12,
-                                color: AppTheme.primaryColor,
+                                color: CustomAppTheme.primaryColor,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),

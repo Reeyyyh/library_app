@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:library_app/app/modules/config/theme.dart';
+import 'package:library_app/app/modules/config/custom_app_theme.dart';
 
 class LatesBookCard extends StatelessWidget {
   const LatesBookCard({
@@ -71,7 +71,7 @@ class LatesBookCard extends StatelessWidget {
                   children: <Widget>[
                     Text(
                       item['judul'],
-                      style: AppTheme.heading2.copyWith(
+                      style: CustomAppTheme.heading2.copyWith(
                         fontSize: 16,
                       ),
                       maxLines: 2,
@@ -85,13 +85,13 @@ class LatesBookCard extends StatelessWidget {
                       children: <Widget>[
                         Text(
                           'By : ',
-                          style: AppTheme.caption.copyWith(
+                          style: CustomAppTheme.caption.copyWith(
                             fontSize: 12,
                           ),
                         ),
                         Text(
                           item['penulis'],
-                          style: AppTheme.heading2.copyWith(
+                          style: CustomAppTheme.heading2.copyWith(
                             fontSize: 14,
                             color: Colors.grey,
                           ),
@@ -110,14 +110,14 @@ class LatesBookCard extends StatelessWidget {
                             vertical: 2,
                           ),
                           decoration: BoxDecoration(
-                            color: AppTheme.primaryColor.withOpacity(0.1),
+                            color: CustomAppTheme.primaryColor.withOpacity(0.1),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Text(
                             categoryData['name'] ?? 'No Category',
-                            style: AppTheme.bodyText.copyWith(
+                            style: CustomAppTheme.bodyText.copyWith(
                               fontSize: 12,
-                              color: AppTheme.primaryColor,
+                              color: CustomAppTheme.primaryColor,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -129,14 +129,14 @@ class LatesBookCard extends StatelessWidget {
                             vertical: 2,
                           ),
                           decoration: BoxDecoration(
-                            color: AppTheme.primaryColor.withOpacity(0.1),
+                            color: CustomAppTheme.primaryColor.withOpacity(0.1),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Text(
                             item['tahun'],
-                            style: AppTheme.bodyText.copyWith(
+                            style: CustomAppTheme.bodyText.copyWith(
                               fontSize: 12,
-                              color: AppTheme.primaryColor,
+                              color: CustomAppTheme.primaryColor,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -148,14 +148,14 @@ class LatesBookCard extends StatelessWidget {
                             vertical: 2,
                           ),
                           decoration: BoxDecoration(
-                            color: AppTheme.primaryColor.withOpacity(0.1),
+                            color: CustomAppTheme.primaryColor.withOpacity(0.1),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Text(
                             item['status'] ?? 'No Genre',
-                            style: AppTheme.bodyText.copyWith(
+                            style: CustomAppTheme.bodyText.copyWith(
                               fontSize: 12,
-                              color: AppTheme.primaryColor,
+                              color: CustomAppTheme.primaryColor,
                               fontWeight: FontWeight.bold,
                             ),
                           ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:library_app/app/modules/config/theme.dart';
+import 'package:library_app/app/modules/config/custom_app_theme.dart';
 
 class ImageCarousel extends StatefulWidget {
   final List<String> imagePaths; // List of image asset paths
@@ -68,7 +68,7 @@ class _ImageCarouselState extends State<ImageCarousel> {
               width: _currentPage == index ? 20 : 8,
               decoration: BoxDecoration(
                 color:
-                    _currentPage == index ? AppTheme.primaryColor : Colors.grey,
+                    _currentPage == index ? CustomAppTheme.primaryColor : Colors.grey,
                 borderRadius: BorderRadius.circular(4),
               ),
             ),

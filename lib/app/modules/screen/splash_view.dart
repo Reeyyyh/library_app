@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
-import 'package:library_app/app/modules/config/theme.dart';
+import 'package:library_app/app/modules/config/custom_app_theme.dart';
 import 'package:library_app/app/modules/screen/controllers/splash_controller.dart';
 
 class SplashView extends GetView<SplashController> {
@@ -50,7 +50,7 @@ class SplashView extends GetView<SplashController> {
               padding: const EdgeInsets.only(bottom: 20),
               child: Text(
                 "SMP MA'ARIF KOTA BATU",
-                style: AppTheme.heading3.copyWith(fontSize: 16),
+                style: CustomAppTheme.heading3.copyWith(fontSize: 16),
               ),
             ),
           ],

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:library_app/app/modules/config/theme.dart';
+import 'package:library_app/app/modules/config/custom_app_theme.dart';
 import 'package:flutter/services.dart';
 
 class CustomInput extends StatefulWidget {
@@ -93,7 +93,7 @@ class _CustomInputState extends State<CustomInput> {
       borderRadius: BorderRadius.circular(10),
       borderSide: BorderSide(
         color: _focusNode.hasFocus
-            ? AppTheme.primaryColor
+            ? CustomAppTheme.primaryColor
             : Colors.transparent, // hilangkan outline saat blur
       ),
     ),
@@ -101,14 +101,14 @@ class _CustomInputState extends State<CustomInput> {
       borderRadius: BorderRadius.circular(10),
       borderSide: BorderSide(
         color: _focusNode.hasFocus
-            ? AppTheme.primaryColor
+            ? CustomAppTheme.primaryColor
             : Colors.transparent, // hilangkan outline saat blur
       ),
     ),
     focusedBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(10),
       borderSide: BorderSide(
-        color: AppTheme.primaryColor, // tampilkan warna fokus
+        color: CustomAppTheme.primaryColor, // tampilkan warna fokus
         width: 2,
       ),
     ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:library_app/app/modules/config/theme.dart';
+import 'package:library_app/app/modules/config/custom_app_theme.dart';
 import 'package:library_app/app/widgets/dateformat.dart';
 
 class CardKritikSaranAdmin extends StatelessWidget {
@@ -36,14 +36,14 @@ class CardKritikSaranAdmin extends StatelessWidget {
             children: <Widget>[
               Text(
                 'Nama : ',
-                style: AppTheme.heading2.copyWith(
+                style: CustomAppTheme.heading2.copyWith(
                   fontSize: 14,
                   color: Colors.grey,
                 ),
               ),
               Text(
                 userData['name'],
-                style: AppTheme.heading3.copyWith(
+                style: CustomAppTheme.heading3.copyWith(
                   fontSize: 14,
                 ),
               ),
@@ -55,14 +55,14 @@ class CardKritikSaranAdmin extends StatelessWidget {
             children: <Widget>[
               Text(
                 'Tanggal : ',
-                style: AppTheme.heading2.copyWith(
+                style: CustomAppTheme.heading2.copyWith(
                   fontSize: 14,
                   color: Colors.grey,
                 ),
               ),
               Text(
                 dateFormat(item['created_at']),
-                style: AppTheme.heading3.copyWith(
+                style: CustomAppTheme.heading3.copyWith(
                   fontSize: 14,
                 ),
               ),
@@ -73,28 +73,28 @@ class CardKritikSaranAdmin extends StatelessWidget {
           const SizedBox(height: 5),
           Text(
             'Kritik',
-            style: AppTheme.heading2.copyWith(
+            style: CustomAppTheme.heading2.copyWith(
               fontSize: 14,
               color: Colors.grey,
             ),
           ),
           Text(
             item['kritik'],
-            style: AppTheme.heading3.copyWith(
+            style: CustomAppTheme.heading3.copyWith(
               fontSize: 16,
             ),
           ),
           const SizedBox(height: 10),
           Text(
             'Saran',
-            style: AppTheme.heading2.copyWith(
+            style: CustomAppTheme.heading2.copyWith(
               fontSize: 14,
               color: Colors.grey,
             ),
           ),
           Text(
             item['saran'],
-            style: AppTheme.heading3.copyWith(
+            style: CustomAppTheme.heading3.copyWith(
               fontSize: 16,
             ),
           ),

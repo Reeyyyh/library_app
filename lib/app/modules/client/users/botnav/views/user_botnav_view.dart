@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:library_app/app/modules/client/users/botnav/controllers/user_botnav_controller.dart';
-import 'package:library_app/app/modules/config/theme.dart';
+import 'package:library_app/app/modules/config/custom_app_theme.dart';
 
 class UserBotNavView extends StatelessWidget {
   const UserBotNavView({super.key});
@@ -50,7 +50,7 @@ class UserBotNavView extends StatelessWidget {
                     padding: EdgeInsets.all(7),
                     decoration: BoxDecoration(
                       color: controller.selectedIndex.value == index
-                          ? AppTheme.primaryColor
+                          ? CustomAppTheme.primaryColor
                           : Colors.transparent,
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -64,9 +64,9 @@ class UserBotNavView extends StatelessWidget {
                   SizedBox(height: 5),
                   Text(
                     controller.menus[index]['title'],
-                    style: AppTheme.caption.copyWith(
+                    style: CustomAppTheme.caption.copyWith(
                       color: controller.selectedIndex.value == index
-                          ? AppTheme.primaryColor
+                          ? CustomAppTheme.primaryColor
                           : Colors.black,
                       fontWeight: controller.selectedIndex.value == index
                           ? FontWeight.bold

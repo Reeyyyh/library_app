@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:library_app/app/modules/config/theme.dart';
+import 'package:library_app/app/modules/config/custom_app_theme.dart';
 
 class CustomSelect extends StatelessWidget {
   final String labelText;
@@ -55,7 +55,7 @@ class CustomSelect extends StatelessWidget {
               borderSide: BorderSide(
                 color: errorMessage.isNotEmpty
                     ? Colors.red
-                    : AppTheme.primaryColor,
+                    : CustomAppTheme.primaryColor,
               ),
             ),
           ),

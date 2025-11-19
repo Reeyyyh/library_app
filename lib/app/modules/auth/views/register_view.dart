@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:library_app/app/modules/auth/views/login_view.dart';
-import 'package:library_app/app/modules/config/theme.dart';
+import 'package:library_app/app/modules/config/custom_app_theme.dart';
 import 'package:library_app/app/widgets/custom_button.dart';
 import 'package:library_app/app/widgets/custom_input.dart';
 
@@ -34,7 +34,7 @@ class RegisterView extends StatelessWidget {
                   children: [
                     Text(
                       'Daftar Sekarang',
-                      style: AppTheme.bodyText.copyWith(
+                      style: CustomAppTheme.bodyText.copyWith(
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
                       ),
@@ -42,7 +42,7 @@ class RegisterView extends StatelessWidget {
                     const SizedBox(height: 8),
                     Text(
                       'Daftar untuk mulai meminjam dan\nmengelola koleksi buku perpustakaan',
-                      style: AppTheme.caption.copyWith(
+                      style: CustomAppTheme.caption.copyWith(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),
@@ -86,7 +86,7 @@ class RegisterView extends StatelessWidget {
                       children: [
                         Text(
                           'Sudah punya akun?',
-                          style: AppTheme.caption.copyWith(
+                          style: CustomAppTheme.caption.copyWith(
                             fontWeight: FontWeight.bold,
                             fontSize: 14,
                           ),
@@ -97,10 +97,10 @@ class RegisterView extends StatelessWidget {
                           },
                           child: Text(
                             ' Masuk',
-                            style: AppTheme.caption.copyWith(
+                            style: CustomAppTheme.caption.copyWith(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
-                              color: AppTheme.primaryColor,
+                              color: CustomAppTheme.primaryColor,
                             ),
                           ),
                         ),
@@ -118,7 +118,7 @@ class RegisterView extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 16.0),
                 child: Text(
                   "SMP MA'ARIF KOTA BATU",
-                  style: AppTheme.heading3.copyWith(fontSize: 16),
+                  style: CustomAppTheme.heading3.copyWith(fontSize: 16),
                 ),
               ),
             ),

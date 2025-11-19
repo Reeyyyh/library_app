@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:library_app/app/modules/auth/views/register_view.dart';
-import 'package:library_app/app/modules/client/users/botnav/views/user_botnav_view.dart';
-import 'package:library_app/app/modules/config/theme.dart';
+import 'package:library_app/app/modules/client/admin/botnav/views/admin_botnav_view.dart';
+import 'package:library_app/app/modules/config/custom_app_theme.dart';
 import 'package:library_app/app/widgets/custom_button.dart';
 import 'package:library_app/app/widgets/custom_input.dart';
 
@@ -37,14 +37,14 @@ class LoginView extends StatelessWidget {
                 children: [
                   Text(
                     'Selamat Datang',
-                    style: AppTheme.bodyText.copyWith(
+                    style: CustomAppTheme.bodyText.copyWith(
                       fontSize: 32,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   Text(
                     'Masuk untuk mengakses koleksi buku perpustakaan dengan mudah.',
-                    style: AppTheme.caption.copyWith(
+                    style: CustomAppTheme.caption.copyWith(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
                     ),
@@ -66,7 +66,7 @@ class LoginView extends StatelessWidget {
                   CustomButton(
                     text: "Masuk",
                     onPressed: () {
-                      Get.offAll(() => UserBotNavView());
+                      Get.offAll(() => AdminBotNavView());
                     },
                     isLoading: false,
                   ),
@@ -76,7 +76,7 @@ class LoginView extends StatelessWidget {
                     children: [
                       Text(
                         'Belum punya akun?',
-                        style: AppTheme.caption.copyWith(
+                        style: CustomAppTheme.caption.copyWith(
                           fontWeight: FontWeight.bold,
                           fontSize: 14,
                         ),
@@ -87,10 +87,10 @@ class LoginView extends StatelessWidget {
                         },
                         child: Text(
                           ' Daftar',
-                          style: AppTheme.caption.copyWith(
+                          style: CustomAppTheme.caption.copyWith(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
-                            color: AppTheme.primaryColor,
+                            color: CustomAppTheme.primaryColor,
                           ),
                         ),
                       ),
@@ -107,7 +107,7 @@ class LoginView extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 16.0),
                 child: Text(
                   "SMP MA'ARIF KOTA BATU",
-                  style: AppTheme.heading3.copyWith(fontSize: 16),
+                  style: CustomAppTheme.heading3.copyWith(fontSize: 16),
                 ),
               ),
             ),
