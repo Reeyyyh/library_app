@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:library_app/app/modules/auth/views/register_view.dart';
+import 'package:library_app/app/modules/client/users/botnav/views/user_botnav_view.dart';
 import 'package:library_app/app/modules/config/theme.dart';
 import 'package:library_app/app/widgets/custom_button.dart';
 import 'package:library_app/app/widgets/custom_input.dart';
@@ -65,7 +66,7 @@ class LoginView extends StatelessWidget {
                   CustomButton(
                     text: "Masuk",
                     onPressed: () {
-                      print('homepage');
+                      Get.offAll(() => UserBotNavView());
                     },
                     isLoading: false,
                   ),

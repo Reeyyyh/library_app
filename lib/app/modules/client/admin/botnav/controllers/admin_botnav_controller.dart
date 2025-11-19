@@ -1,0 +1,41 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:library_app/app/modules/client/admin/pages/1_Dashboard/views/dashboard_view.dart';
+import 'package:library_app/app/modules/client/admin/pages/2_ListBook/views/listbook_view.dart';
+import 'package:library_app/app/modules/client/admin/pages/3_ListCategory/listcategory_view.dart';
+import 'package:library_app/app/modules/client/admin/pages/4_ListUser/views/listuser_view.dart';
+
+
+class AdminBotnavController extends GetxController {
+  RxInt selectedIndex = 0.obs;
+
+  final List<Map<String, dynamic>> adminMenus = [
+    {
+      'title': 'Dashboard',
+      'icon': Icons.home,
+      'page': Dashboard(),
+    },
+    {
+      'title': 'Buku',
+      'icon': Icons.my_library_books_rounded,
+      'page': ListBook(),
+    },
+    {
+      'title': 'Kategori',
+      'icon': Icons.category_rounded,
+      'page': ListCategory(),
+    },
+    {
+      'title': 'Pengguna',
+      'icon': Icons.person,
+      'page': ListUser(),
+    },
+  ];
+
+  List<Map<String, dynamic>> get menus => adminMenus;
+
+  void changeTabIndex(int index) {
+    if (selectedIndex.value == index) return;
+    selectedIndex.value = index;
+  }
+}
