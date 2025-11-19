@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:library_app/app/constants/theme.dart';
+import 'package:library_app/app/modules/config/theme.dart';
 
 class LatesBookCard extends StatelessWidget {
   const LatesBookCard({

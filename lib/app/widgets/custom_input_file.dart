@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:library_app/app/constants/theme.dart';
+import 'package:library_app/app/modules/config/theme.dart';
 
 class CustomFileInput extends StatelessWidget {
   final String labelText;

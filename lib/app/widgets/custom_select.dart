@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:library_app/app/constants/theme.dart';
+import 'package:library_app/app/modules/config/theme.dart';
 
 class CustomSelect extends StatelessWidget {
   final String labelText;

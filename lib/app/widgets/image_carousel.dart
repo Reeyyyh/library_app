@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:library_app/app/constants/theme.dart';
+import 'package:library_app/app/modules/config/theme.dart';
 
 class ImageCarousel extends StatefulWidget {
   final List<String> imagePaths; // List of image asset paths
