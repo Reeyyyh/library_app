@@ -13,6 +13,7 @@ class CustomInput extends StatefulWidget {
   final TextInputType keyboardType;
   final bool isNumber;
   final bool readonly;
+  final bool showSuccessBorder;
 
   const CustomInput({
     super.key,
@@ -25,6 +26,7 @@ class CustomInput extends StatefulWidget {
     this.keyboardType = TextInputType.text,
     this.isNumber = false,
     this.readonly = false,
+    this.showSuccessBorder = false,
   });
 
   @override
@@ -75,58 +77,79 @@ class _CustomInputState extends State<CustomInput> {
 
         // TEXT FIELD
         TextField(
-  focusNode: _focusNode,
-  controller: widget.controller,
-  obscureText: widget.isPassword && _obscureText,
-  maxLines: widget.isPassword ? 1 : widget.maxLines,
-  enabled: !widget.readonly,
-  keyboardType:
-      widget.isNumber ? TextInputType.number : widget.keyboardType,
-  inputFormatters: inputFormatters,
-  decoration: InputDecoration(
-    hintText: widget.hintText,
-    fillColor: _focusNode.hasFocus
-        ? Colors.white
-        : Colors.grey.shade200, // background gelap saat blur
-    filled: true,
-    border: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(10),
-      borderSide: BorderSide(
-        color: _focusNode.hasFocus
-            ? CustomAppTheme.primaryColor
-            : Colors.transparent, // hilangkan outline saat blur
-      ),
-    ),
-    enabledBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(10),
-      borderSide: BorderSide(
-        color: _focusNode.hasFocus
-            ? CustomAppTheme.primaryColor
-            : Colors.transparent, // hilangkan outline saat blur
-      ),
-    ),
-    focusedBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(10),
-      borderSide: BorderSide(
-        color: CustomAppTheme.primaryColor, // tampilkan warna fokus
-        width: 2,
-      ),
-    ),
-    suffixIcon: widget.isPassword
-        ? IconButton(
-            icon: Icon(
-              _obscureText ? Icons.visibility : Icons.visibility_off,
+          focusNode: _focusNode,
+          controller: widget.controller,
+          obscureText: widget.isPassword && _obscureText,
+          maxLines: widget.isPassword ? 1 : widget.maxLines,
+          enabled: !widget.readonly,
+          keyboardType:
+              widget.isNumber ? TextInputType.number : widget.keyboardType,
+          inputFormatters: inputFormatters,
+          decoration: InputDecoration(
+            hintText: widget.hintText,
+
+            fillColor: errorMessage.isNotEmpty
+                ? Colors.red.withOpacity(0.03)
+                : _focusNode.hasFocus
+                    ? Colors.white
+                    : Colors.grey.shade200,
+
+            filled: true,
+
+            // BORDER DEFAULT
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(
+                color: errorMessage.isNotEmpty
+                    ? Colors.red // 🔴 border merah kalau error
+                    : Colors.transparent,
+                width: 1.5,
+              ),
             ),
-            color: Colors.grey[700],
-            onPressed: () {
-              setState(() {
-                _obscureText = !_obscureText;
-              });
-            },
-          )
-        : null,
-  ),
-),
+
+            // BORDER SAAT TIDAK FOKUS
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(
+                color: errorMessage.isNotEmpty
+                    ? Colors.red
+                    : widget.showSuccessBorder
+                        ? CustomAppTheme.primaryColor
+                        : Colors.transparent,
+                width: 1.4,
+              ),
+            ),
+
+            // BORDER SAAT FOKUS
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(
+                color: errorMessage.isNotEmpty
+                    ? Colors.red
+                    : widget.showSuccessBorder
+                        ? Colors.green
+                        : CustomAppTheme.primaryColor,
+                width: 2,
+              ),
+            ),
+
+            suffixIcon: widget.isPassword
+                ? IconButton(
+                    icon: Icon(
+                      _obscureText ? Icons.visibility : Icons.visibility_off,
+                    ),
+                    color: errorMessage.isNotEmpty
+                        ? Colors.red // 🔴 icon merah juga
+                        : Colors.grey[700],
+                    onPressed: () {
+                      setState(() {
+                        _obscureText = !_obscureText;
+                      });
+                    },
+                  )
+                : null,
+          ),
+        ),
 
         // ERROR MESSAGE
         if (errorMessage.isNotEmpty)

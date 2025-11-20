@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:library_app/app/modules/auth/controllers/register_controller.dart';
 import 'package:library_app/app/modules/auth/views/login_view.dart';
 import 'package:library_app/app/modules/config/custom_app_theme.dart';
 import 'package:library_app/app/widgets/custom_button.dart';
@@ -15,23 +16,29 @@ class RegisterView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final registerController = Get.put(RegisterController());
+
     return Scaffold(
       backgroundColor: Colors.white,
-      resizeToAvoidBottomInset: false, // supaya footer tidak ikut naik
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
-        child: Stack(
+        child: Column(
           children: [
-            // Konten scrollable
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
+            // ================================
+            // BAGIAN YANG BISA DI SCROLL
+            // ================================
+            Expanded(
               child: SingleChildScrollView(
                 padding: EdgeInsets.only(
+                  left: 24,
+                  right: 24,
                   top: 48,
-                  bottom: 100 + MediaQuery.of(context).viewInsets.bottom,
+                  bottom: MediaQuery.of(context).viewInsets.bottom + 32,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    // TITLE
                     Text(
                       'Daftar Sekarang',
                       style: CustomAppTheme.bodyText.copyWith(
@@ -47,40 +54,88 @@ class RegisterView extends StatelessWidget {
                         fontSize: 16,
                       ),
                     ),
+
                     const SizedBox(height: 32),
-                    CustomInput(
-                      labelText: 'Nama Lengkap :',
-                      hintText: 'Masukkan Nama Lengkap',
-                      controller: nameC,
-                    ),
+
+                    // ==========================
+                    // NAME
+                    // ==========================
+                    Obx(() => CustomInput(
+                          labelText: 'Nama Lengkap :',
+                          hintText: 'Masukkan Nama Lengkap',
+                          controller: nameC,
+                          errorMessage: registerController.nameError.value,
+                          showSuccessBorder:
+                              registerController.nameSuccess.value,
+                        )),
+
                     const SizedBox(height: 16),
-                    CustomInput(
-                      labelText: 'Email :',
-                      hintText: 'Masukkan Email',
-                      controller: emailC,
-                    ),
+
+                    // ==========================
+                    // EMAIL
+                    // ==========================
+                    Obx(() => CustomInput(
+                          labelText: 'Email :',
+                          hintText: 'Masukkan Email',
+                          controller: emailC,
+                          errorMessage: registerController.emailError.value,
+                          showSuccessBorder:
+                              registerController.emailSuccess.value,
+                        )),
+
                     const SizedBox(height: 16),
-                    CustomInput(
-                      labelText: 'Password :',
-                      hintText: 'Masukan Password',
-                      controller: passwordC,
-                      isPassword: true,
-                    ),
+
+                    // ==========================
+                    // PASSWORD
+                    // ==========================
+                    Obx(() => CustomInput(
+                          labelText: 'Password :',
+                          hintText: 'Masukkan Password',
+                          controller: passwordC,
+                          isPassword: true,
+                          errorMessage: registerController.passwordError.value,
+                          showSuccessBorder:
+                              registerController.passwordSuccess.value,
+                        )),
+
                     const SizedBox(height: 16),
-                    CustomInput(
-                      labelText: 'Konfirmasi Password :',
-                      hintText: 'Masukan Ulang Password',
-                      controller: confirmPasswordC,
-                      isPassword: true,
-                    ),
+
+                    // ==========================
+                    // CONFIRM PASSWORD
+                    // ==========================
+                    Obx(() => CustomInput(
+                          labelText: 'Konfirmasi Password :',
+                          hintText: 'Masukkan Ulang Password',
+                          controller: confirmPasswordC,
+                          isPassword: true,
+                          errorMessage:
+                              registerController.confirmPasswordError.value,
+                          showSuccessBorder:
+                              registerController.confirmPasswordSuccess.value,
+                        )),
+
                     const SizedBox(height: 26),
+
+                    // REGISTER BUTTON
                     CustomButton(
                       text: "Daftar",
                       onPressed: () {
-                        Get.offAllNamed('/home');
+                        final isValid = registerController.validate(
+                          name: nameC.text,
+                          email: emailC.text,
+                          password: passwordC.text,
+                          confirmPassword: confirmPasswordC.text,
+                        );
+
+                        if (!isValid) return;
+
+                        Get.offAll(() => LoginView());
                       },
                     ),
+
                     const SizedBox(height: 18),
+
+                    // SUDAH PUNYA AKUN?
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -106,20 +161,21 @@ class RegisterView extends StatelessWidget {
                         ),
                       ],
                     ),
+
+                    const SizedBox(height: 12),
                   ],
                 ),
               ),
             ),
 
-            // Footer tetap di bawah
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 16.0),
-                child: Text(
-                  "SMP MA'ARIF KOTA BATU",
-                  style: CustomAppTheme.heading3.copyWith(fontSize: 16),
-                ),
+            // ================================
+            // FOOTER TETAP DI BAWAH
+            // ================================
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Text(
+                "SMP MA'ARIF KOTA BATU",
+                style: CustomAppTheme.heading3.copyWith(fontSize: 12),
               ),
             ),
           ],

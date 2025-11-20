@@ -13,7 +13,7 @@ class DashboardView extends GetView<DashboardController> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green, // primary color
+        backgroundColor: CustomAppTheme.primaryColor, // primary color
         title: Obx(() => Text(
               'Welcome, ${controller.name.value}',
               style: const TextStyle(
@@ -61,7 +61,7 @@ class DashboardView extends GetView<DashboardController> {
                           ElevatedButton(
                             onPressed: () => Get.back(),
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.green,
+                              backgroundColor: CustomAppTheme.primaryColor,
                             ),
                             child: const Text(
                               'Logout',
@@ -81,7 +81,7 @@ class DashboardView extends GetView<DashboardController> {
               child: Obx(() => Text(
                     controller.name.value[0],
                     style: const TextStyle(
-                      color: Colors.green,
+                      color: CustomAppTheme.primaryColor,
                       fontWeight: FontWeight.bold,
                     ),
                   )),
@@ -131,7 +131,7 @@ class DashboardView extends GetView<DashboardController> {
                   onTap: () {},
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Colors.green,
+                      color: CustomAppTheme.primaryColor,
                       borderRadius: BorderRadius.circular(20),
                       boxShadow: [
                         BoxShadow(

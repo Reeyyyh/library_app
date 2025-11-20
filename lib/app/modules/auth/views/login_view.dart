@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:library_app/app/modules/auth/controllers/login_controller.dart';
 import 'package:library_app/app/modules/auth/views/register_view.dart';
 import 'package:library_app/app/modules/client/admin/botnav/views/admin_botnav_view.dart';
 import 'package:library_app/app/modules/config/custom_app_theme.dart';
@@ -15,100 +16,102 @@ class LoginView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loginController = Get.put(LoginController());
     return Scaffold(
       backgroundColor: Colors.white,
       resizeToAvoidBottomInset: false, // jangan resize saat keyboard muncul
       body: SafeArea(
-        child: Stack(
+        child: Column(
           children: [
-            // Konten scrollable
-            SingleChildScrollView(
-              padding: EdgeInsets.fromLTRB(
-                24,
-                72,
-                24,
-                100 +
-                    MediaQuery.of(context)
-                        .viewInsets
-                        .bottom, // tambahkan space saat keyboard muncul
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Selamat Datang',
-                    style: CustomAppTheme.bodyText.copyWith(
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    'Masuk untuk mengakses koleksi buku perpustakaan dengan mudah.',
-                    style: CustomAppTheme.caption.copyWith(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                  ),
-                  const SizedBox(height: 56),
-                  CustomInput(
-                    labelText: 'Email',
-                    hintText: 'Masukan Email',
-                    controller: emailC,
-                  ),
-                  const SizedBox(height: 16),
-                  CustomInput(
-                    labelText: 'Password',
-                    hintText: 'Masukan Password',
-                    controller: passC,
-                    isPassword: true,
-                  ),
-                  const SizedBox(height: 26),
-                  CustomButton(
-                    text: "Masuk",
-                    onPressed: () {
-                      Get.offAll(() => AdminBotNavView());
-                    },
-                    isLoading: false,
-                  ),
-                  const SizedBox(height: 18),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Belum punya akun?',
-                        style: CustomAppTheme.caption.copyWith(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14,
-                        ),
+            // BAGIAN KONTEN
+            Expanded(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.fromLTRB(
+                  24,
+                  72,
+                  24,
+                  24 + MediaQuery.of(context).viewInsets.bottom,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Selamat Datang',
+                      style: CustomAppTheme.bodyText.copyWith(
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          Get.offAll(() => RegisterView());
-                        },
-                        child: Text(
-                          ' Daftar',
+                    ),
+                    Text(
+                      'Masuk untuk mengakses koleksi buku perpustakaan dengan mudah.',
+                      style: CustomAppTheme.caption.copyWith(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                    const SizedBox(height: 56),
+                    Obx(() => CustomInput(
+                          labelText: 'Email',
+                          hintText: 'Masukan Email',
+                          controller: emailC,
+                          errorMessage: loginController.emailError.value,
+                          showSuccessBorder: loginController.emailSuccess.value,
+                        )),
+                    const SizedBox(height: 16),
+                    Obx(() => CustomInput(
+                          labelText: 'Password',
+                          hintText: 'Masukan Password',
+                          controller: passC,
+                          isPassword: true,
+                          errorMessage: loginController.passwordError.value,
+                          showSuccessBorder:
+                              loginController.passwordSuccess.value,
+                        )),
+                    const SizedBox(height: 26),
+                    CustomButton(
+                      text: "Masuk",
+                      onPressed: () {
+                        bool ok =
+                            loginController.validate(emailC.text, passC.text);
+                        if (ok) Get.offAll(() => AdminBotNavView());
+                      },
+                      isLoading: false,
+                    ),
+                    const SizedBox(height: 18),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Belum punya akun?',
                           style: CustomAppTheme.caption.copyWith(
                             fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            color: CustomAppTheme.primaryColor,
+                            fontSize: 14,
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                        GestureDetector(
+                          onTap: () => Get.offAll(() => RegisterView()),
+                          child: Text(
+                            ' Daftar',
+                            style: CustomAppTheme.caption.copyWith(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              color: CustomAppTheme.primaryColor,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
 
-            // Footer tetap di bawah
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 16.0),
-                child: Text(
-                  "SMP MA'ARIF KOTA BATU",
-                  style: CustomAppTheme.heading3.copyWith(fontSize: 16),
-                ),
+            // FOOTER TETAP DI BAWAH
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: Text(
+                "SMP MA'ARIF KOTA BATU",
+                style: CustomAppTheme.heading3.copyWith(fontSize: 12),
               ),
             ),
           ],
