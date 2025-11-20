@@ -12,8 +12,8 @@ class SplashController extends GetxController {
   void onReady() {
     super.onReady();
 
-    // Tunggu animasi Splash 4 detik
-    Future.delayed(const Duration(seconds: 4), () {
+    // Tunggu animasi Splash 3 detik
+    Future.delayed(const Duration(seconds: 3), () {
       _checkUserLogin();
     });
   }

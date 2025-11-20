@@ -24,7 +24,7 @@ class WelcomeView extends StatelessWidget {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(20),
                         child: Image.asset(
-                          'assets/icon_welcome.jpg',
+                          'assets/img/icon_welcome.jpg',
                           fit: BoxFit.cover,
                           height: 200,
                         ),
