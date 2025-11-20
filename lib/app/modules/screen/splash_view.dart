@@ -24,7 +24,7 @@ class SplashView extends GetView<SplashController> {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(20),
                       child: Image.asset(
-                        'assets/logo.png',
+                        'assets/img/logo.png',
                         height: 200,
                         fit: BoxFit.cover,
                       ),

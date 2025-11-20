@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:library_app/app/modules/auth/controllers/login_controller.dart';
+import 'package:library_app/app/modules/auth/services/auth_service.dart';
 import 'package:library_app/app/modules/auth/views/register_view.dart';
 import 'package:library_app/app/modules/client/admin/botnav/views/admin_botnav_view.dart';
+import 'package:library_app/app/modules/client/users/botnav/views/user_botnav_view.dart';
 import 'package:library_app/app/modules/config/custom_app_theme.dart';
 import 'package:library_app/app/widgets/custom_button.dart';
 import 'package:library_app/app/widgets/custom_input.dart';
@@ -19,7 +21,7 @@ class LoginView extends StatelessWidget {
     final loginController = Get.put(LoginController());
     return Scaffold(
       backgroundColor: Colors.white,
-      resizeToAvoidBottomInset: false, // jangan resize saat keyboard muncul
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Column(
           children: [
@@ -70,12 +72,35 @@ class LoginView extends StatelessWidget {
                     const SizedBox(height: 26),
                     CustomButton(
                       text: "Masuk",
-                      onPressed: () {
+                      onPressed: () async {
                         bool ok =
                             loginController.validate(emailC.text, passC.text);
-                        if (ok) Get.offAll(() => AdminBotNavView());
+
+                        if (!ok) return;
+
+                        final auth = Get.find<AuthService>();
+                        String? result = await auth.login(
+                            emailC.text.trim(), passC.text.trim());
+
+                        if (result != null) {
+                          Get.snackbar(
+                            "Gagal",
+                            result,
+                            backgroundColor: Colors.red,
+                            colorText: Colors.white,
+                          );
+                          return;
+                        }
+
+                        // Ambil role dari AuthService
+                        String role = auth.userData['role'] ?? 'user';
+
+                        if (role == 'admin') {
+                          Get.offAll(() => AdminBotNavView());
+                        } else {
+                          Get.offAll(() => UserBotNavView());
+                        }
                       },
-                      isLoading: false,
                     ),
                     const SizedBox(height: 18),
                     Row(

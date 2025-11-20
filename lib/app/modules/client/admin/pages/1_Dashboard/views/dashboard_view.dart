@@ -59,7 +59,10 @@ class DashboardView extends GetView<DashboardController> {
                           ),
                           const SizedBox(width: 8),
                           ElevatedButton(
-                            onPressed: () => Get.back(),
+                            onPressed: () async {
+                              Get.back();
+                              controller.logout();
+                            },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: CustomAppTheme.primaryColor,
                             ),

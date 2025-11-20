@@ -1,6 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:library_app/app/modules/auth/services/auth_service.dart';
+import 'package:library_app/app/modules/auth/views/login_view.dart';
 
 class RegisterController extends GetxController {
+  final AuthService auth = Get.find<AuthService>();
+
   // Error state reactive
   var nameError = ''.obs;
   var emailError = ''.obs;
@@ -20,22 +25,18 @@ class RegisterController extends GetxController {
   }) {
     bool isValid = true;
 
-    name = name.trim();
-    email = email.trim();
-
-    // RESET error
+    // Reset state
     nameError.value = '';
     emailError.value = '';
     passwordError.value = '';
     confirmPasswordError.value = '';
 
-    // RESET success
     nameSuccess.value = false;
     emailSuccess.value = false;
     passwordSuccess.value = false;
     confirmPasswordSuccess.value = false;
 
-    // NAME
+    // VALIDASI
     if (name.isEmpty) {
       nameError.value = "Nama tidak boleh kosong";
       isValid = false;
@@ -43,7 +44,6 @@ class RegisterController extends GetxController {
       nameSuccess.value = true;
     }
 
-    // EMAIL
     if (email.isEmpty) {
       emailError.value = "Email wajib diisi";
       isValid = false;
@@ -54,7 +54,6 @@ class RegisterController extends GetxController {
       emailSuccess.value = true;
     }
 
-    // PASSWORD
     if (password.isEmpty) {
       passwordError.value = "Password wajib diisi";
       isValid = false;
@@ -65,7 +64,6 @@ class RegisterController extends GetxController {
       passwordSuccess.value = true;
     }
 
-    // CONFIRM PASSWORD
     if (confirmPassword.isEmpty) {
       confirmPasswordError.value = "Konfirmasi wajib diisi";
       isValid = false;
@@ -80,5 +78,40 @@ class RegisterController extends GetxController {
     }
 
     return isValid;
+  }
+
+  // ===========================
+  // REGISTER FUNCTION
+  // ===========================
+  Future<void> doRegister({
+    required String name,
+    required String email,
+    required String password,
+  }) async {
+    String? result = await auth.register(
+      name: name,
+      email: email,
+      password: password,
+    );
+
+    if (result != null) {
+      // gagal → tampilkan snackbar
+      Get.snackbar(
+        "Gagal",
+        result,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+    } else {
+      // sukses
+      Get.snackbar(
+        "Sukses",
+        "Registrasi berhasil, silakan login",
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+      );
+
+      Get.offAll(() => LoginView());
+    }
   }
 }

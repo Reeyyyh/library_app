@@ -119,7 +119,7 @@ class RegisterView extends StatelessWidget {
                     // REGISTER BUTTON
                     CustomButton(
                       text: "Daftar",
-                      onPressed: () {
+                      onPressed: () async {
                         final isValid = registerController.validate(
                           name: nameC.text,
                           email: emailC.text,
@@ -129,7 +129,11 @@ class RegisterView extends StatelessWidget {
 
                         if (!isValid) return;
 
-                        Get.offAll(() => LoginView());
+                        await registerController.doRegister(
+                          name: nameC.text.trim(),
+                          email: emailC.text.trim(),
+                          password: passwordC.text.trim(),
+                        );
                       },
                     ),
 
