@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:library_app/app/modules/client/admin/widgets/admin_appbar.dart';
 
 class Other extends StatelessWidget {
   const Other({super.key});
@@ -6,6 +7,9 @@ class Other extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AdminAppBar(
+        title: "Kategori",
+      ),
       body: Center(
         child: Text(
           'Other Page',

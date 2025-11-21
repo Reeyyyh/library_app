@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:library_app/app/modules/config/custom_app_theme.dart';
+import 'package:library_app/app/models/admin/loan_request_model.dart'; // import model
 
 class LoanRequestCard extends StatelessWidget {
-  final Map<String, String> data;
+  final LoanRequest data; // pakai model
   final VoidCallback? onTap;
 
   const LoanRequestCard({super.key, required this.data, this.onTap});
@@ -23,24 +24,22 @@ class LoanRequestCard extends StatelessWidget {
             children: [
               // Peminjam
               Text('Peminjam:', style: CustomAppTheme.heading4),
-              Text('${data['nama']}', style: CustomAppTheme.bodyText),
-              Text('${data['email']}', style: CustomAppTheme.caption),
+              Text(data.nama, style: CustomAppTheme.bodyText),
+              Text(data.email, style: CustomAppTheme.caption),
               const SizedBox(height: 8),
               const Divider(thickness: 1, color: Colors.grey),
 
               // Buku
               Text('Buku:', style: CustomAppTheme.heading4),
-              Text('${data['judulBuku']}', style: CustomAppTheme.bodyText),
-              Text('${data['category']}', style: CustomAppTheme.caption),
+              Text(data.judulBuku, style: CustomAppTheme.bodyText),
+              Text(data.category, style: CustomAppTheme.caption),
               const SizedBox(height: 8),
               const Divider(thickness: 1, color: Colors.grey),
 
               // Detail pinjam
               Text('Detail Pinjaman:', style: CustomAppTheme.heading4),
-              Text('Pinjam: ${data['tanggalPinjam']}',
-                  style: CustomAppTheme.caption),
-              Text('Kembali: ${data['tanggalKembali']}',
-                  style: CustomAppTheme.caption),
+              Text('Pinjam: ${data.tanggalPinjam}', style: CustomAppTheme.caption),
+              Text('Kembali: ${data.tanggalKembali}', style: CustomAppTheme.caption),
               const SizedBox(height: 8),
               const Divider(thickness: 1, color: Colors.grey),
 
@@ -49,20 +48,17 @@ class LoanRequestCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                     decoration: BoxDecoration(
-                      color: data['status'] == 'Pending'
+                      color: data.status == 'Pending'
                           ? Colors.orange.withOpacity(0.2)
                           : Colors.green.withOpacity(0.2),
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: Text(
-                      '${data['status']}',
+                      data.status,
                       style: CustomAppTheme.bodyText.copyWith(
-                        color: data['status'] == 'Pending'
-                            ? Colors.orange
-                            : Colors.green,
+                        color: data.status == 'Pending' ? Colors.orange : Colors.green,
                         fontWeight: FontWeight.bold,
                       ),
                     ),

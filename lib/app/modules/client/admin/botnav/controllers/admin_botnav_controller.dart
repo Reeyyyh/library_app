@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:library_app/app/modules/client/admin/pages/1_Dashboard/views/dashboard_view.dart';
 import 'package:library_app/app/modules/client/admin/pages/2_ListBook/views/listbook_view.dart';
-import 'package:library_app/app/modules/client/admin/pages/3_ListCategory/listcategory_view.dart';
+import 'package:library_app/app/modules/client/admin/pages/3_ListCategory/views/listcategory_view.dart';
 import 'package:library_app/app/modules/client/admin/pages/4_Other/views/other_view.dart';
 
 

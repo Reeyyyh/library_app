@@ -38,8 +38,8 @@ class AuthService extends GetxController {
     required String password,
   }) async {
     try {
-      UserCredential credential = await _auth
-          .createUserWithEmailAndPassword(email: email, password: password);
+      UserCredential credential = await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
 
       String uid = credential.user!.uid;
 
@@ -84,6 +84,13 @@ class AuthService extends GetxController {
         await _auth.signOut();
         return "Akun Anda dinonaktifkan oleh admin";
       }
+
+      userData.assignAll({
+        'uid': uid,
+        'name': snap.get("name") ?? "",
+        'email': snap.get("email") ?? "",
+        'role': snap.get("role") ?? "user",
+      });
 
       return null; // success
     } on FirebaseAuthException catch (e) {

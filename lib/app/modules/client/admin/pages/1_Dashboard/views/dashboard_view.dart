@@ -1,97 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:library_app/app/modules/client/admin/widgets/admin_appbar.dart';
 import 'package:library_app/app/modules/client/admin/widgets/load_request_card.dart';
+import 'package:library_app/app/modules/client/admin/widgets/load_request_empty.dart';
 import 'package:library_app/app/modules/config/custom_app_theme.dart';
 import '../controllers/dashboard_controller.dart';
 
-class DashboardView extends GetView<DashboardController> {
+class DashboardView extends StatelessWidget {
   const DashboardView({super.key});
 
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(DashboardController());
-
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: CustomAppTheme.primaryColor, // primary color
-        title: Obx(() => Text(
-              'Welcome, ${controller.name.value}',
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            )),
-        actions: [
-          GestureDetector(
-            onTap: () {
-              Get.bottomSheet(
-                Container(
-                  width: Get.width,
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Text(
-                        'Are you sure you want to logout?',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          OutlinedButton(
-                            onPressed: () => Get.back(),
-                            style: OutlinedButton.styleFrom(
-                              side: const BorderSide(color: Colors.red),
-                            ),
-                            child: const Text(
-                              'Cancel',
-                              style: TextStyle(color: Colors.red),
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          ElevatedButton(
-                            onPressed: () async {
-                              Get.back();
-                              controller.logout();
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: CustomAppTheme.primaryColor,
-                            ),
-                            child: const Text(
-                              'Logout',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
-            child: CircleAvatar(
-              radius: 20,
-              backgroundColor: Colors.white,
-              child: Obx(() => Text(
-                    controller.name.value[0],
-                    style: const TextStyle(
-                      color: CustomAppTheme.primaryColor,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  )),
-            ),
-          ),
-          const SizedBox(width: 16),
-        ],
+      appBar: AdminAppBar(
+        title: "Dashboard",
+        showWelcome: true,
       ),
       body: Obx(() {
         if (controller.isLoading.value) {
@@ -154,7 +78,7 @@ class DashboardView extends GetView<DashboardController> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                item['title'],
+                                item.title, // dari model
                                 style: CustomAppTheme.heading3.copyWith(
                                   fontSize: 18,
                                   color: Colors.white,
@@ -166,7 +90,7 @@ class DashboardView extends GetView<DashboardController> {
                                   color: Colors.white,
                                   padding: const EdgeInsets.all(6),
                                   child: Icon(
-                                    item['icon'],
+                                    item.icon, // dari model
                                     size: 24,
                                     color: Colors.green,
                                   ),
@@ -177,14 +101,14 @@ class DashboardView extends GetView<DashboardController> {
                           Row(
                             children: [
                               Text(
-                                item['count'].toString(),
+                                item.count.toString(), // dari model
                                 style: CustomAppTheme.heading1.copyWith(
                                   color: Colors.white,
                                 ),
                               ),
                               const SizedBox(width: 6),
                               Text(
-                                item['unit'],
+                                item.unit, // dari model
                                 style: CustomAppTheme.bodyText.copyWith(
                                   color: Colors.white,
                                   fontWeight: FontWeight.w800,
@@ -212,20 +136,28 @@ class DashboardView extends GetView<DashboardController> {
                 ),
                 const SizedBox(height: 10),
                 Obx(() {
+                  if (controller.isLoading.value) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
+                  if (controller.loanRequests.isEmpty) {
+                    return const LoadRequestEmpty();
+                  }
+
                   return Column(
                     children: controller.loanRequests
-                        .map((item) => LoanRequestCard(
-                              data: item,
+                        .map((request) => LoanRequestCard(
+                              data: request,
                               onTap: () {
-                                // nanti bisa ke halaman detail pinjam
-                                print('Tapped on ${item['nama']}');
+                                // bisa nanti ke detail page
+                                print('Tapped ${request.nama}');
                               },
                             ))
                         .toList(),
                   );
                 }),
               ],
-            ),
+            )
           ],
         );
       }),
