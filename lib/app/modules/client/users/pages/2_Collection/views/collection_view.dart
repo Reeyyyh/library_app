@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:library_app/app/modules/client/users/pages/2_Collection/controllers/collection_controller.dart';
+import 'package:library_app/app/modules/client/users/pages/2_Collection/views/book_detail_view.dart';
 import 'package:library_app/app/modules/client/users/widgets/collection_card.dart';
+import 'package:library_app/app/modules/config/custom_app_theme.dart';
 
 class CollectionView extends StatelessWidget {
   const CollectionView({super.key});
@@ -11,6 +13,7 @@ class CollectionView extends StatelessWidget {
     final controller = Get.put(CollectionController());
 
     return Scaffold(
+      backgroundColor: CustomAppTheme.backgroundColor,
       appBar: AppBar(
         backgroundColor: Colors.green,
         shape: const RoundedRectangleBorder(
@@ -99,7 +102,11 @@ class CollectionView extends StatelessWidget {
                     itemBuilder: (context, index) {
                       return CollectionCard(
                         book: filteredBooks[index],
-                        onTap: () {},
+                        onTap: () {
+                          Get.to(
+                            BookDetailView(book: filteredBooks[index]),
+                          );
+                        },
                       );
                     },
                   ),

@@ -4,12 +4,15 @@ import 'package:library_app/app/models/admin/book_model.dart';
 import 'package:library_app/app/modules/config/custom_app_theme.dart';
 
 class LatesBookCard extends StatelessWidget {
-  final Map<String, dynamic> item;
+  final BookModel book;
 
-  const LatesBookCard({super.key, required this.item});
+  const LatesBookCard({super.key, required this.book});
 
   @override
   Widget build(BuildContext context) {
+    int kategoriFlex = (book.kategori).length <= 6 ? 2 : 1;
+    int tahunFlex = kategoriFlex == 1 ? 2 : 1;
+
     return Container(
       margin: const EdgeInsets.only(bottom: 4),
       padding: const EdgeInsets.all(12),
@@ -29,27 +32,26 @@ class LatesBookCard extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(8),
-            child: CachedNetworkImage(
-              imageUrl: item['image'] ?? '',
-              width: 60,
-              height: 80,
-              fit: BoxFit.cover,
-              placeholder: (_, __) => const Center(
-                child: CircularProgressIndicator(strokeWidth: 2),
-              ),
-              errorWidget: (_, __, ___) =>
-                  const Icon(Icons.book, size: 40, color: Colors.grey),
-            ),
+            child: book.image.isEmpty
+                ? const Icon(Icons.book, size: 60, color: Colors.grey)
+                : CachedNetworkImage(
+                    imageUrl: book.image,
+                    width: 60,
+                    height: 80,
+                    fit: BoxFit.cover,
+                    placeholder: (_, __) =>
+                        const Center(child: CircularProgressIndicator(strokeWidth: 2)),
+                    errorWidget: (_, __, ___) =>
+                        const Icon(Icons.book, size: 40, color: Colors.grey),
+                  ),
           ),
           const SizedBox(width: 12),
-
-          // TEXT
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  item['judul'] ?? "Tanpa Judul",
+                  book.judul,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
@@ -59,7 +61,7 @@ class LatesBookCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  "By : ${item['penulis'] ?? '-'}",
+                  "By : ${book.penulis}",
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
@@ -70,43 +72,40 @@ class LatesBookCard extends StatelessWidget {
                 const SizedBox(height: 6),
                 Row(
                   children: [
-                    // Kategori, fleksibel dan bisa mengecil
-                    Expanded(
-                      flex: 2,
+                    Flexible(
+                      flex: kategoriFlex,
+                      fit: FlexFit.loose,
                       child: FittedBox(
                         fit: BoxFit.scaleDown,
                         alignment: Alignment.centerLeft,
-                        child: _tag(item['kategori'] ?? '-'),
+                        child: _tag(book.kategori),
                       ),
                     ),
                     const SizedBox(width: 6),
-
-                    // Tahun, biasanya pendek, aman
-                    Expanded(
-                      flex: 1,
+                    Flexible(
+                      flex: tahunFlex,
+                      fit: FlexFit.loose,
                       child: FittedBox(
                         fit: BoxFit.scaleDown,
                         alignment: Alignment.centerLeft,
-                        child: _tag(item['tahun'] ?? '-'),
+                        child: _tag(book.tahun),
                       ),
                     ),
                     const SizedBox(width: 6),
-
-                    // Status, fleksibel juga
-                    Expanded(
+                    Flexible(
                       flex: 2,
+                      fit: FlexFit.loose,
                       child: FittedBox(
                         fit: BoxFit.scaleDown,
                         alignment: Alignment.centerLeft,
-                        child: _statusTag(BookStatusExtension.fromValue(
-                            item['status'] ?? '')),
+                        child: _statusTag(book.status),
                       ),
                     ),
                   ],
                 ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );
@@ -134,7 +133,7 @@ class LatesBookCard extends StatelessWidget {
     bool isAvailable = status == BookStatus.tersedia;
 
     Color solidColor = isAvailable ? Colors.green : Colors.red;
-    Color bgSoftColor = solidColor.withOpacity(0.12); // Soft background
+    Color bgSoftColor = solidColor.withOpacity(0.12);
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
@@ -158,8 +157,6 @@ class LatesBookCard extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 6),
-
-          // TEKS
           Text(
             status.label,
             style: TextStyle(

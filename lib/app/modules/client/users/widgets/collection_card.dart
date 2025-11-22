@@ -14,6 +14,9 @@ class CollectionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    int kategoriFlex = book.kategori.length <= 6 ? 1 : 2;
+
     return GestureDetector(
       onTap: onTap,
       child: Card(
@@ -64,12 +67,13 @@ class CollectionCard extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                         const SizedBox(height: 4),
-                        // Row kategori, tahun, status
+                        
+                        
                         Row(
                           children: [
                             // Kategori
                             Expanded(
-                              flex: 2,
+                              flex: kategoriFlex,
                               child: FittedBox(
                                 fit: BoxFit.scaleDown,
                                 alignment: Alignment.centerLeft,
@@ -128,7 +132,7 @@ class CollectionCard extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: book.status == BookStatus.tersedia
                           ? CustomAppTheme.primaryColor
-                          : Colors.red,
+                          : Color(0xFFAE3433),
                       borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(15),
                         bottomRight: Radius.circular(14),

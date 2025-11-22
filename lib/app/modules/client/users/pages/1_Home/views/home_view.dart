@@ -2,9 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:library_app/app/models/admin/book_model.dart';
 import 'package:library_app/app/modules/auth/services/auth_service.dart';
 import 'package:library_app/app/modules/client/users/pages/1_Home/controllers/home_controller.dart';
 import 'package:library_app/app/modules/client/users/pages/1_Home/views/list_categories_view.dart';
+import 'package:library_app/app/modules/client/users/pages/2_Collection/views/book_detail_view.dart';
 import 'package:library_app/app/modules/client/users/widgets/book_empty.dart';
 import 'package:library_app/app/modules/client/users/widgets/category_empty.dart';
 import 'package:library_app/app/modules/client/users/widgets/lates_book_card.dart';
@@ -176,9 +178,7 @@ class HomeView extends StatelessWidget {
                       color: Colors.transparent,
                       child: InkWell(
                         borderRadius: BorderRadius.circular(12),
-                        onTap: () {
-                          
-                        },
+                        onTap: () {},
                         child: Container(
                           alignment: Alignment.center,
                           padding: const EdgeInsets.all(12),
@@ -240,8 +240,13 @@ class HomeView extends StatelessWidget {
                   itemCount: docs.length,
                   separatorBuilder: (_, __) => const SizedBox(height: 12),
                   itemBuilder: (context, index) {
-                    final item = docs[index].data() as Map<String, dynamic>;
-                    return LatesBookCard(item: item);
+                    final book = BookModel.fromDoc(docs[index]);
+                    return InkWell(
+                      onTap: () {
+                        Get.to(() => BookDetailView(book: book));
+                      },
+                      child: LatesBookCard(book: book),
+                    );
                   },
                 );
               },
