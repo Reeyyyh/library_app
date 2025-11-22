@@ -124,6 +124,36 @@ class UpdatebookView extends StatelessWidget {
             }),
             const SizedBox(height: 16),
 
+            // ========== STATUS DROPDOWN ==========
+              const Text("Status"),
+              Obx(() {
+                return Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.green,
+                    ),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: DropdownButton<BookStatus>(
+                    value: controller.status.value,
+                    isExpanded: true,
+                    hint: const Text("Pilih Status"),
+                    items: BookStatus.values.map((status) {
+                      return DropdownMenuItem(
+                        value: status,
+                        child: Text(status.label),
+                      );
+                    }).toList(),
+                    onChanged: (val) {
+                      if (val != null) controller.status.value = val;
+                    },
+                    underline: const SizedBox(),
+                  ),
+                );
+              }),
+
             Obx(
               () => CustomInput(
                 labelText: "Deskripsi",

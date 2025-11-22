@@ -24,7 +24,7 @@ class DashboardController extends GetxController {
     super.onInit();
     // listen real-time untuk semua collection
     _listenCollectionCount('books', 0);
-    _listenCollectionCount('category', 1);
+    _listenCollectionCount('categories', 1);
     _listenCollectionCount('history', 2);
     _listenCollectionCount('users', 3);
 

@@ -64,7 +64,7 @@ class CreatebookController extends GetxController {
 
   void fetchCategories() async {
     final snapshot =
-        await FirebaseFirestore.instance.collection('category').get();
+        await FirebaseFirestore.instance.collection('categories').get();
     categories.value =
         snapshot.docs.map((doc) => doc['name'] as String).toList();
     if (categories.isNotEmpty) selectedCategory.value = categories.first;

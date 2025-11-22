@@ -12,6 +12,9 @@ class UpdatebookController extends GetxController {
   late TextEditingController stokC;
   late TextEditingController deskripsiC;
 
+  Rx<BookStatus> status = BookStatus.tersedia.obs;
+
+
   // Kategori
   var categories = <String>[].obs;
   var selectedCategory = ''.obs;
@@ -57,7 +60,7 @@ class UpdatebookController extends GetxController {
   // Fetch categories
   void fetchCategories() async {
     final snapshot =
-        await FirebaseFirestore.instance.collection('category').get();
+        await FirebaseFirestore.instance.collection('categories').get();
     categories.value =
         snapshot.docs.map((doc) => doc['name'] as String).toList();
   }
@@ -72,6 +75,7 @@ class UpdatebookController extends GetxController {
     stokC = TextEditingController(text: book.stok.toString());
     deskripsiC = TextEditingController(text: book.deskripsi);
     selectedCategory.value = book.kategori;
+    status.value = book.status;
   }
 
   // Validasi field
@@ -173,6 +177,7 @@ class UpdatebookController extends GetxController {
         'stok': int.tryParse(stokC.text) ?? 0,
         'kategori': selectedCategory.value,
         'deskripsi': deskripsiC.text,
+        'status': status.value.toValue(),
         'updatedAt': Timestamp.now(),
       });
 

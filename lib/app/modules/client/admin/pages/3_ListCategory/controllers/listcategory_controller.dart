@@ -20,7 +20,7 @@ class ListCategoryController extends GetxController {
   Future<void> fetchCategories() async {
     try {
       isLoading.value = true;
-      final snapshot = await firestore.collection('category').get();
+      final snapshot = await firestore.collection('categories').get();
       categories.value = snapshot.docs
           .map((doc) => {'id': doc.id, 'name': doc['name']})
           .toList();
@@ -35,7 +35,7 @@ class ListCategoryController extends GetxController {
   Future<void> addCategory(String name) async {
     try {
       isLoading.value = true;
-      await firestore.collection('category').add({
+      await firestore.collection('categories').add({
         'name': name,
         'created_at': FieldValue.serverTimestamp(),
       });
@@ -51,7 +51,7 @@ class ListCategoryController extends GetxController {
   Future<void> updateCategory(String id, String newName) async {
     try {
       isLoading.value = true;
-      await firestore.collection('category').doc(id).update({
+      await firestore.collection('categories').doc(id).update({
         'name': newName,
       });
       fetchCategories();
@@ -66,7 +66,7 @@ class ListCategoryController extends GetxController {
   Future<void> deleteCategory(String id) async {
     try {
       isLoading.value = true;
-      await firestore.collection('category').doc(id).delete();
+      await firestore.collection('categories').doc(id).delete();
       fetchCategories();
     } catch (e) {
       Get.snackbar('Error', 'Gagal menghapus category: $e');
