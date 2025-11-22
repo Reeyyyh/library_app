@@ -14,8 +14,10 @@ class HomeController extends GetxController {
   Future<void> getCategories() async {
     try {
       isLoading.value = true;
+
       QuerySnapshot snapshot = await FirebaseFirestore.instance
           .collection('categories')
+          .orderBy('position')
           .limit(4)
           .get();
 
@@ -38,6 +40,20 @@ class HomeController extends GetxController {
         .orderBy('createdAt', descending: true)
         .limit(2)
         .snapshots();
+  }
+
+  Stream<List<Map<String, dynamic>>> getTopCategoriesStream() {
+    return FirebaseFirestore.instance
+        .collection('categories')
+        .orderBy('position')
+        .limit(4)
+        .snapshots()
+        .map((snapshot) => snapshot.docs.map((doc) {
+              return {
+                'id': doc.id,
+                ...doc.data(),
+              };
+            }).toList());
   }
 
   Future<List<Map<String, dynamic>>> fetchLatestBooks() async {

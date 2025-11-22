@@ -5,16 +5,16 @@ class ImageCarousel extends StatefulWidget {
   final List<String> imagePaths; // List of image asset paths
 
   const ImageCarousel({
-    Key? key,
+    super.key,
     required this.imagePaths,
-  }) : super(key: key);
+  });
 
   @override
   _ImageCarouselState createState() => _ImageCarouselState();
 }
 
 class _ImageCarouselState extends State<ImageCarousel> {
-  PageController _pageController = PageController();
+  final PageController _pageController = PageController();
   int _currentPage = 0;
 
   @override

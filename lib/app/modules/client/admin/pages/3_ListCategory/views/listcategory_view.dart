@@ -28,35 +28,54 @@ class ListCategory extends StatelessWidget {
           return const CategoryEmpty();
         }
 
-        return ListView.builder(
-          padding: const EdgeInsets.all(16),
-          itemCount: controller.categories.length,
-          itemBuilder: (context, index) {
-            final category = controller.categories[index];
-            return CategoryCard(
-              categoryName: category['name'],
-              onEdit: () {
-                showCategoryAddUpdateDialog(
-                  controller: controller,
-                  isEdit: true,
-                  id: category['id'],
-                  currentName: category['name'],
-                );
-              },
-              onDelete: () {
-                showCustomDeleteDialog(
-                  title: 'Hapus Category',
-                  message: 'Apakah yakin ingin menghapus category ini?',
-                  confirmColor: Colors.redAccent,
-                  confirmText: 'Hapus',
-                  onConfirm: () {
-                    controller.deleteCategory(category['id']);
-                    Get.back();
-                  },
-                );
-              },
-            );
-          },
+        return SingleChildScrollView(
+          child: ReorderableListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: controller.categories.length,
+            onReorder: controller.reorderAll,
+            itemBuilder: (context, index) {
+              final category = controller.categories[index];
+              return Column(
+                key: ValueKey(category['id']),
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (index == 4)
+                    const Padding(
+                      padding: EdgeInsets.all(16),
+                      child: Text(
+                        "Kategori Lain",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16),
+                      ),
+                    ),
+                  CategoryCard(
+                    categoryName: category['name'],
+                    onEdit: () {
+                      showCategoryAddUpdateDialog(
+                        controller: controller,
+                        isEdit: true,
+                        id: category['id'],
+                        currentName: category['name'],
+                      );
+                    },
+                    onDelete: () {
+                      showCustomDeleteDialog(
+                        title: 'Hapus Category',
+                        message: 'Apakah yakin ingin menghapus category ini?',
+                        confirmColor: Colors.redAccent,
+                        confirmText: 'Hapus',
+                        onConfirm: () {
+                          controller.deleteCategory(category['id']);
+                          Get.back();
+                        },
+                      );
+                    },
+                  ),
+                ],
+              );
+            },
+          ),
         );
       }),
       floatingActionButton: FloatingActionButton(

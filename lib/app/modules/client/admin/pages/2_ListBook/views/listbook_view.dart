@@ -6,6 +6,7 @@ import 'package:library_app/app/modules/client/admin/pages/2_ListBook/views/crea
 import 'package:library_app/app/modules/client/admin/pages/2_ListBook/views/updatebook_view.dart';
 import 'package:library_app/app/modules/client/admin/widgets/admin_appbar.dart';
 import 'package:library_app/app/modules/client/admin/widgets/book_card.dart';
+import 'package:library_app/app/modules/client/admin/widgets/book_empty.dart';
 import 'package:library_app/app/modules/config/custom_app_theme.dart';
 
 class ListBook extends StatelessWidget {
@@ -28,12 +29,7 @@ class ListBook extends StatelessWidget {
           }
 
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(
-              child: Text(
-                "Belum ada buku",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-              ),
-            );
+            return const BookEmpty();
           }
 
           final books = snapshot.data!;

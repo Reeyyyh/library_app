@@ -23,8 +23,51 @@ class BookCard extends StatelessWidget {
     );
   }
 
+  Widget _statusTag(BookStatus status) {
+    bool isAvailable = status == BookStatus.tersedia;
+    Color solidColor = isAvailable ? Colors.green : Colors.red;
+    Color bgSoftColor = solidColor.withOpacity(0.12);
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      decoration: BoxDecoration(
+        color: bgSoftColor,
+        borderRadius: BorderRadius.circular(50),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 18,
+            height: 18,
+            decoration: BoxDecoration(
+              color: solidColor,
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              isAvailable ? Icons.check : Icons.close,
+              color: Colors.white,
+              size: 12,
+            ),
+          ),
+          const SizedBox(width: 6),
+          Text(
+            status.label, // dari BookStatusExtension di model
+            style: TextStyle(
+              color: solidColor,
+              fontSize: 11,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final status = book.status; // langsung pakai dari model
+
     return Container(
       margin: const EdgeInsets.only(bottom: 14),
       padding: const EdgeInsets.all(12),
@@ -58,12 +101,16 @@ class BookCard extends StatelessWidget {
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
         ),
-        subtitle: Text(
-          book.penulis,
-          style: const TextStyle(
-            color: Colors.black54,
-            fontSize: 13,
-          ),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Stok: ${book.stok}",
+              style: const TextStyle(color: Colors.black54, fontSize: 13),
+            ),
+            const SizedBox(height: 4),
+            _statusTag(status),
+          ],
         ),
         onTap: onTap,
         trailing: IconButton(

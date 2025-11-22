@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:library_app/app/modules/auth/services/auth_service.dart';
 import 'package:library_app/app/modules/client/users/pages/1_Home/controllers/home_controller.dart';
+import 'package:library_app/app/modules/client/users/widgets/book_empty.dart';
+import 'package:library_app/app/modules/client/users/widgets/category_empty.dart';
 import 'package:library_app/app/modules/client/users/widgets/lates_book_card.dart';
 import 'package:library_app/app/modules/config/custom_app_theme.dart';
 import 'package:library_app/app/widgets/image_carousel.dart';
@@ -138,60 +140,62 @@ class HomeView extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Text("Lihat Semua"),
+                Text("Show More"),
               ],
             ),
 
             const SizedBox(height: 10),
 
-            Obx(() {
-              if (controller.isLoading.value) {
-                return const Center(child: CircularProgressIndicator());
-              }
+            StreamBuilder<List<Map<String, dynamic>>>(
+              stream: controller.getTopCategoriesStream(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return const Center(child: CircularProgressIndicator());
+                }
 
-              if (controller.categories.isEmpty) {
-                return const Text("Tidak ada kategori.");
-              }
+                final categories = snapshot.data!;
 
-              return GridView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: controller.categories.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 10,
-                  crossAxisSpacing: 10,
-                  childAspectRatio: 1 / 0.35,
-                ),
-                itemBuilder: (context, index) {
-                  final category = controller.categories[index];
+                if (categories.isEmpty) {
+                  return const CategoryEmpty();
+                }
 
-                  return GestureDetector(
-                    onTap: () {
-                      // pindah ke tab kategori / list buku
-                      // sesuaikan nanti
-                    },
-                    child: Container(
-                      alignment: Alignment.center,
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Text(
-                        category['name'] ?? "-",
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.center,
-                        style: CustomAppTheme.bodyText.copyWith(
-                          fontWeight: FontWeight.w600, // Semi-bold
+                return GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: categories.length,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 10,
+                    crossAxisSpacing: 10,
+                    childAspectRatio: 1 / 0.35,
+                  ),
+                  itemBuilder: (context, index) {
+                    final category = categories[index];
+
+                    return GestureDetector(
+                      onTap: () {},
+                      child: Container(
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text(
+                          category['name'] ?? "-",
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.center,
+                          style: CustomAppTheme.bodyText.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
-                    ),
-                  );
-                },
-              );
-            }),
+                    );
+                  },
+                );
+              },
+            ),
 
             const SizedBox(height: 30),
 
@@ -218,7 +222,7 @@ class HomeView extends StatelessWidget {
                 }
 
                 if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                  return const Text("Tidak ada buku terbaru.");
+                  return const BookEmpty();
                 }
 
                 return StreamBuilder(

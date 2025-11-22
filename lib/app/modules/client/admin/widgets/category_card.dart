@@ -26,19 +26,17 @@ class CategoryCard extends StatelessWidget {
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Edit button
             IconButton(
               icon: const Icon(Icons.edit, color: Colors.blue),
-              onPressed: () {
-                if (onEdit != null) onEdit!();
-              },
+              onPressed: onEdit,
             ),
-            // Delete button
             IconButton(
               icon: const Icon(Icons.delete, color: Colors.red),
-              onPressed: () {
-                if (onDelete != null) onDelete!();
-              },
+              onPressed: onDelete,
+            ),
+            const Padding(
+              padding: EdgeInsets.only(left: 4),
+              child: Icon(Icons.drag_handle, color: Colors.grey),
             ),
           ],
         ),

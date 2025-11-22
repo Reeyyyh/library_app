@@ -10,13 +10,13 @@ class CustomSelect extends StatelessWidget {
   final Function(int?)? onChanged;
 
   const CustomSelect({
-    Key? key,
+    super.key,
     required this.labelText,
     required this.controller,
     this.errorMessage,
     required this.items,
     this.onChanged,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

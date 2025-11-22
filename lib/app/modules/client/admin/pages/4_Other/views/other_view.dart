@@ -8,7 +8,7 @@ class Other extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AdminAppBar(
-        title: "Kategori",
+        title: "Lainnya",
         showBack: false,
       ),
       body: Center(
