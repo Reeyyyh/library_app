@@ -11,14 +11,14 @@ class LatesBookCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
+      margin: const EdgeInsets.only(bottom: 4),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withOpacity(0.1),
             blurRadius: 6,
             offset: const Offset(0, 2),
           )
@@ -70,14 +70,40 @@ class LatesBookCard extends StatelessWidget {
                 const SizedBox(height: 6),
                 Row(
                   children: [
-                    _tag(item['kategori'] ?? '-'),
+                    // Kategori, fleksibel dan bisa mengecil
+                    Expanded(
+                      flex: 2,
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        alignment: Alignment.centerLeft,
+                        child: _tag(item['kategori'] ?? '-'),
+                      ),
+                    ),
                     const SizedBox(width: 6),
-                    _tag(item['tahun'] ?? '-'),
+
+                    // Tahun, biasanya pendek, aman
+                    Expanded(
+                      flex: 1,
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        alignment: Alignment.centerLeft,
+                        child: _tag(item['tahun'] ?? '-'),
+                      ),
+                    ),
                     const SizedBox(width: 6),
-                    _statusTag(
-                        BookStatusExtension.fromValue(item['status'] ?? '')),
+
+                    // Status, fleksibel juga
+                    Expanded(
+                      flex: 2,
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        alignment: Alignment.centerLeft,
+                        child: _statusTag(BookStatusExtension.fromValue(
+                            item['status'] ?? '')),
+                      ),
+                    ),
                   ],
-                )
+                ),
               ],
             ),
           )

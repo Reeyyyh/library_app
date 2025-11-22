@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:library_app/app/modules/auth/services/auth_service.dart';
 import 'package:library_app/app/modules/client/users/pages/1_Home/controllers/home_controller.dart';
+import 'package:library_app/app/modules/client/users/pages/1_Home/views/list_categories_view.dart';
 import 'package:library_app/app/modules/client/users/widgets/book_empty.dart';
 import 'package:library_app/app/modules/client/users/widgets/category_empty.dart';
 import 'package:library_app/app/modules/client/users/widgets/lates_book_card.dart';
@@ -25,11 +26,9 @@ class HomeView extends StatelessWidget {
         backgroundColor: CustomAppTheme.backgroundColor,
         title: Obx(() {
           final user = auth.userData;
-
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              // === Welcome text ===
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -46,8 +45,6 @@ class HomeView extends StatelessWidget {
                   ),
                 ],
               ),
-
-              // === Profile picture / Initial ===
               GestureDetector(
                 onTap: () {
                   Get.bottomSheet(
@@ -107,10 +104,6 @@ class HomeView extends StatelessWidget {
           );
         }),
       ),
-
-      // ==========================
-      // BODY
-      // ==========================
       body: RefreshIndicator(
         onRefresh: () async {
           controller.getCategories();
@@ -118,7 +111,7 @@ class HomeView extends StatelessWidget {
         child: ListView(
           padding: const EdgeInsets.all(20),
           children: [
-            // ===================== CAROUSEL =====================
+            // ===== CAROUSEL =====
             ImageCarousel(
               imagePaths: [
                 'assets/img/banner1.png',
@@ -126,24 +119,33 @@ class HomeView extends StatelessWidget {
                 'assets/img/banner3.jpg',
               ],
             ),
-
             const SizedBox(height: 20),
 
-            // ===================== KATEGORI =====================
+            // ===== KATEGORI =====
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                Text(
-                  "Kategori Buku",
+              children: [
+                const Text(
+                  "Kategori",
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Text("Show More"),
+                GestureDetector(
+                  onTap: () {
+                    Get.to(() => ListCategoriesView());
+                  },
+                  child: Text(
+                    "Show More",
+                    style: CustomAppTheme.smallText.copyWith(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 12,
+                    ),
+                  ),
+                ),
               ],
             ),
-
             const SizedBox(height: 10),
 
             StreamBuilder<List<Map<String, dynamic>>>(
@@ -154,7 +156,6 @@ class HomeView extends StatelessWidget {
                 }
 
                 final categories = snapshot.data!;
-
                 if (categories.isEmpty) {
                   return const CategoryEmpty();
                 }
@@ -165,29 +166,41 @@ class HomeView extends StatelessWidget {
                   itemCount: categories.length,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
-                    mainAxisSpacing: 10,
-                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 12,
+                    crossAxisSpacing: 12,
                     childAspectRatio: 1 / 0.35,
                   ),
                   itemBuilder: (context, index) {
                     final category = categories[index];
-
-                    return GestureDetector(
-                      onTap: () {},
-                      child: Container(
-                        alignment: Alignment.center,
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Text(
-                          category['name'] ?? "-",
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.center,
-                          style: CustomAppTheme.bodyText.copyWith(
-                            fontWeight: FontWeight.w600,
+                    return Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(12),
+                        onTap: () {
+                          
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                blurRadius: 4,
+                                offset: const Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                          child: Text(
+                            category['name'] ?? "-",
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.center,
+                            style: CustomAppTheme.bodyText.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ),
                       ),
@@ -196,10 +209,9 @@ class HomeView extends StatelessWidget {
                 );
               },
             ),
-
             const SizedBox(height: 30),
 
-            // ===================== BUKU TERBARU =====================
+            // ===== BUKU TERBARU =====
             const Text(
               "Buku Terbaru",
               style: TextStyle(
@@ -207,15 +219,10 @@ class HomeView extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-
             const SizedBox(height: 10),
 
             StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance
-                  .collection("books")
-                  .orderBy("createdAt", descending: true)
-                  .limit(4)
-                  .snapshots(),
+              stream: controller.getLatestBooks(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
@@ -225,21 +232,16 @@ class HomeView extends StatelessWidget {
                   return const BookEmpty();
                 }
 
-                return StreamBuilder(
-                  stream: controller.getLatestBooks(),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
-                      return CircularProgressIndicator();
-                    }
+                final docs = snapshot.data!.docs;
 
-                    final docs = snapshot.data!.docs;
-
-                    return Column(
-                      children: docs.map((d) {
-                        final item = d.data() as Map<String, dynamic>;
-                        return LatesBookCard(item: item);
-                      }).toList(),
-                    );
+                return ListView.separated(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: docs.length,
+                  separatorBuilder: (_, __) => const SizedBox(height: 12),
+                  itemBuilder: (context, index) {
+                    final item = docs[index].data() as Map<String, dynamic>;
+                    return LatesBookCard(item: item);
                   },
                 );
               },
