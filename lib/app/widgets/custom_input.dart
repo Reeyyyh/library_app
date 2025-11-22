@@ -14,6 +14,7 @@ class CustomInput extends StatefulWidget {
   final bool isNumber;
   final bool readonly;
   final bool showSuccessBorder;
+  final Function(String)? onChanged;
 
   const CustomInput({
     super.key,
@@ -27,6 +28,7 @@ class CustomInput extends StatefulWidget {
     this.isNumber = false,
     this.readonly = false,
     this.showSuccessBorder = false,
+    this.onChanged,
   });
 
   @override
@@ -85,6 +87,7 @@ class _CustomInputState extends State<CustomInput> {
           keyboardType:
               widget.isNumber ? TextInputType.number : widget.keyboardType,
           inputFormatters: inputFormatters,
+          onChanged: widget.onChanged,
           decoration: InputDecoration(
             hintText: widget.hintText,
 

@@ -6,11 +6,13 @@ import 'package:library_app/app/modules/config/custom_app_theme.dart';
 class AdminAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final bool showWelcome;
+  final bool showBack;
 
   const AdminAppBar({
     super.key,
     required this.title,
     this.showWelcome = false,
+    this.showBack = true,
   });
 
   @override
@@ -18,7 +20,6 @@ class AdminAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TRY GET → aman dipakai di halaman apa pun
     final DashboardController? dashboard =
         Get.isRegistered<DashboardController>()
             ? Get.find<DashboardController>()
@@ -27,7 +28,13 @@ class AdminAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: CustomAppTheme.primaryColor,
 
-      // 🔥 TITLE reactive kalau showWelcome = true
+      leading: showBack
+          ? IconButton(
+              icon: const Icon(Icons.arrow_back, color: Colors.white),
+              onPressed: () => Get.back(),
+            )
+          : null,
+
       title: (showWelcome && dashboard != null)
           ? Obx(() => Text(
                 "Welcome, ${dashboard.name.value}",
@@ -40,14 +47,11 @@ class AdminAppBar extends StatelessWidget implements PreferredSizeWidget {
 
       actions: [
         GestureDetector(
-          onTap: () => dashboard != null
-              ? _showLogoutSheet(dashboard)
-              : null,
+          onTap: () =>
+              dashboard != null ? _showLogoutSheet(dashboard) : null,
           child: CircleAvatar(
             radius: 20,
             backgroundColor: Colors.white,
-
-            // 🔥 Avatar SEKARANG SELALU Icons.person
             child: Icon(
               Icons.person,
               color: CustomAppTheme.primaryColor,

@@ -17,6 +17,7 @@ class ListCategory extends StatelessWidget {
     return Scaffold(
       appBar: AdminAppBar(
         title: "Kategori",
+        showBack: false,
       ),
       body: Obx(() {
         if (controller.isLoading.value) {

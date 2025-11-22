@@ -9,6 +9,7 @@ class Other extends StatelessWidget {
     return Scaffold(
       appBar: AdminAppBar(
         title: "Kategori",
+        showBack: false,
       ),
       body: Center(
         child: Text(

@@ -16,6 +16,7 @@ class DashboardView extends StatelessWidget {
       appBar: AdminAppBar(
         title: "Dashboard",
         showWelcome: true,
+        showBack: false,
       ),
       body: Obx(() {
         if (controller.isLoading.value) {
