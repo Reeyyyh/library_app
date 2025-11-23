@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 class CustomAppTheme {
   static const Color primaryColor = Color(0xFF009140);
   static const Color backgroundColor = Color(0xFFE8F5E9);
+  
   static TextStyle heading1 = GoogleFonts.montserrat(
     fontSize: 32,
     fontWeight: FontWeight.bold,
