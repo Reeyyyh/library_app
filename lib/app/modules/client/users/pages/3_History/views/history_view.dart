@@ -8,7 +8,7 @@ class HistoryView extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: Text(
-          'History Page',
+          'History Page, Objectif selanjutnya',
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
       ),
