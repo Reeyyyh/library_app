@@ -16,3 +16,13 @@ Library App adalah aplikasi mobile untuk:
 - Integrasi data dengan Firebase  
 
 ---
+## 👥 Profil Kelompok
+
+| Kelas | NIM | Nama | Username GitHub |
+|------|------|------|------------------|
+| RI-7A | 202210370311324 | Raka Adyatma Bimasakti | rakarajinibadah |
+| RI-7A | 202210370311351 | Farid Anugraha | Srellica |
+| RI-7D | 202210370311011 | Mohamad Raihan | Reeyyyh |
+| RI-7D | 202210370311030 | Muhammad Arif Irfan | marifirfannn |
+
+---
