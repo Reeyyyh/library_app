@@ -26,3 +26,7 @@ Library App adalah aplikasi mobile untuk:
 | RI-7D | 202210370311030 | Muhammad Arif Irfan | marifirfannn |
 
 ---
+## 🎨 **Link Figma (Desain UI/UX)**
+🔗 https://www.figma.com/design/iuzxcSUNA0KG80KBrCfyoF/perpustakaan?node-id=604-3604&t=YmIVhXjPpWetmwjg-1
+
+---
