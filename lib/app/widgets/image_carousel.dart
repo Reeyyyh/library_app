@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:library_app/app/modules/config/custom_app_theme.dart';
 
 class ImageCarousel extends StatefulWidget {
-  final List<String> imagePaths; // List of image asset paths
+  final List<String> imagePaths;
 
   const ImageCarousel({
     super.key,

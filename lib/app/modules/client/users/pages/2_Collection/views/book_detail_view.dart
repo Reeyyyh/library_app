@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:library_app/app/models/admin/book_model.dart';
+import 'package:get/get.dart';
+import 'package:library_app/app/models/book_model.dart';
+import 'package:library_app/app/modules/client/users/pages/2_Collection/views/borrow_confirm_view.dart';
 import 'package:library_app/app/modules/config/custom_app_theme.dart';
 import 'package:library_app/app/widgets/custom_appbar.dart';
 import 'package:library_app/app/widgets/custom_button.dart';
@@ -35,7 +37,7 @@ class BookDetailView extends StatelessWidget {
           const SizedBox(height: 8),
           _buildBookInfoTable(book, statusLabel),
           const SizedBox(height: 8),
-          _buildInformationTitle('Deskripsi'),
+          _buildInformationTitle('Deskripsi Buku'),
           const SizedBox(height: 8),
           Container(
             padding: const EdgeInsets.all(10),
@@ -58,10 +60,14 @@ class BookDetailView extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           CustomButton(
-            text: 'Sewa Sekarang',
-            onPressed: () {
-              // logika sewa buku bisa ditambahkan di sini
-            },
+            text: book.status == BookStatus.tersedia
+                ? 'Sewa Sekarang'
+                : 'Tidak Tersedia',
+            onPressed: book.status == BookStatus.tersedia
+                ? () {
+                    Get.to(() => BorrowConfirmView(book: book));
+                  }
+                : null, // null = otomatis disabled
           ),
         ],
       ),

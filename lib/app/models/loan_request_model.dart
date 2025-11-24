@@ -1,13 +1,18 @@
 class LoanRequest {
+  final String borrowCode;
+  final String uid;
   final String nama;
   final String email;
   final String judulBuku;
   final String category;
+
   final String tanggalPinjam;
   final String tanggalKembali;
   final String status;
 
   LoanRequest({
+    required this.borrowCode,
+    required this.uid,
     required this.nama,
     required this.email,
     required this.judulBuku,
@@ -19,18 +24,22 @@ class LoanRequest {
 
   factory LoanRequest.fromMap(Map<String, dynamic> map) {
     return LoanRequest(
+      borrowCode: map['borrowCode'] ?? '',
+      uid: map['uid'] ?? '',
       nama: map['nama'] ?? '',
       email: map['email'] ?? '',
       judulBuku: map['judulBuku'] ?? '',
       category: map['category'] ?? '',
       tanggalPinjam: map['tanggalPinjam'] ?? '',
       tanggalKembali: map['tanggalKembali'] ?? '',
-      status: map['status'] ?? '',
+      status: map['status'] ?? 'pending',
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
+      'borrowCode': borrowCode,
+      'uid': uid,
       'nama': nama,
       'email': email,
       'judulBuku': judulBuku,

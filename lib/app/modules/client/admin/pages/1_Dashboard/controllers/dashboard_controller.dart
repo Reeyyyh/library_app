@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:library_app/app/models/admin/loan_request_model.dart';
-import 'package:library_app/app/models/admin/menu_model.dart';
+import 'package:library_app/app/models/loan_request_model.dart';
+import 'package:library_app/app/models/menu_model.dart';
 import 'package:library_app/app/modules/auth/services/auth_service.dart';
 import 'package:library_app/app/modules/auth/views/login_view.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

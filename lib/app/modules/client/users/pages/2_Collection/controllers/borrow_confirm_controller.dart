@@ -1,0 +1,78 @@
+import 'dart:math';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:library_app/app/models/loan_request_model.dart';
+import 'package:library_app/app/modules/auth/services/auth_service.dart';
+
+class BorrowConfirmController extends GetxController {
+  final AuthService authService = Get.find<AuthService>();
+
+  var borrowDate = DateTime.now().obs;
+  var duration = 7.obs;
+  var userName = ''.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    // Ambil nama user dari AuthService
+    userName.value = authService.userData['name'] ?? "Pengguna";
+
+    // Jika data user berubah, update nama
+    ever(authService.userData, (_) {
+      userName.value = authService.userData['name'] ?? "Pengguna";
+    });
+  }
+
+  // Validasi tanggal pinjam
+  void setBorrowDate(DateTime date) {
+    final today = DateTime.now();
+    if (date.isBefore(DateTime(today.year, today.month, today.day))) {
+      Get.snackbar("Error", "Tanggal pinjam tidak boleh di masa lalu",
+          backgroundColor: Colors.red, colorText: Colors.white);
+      return;
+    }
+    borrowDate.value = date;
+
+    if (duration.value < 1) duration.value = 1;
+  }
+
+  // Validasi tanggal kembali
+  void setReturnDate(DateTime date) {
+    if (!date.isAfter(borrowDate.value)) {
+      Get.snackbar("Error", "Tanggal kembali harus lebih dari tanggal pinjam",
+          backgroundColor: Colors.red, colorText: Colors.white);
+      return;
+    }
+    duration.value = date.difference(borrowDate.value).inDays;
+  }
+
+  String generateBorrowCode() {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    final rand = Random();
+    return List.generate(6, (index) => chars[rand.nextInt(chars.length)])
+        .join();
+  }
+
+  Future<void> submitBorrow(LoanRequest request) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection("borrow_requests")
+          .add(request.toMap());
+
+      Get.snackbar(
+        "Sukses",
+        "Pengajuan peminjaman berhasil dikirim",
+        colorText: Colors.black,
+        backgroundColor: Colors.white,
+      );
+    } catch (e) {
+      Get.snackbar(
+        "Error",
+        "Gagal mengirim peminjaman: $e",
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+    }
+  }
+}

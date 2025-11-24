@@ -103,8 +103,7 @@ class CollectionView extends StatelessWidget {
                       return CollectionCard(
                         book: filteredBooks[index],
                         onTap: () {
-                          Get.to(
-                            BookDetailView(book: filteredBooks[index]),
+                          Get.to(() => BookDetailView(book: filteredBooks[index]),
                           );
                         },
                       );

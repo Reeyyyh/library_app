@@ -27,10 +27,18 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDisabled = onPressed == null || isLoading;
+
     return ElevatedButton(
-      onPressed: isLoading ? () {} : onPressed,
+      onPressed: isDisabled ? null : onPressed,
       style: ElevatedButton.styleFrom(
-        backgroundColor: color,
+        // warna jika aktif / normal
+        backgroundColor: isDisabled ? const Color(0xFF9E9E9E) : color,
+
+        // warna ketika disabled (khusus ElevatedButton)
+        disabledBackgroundColor: const Color(0xFF9E9E9E),
+        disabledForegroundColor: Colors.white70,
+
         minimumSize: Size(width, height),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(borderRadius),
@@ -39,7 +47,7 @@ class CustomButton extends StatelessWidget {
         textStyle: TextStyle(fontSize: fontSize),
       ),
       child: isLoading
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(
                 color: Colors.white,
                 strokeWidth: 3,
