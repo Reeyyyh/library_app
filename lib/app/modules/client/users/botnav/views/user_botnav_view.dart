@@ -25,57 +25,72 @@ class UserBotNavView extends StatelessWidget {
         height: 80,
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.only(
+          borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(20),
             topRight: Radius.circular(20),
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.3),
-              blurRadius: 5,
-              offset: Offset(0, -3),
+              color: Colors.black.withOpacity(0.08),
+              blurRadius: 10,
+              offset: const Offset(0, -3),
             ),
           ],
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: List.generate(
             controller.menus.length,
-            (index) => GestureDetector(
-              onTap: () => controller.changeTabIndex(index),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    padding: EdgeInsets.all(7),
-                    decoration: BoxDecoration(
-                      color: controller.selectedIndex.value == index
-                          ? CustomAppTheme.primaryColor
-                          : Colors.transparent,
-                      borderRadius: BorderRadius.circular(8),
+            (index) {
+              final bool isSelected =
+                  controller.selectedIndex.value == index;
+
+              return Expanded(
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(16),
+                  onTap: () => controller.changeTabIndex(index),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 10,
                     ),
-                    child: Icon(
-                      controller.menus[index]['icon'],
-                      color: controller.selectedIndex.value == index
-                          ? Colors.white
-                          : Colors.black,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        AnimatedContainer(
+                          duration: const Duration(milliseconds: 200),
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: isSelected
+                                ? CustomAppTheme.primaryColor
+                                : Colors.transparent,
+                            borderRadius: BorderRadius.circular(999),
+                          ),
+                          child: Icon(
+                            controller.menus[index]['icon'],
+                            size: 22,
+                            color: isSelected
+                                ? Colors.white
+                                : Colors.grey[600],
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          controller.menus[index]['title'],
+                          style: CustomAppTheme.caption.copyWith(
+                            fontSize: 11,
+                            color: isSelected
+                                ? CustomAppTheme.primaryColor
+                                : Colors.grey[600],
+                            fontWeight:
+                                isSelected ? FontWeight.w600 : FontWeight.w400,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  SizedBox(height: 5),
-                  Text(
-                    controller.menus[index]['title'],
-                    style: CustomAppTheme.caption.copyWith(
-                      color: controller.selectedIndex.value == index
-                          ? CustomAppTheme.primaryColor
-                          : Colors.black,
-                      fontWeight: controller.selectedIndex.value == index
-                          ? FontWeight.bold
-                          : FontWeight.normal,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+                ),
+              );
+            },
           ),
         ),
       ),
