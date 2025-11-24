@@ -147,6 +147,7 @@ class BorrowConfirmView extends StatelessWidget {
                   uid: controller.authService.userData['uid'],
                   nama: controller.authService.userData['name'],
                   email: controller.authService.userData['email'],
+                  image: book.image,
                   judulBuku: book.judul,
                   category: book.kategori,
                   tanggalPinjam: DateFormat('dd/MM/yyyy')

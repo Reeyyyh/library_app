@@ -5,7 +5,7 @@ import 'package:library_app/app/modules/client/users/widgets/category_empty.dart
 import 'package:library_app/app/modules/config/custom_app_theme.dart';
 
 class ListCategoriesView extends StatelessWidget {
-  final controller = Get.put(ListCategoriesController());
+  final ListCategoriesController controller = Get.put(ListCategoriesController());
 
   ListCategoriesView({super.key});
 

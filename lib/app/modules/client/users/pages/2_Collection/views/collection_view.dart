@@ -10,7 +10,7 @@ class CollectionView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(CollectionController());
+    final CollectionController controller = Get.put(CollectionController());
 
     return Scaffold(
       backgroundColor: CustomAppTheme.backgroundColor,
