@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-/// Status ketersediaan buku di perpustakaan.
+// Enum yang menentukan status buku (tersedia atau tidak tersedia)
 enum BookStatus {
   /// Buku bisa dipinjam.
   tersedia,
@@ -21,7 +21,7 @@ extension BookStatusExtension on BookStatus {
     }
   }
 
-  /// Label yang ditampilkan ke user (untuk UI).
+  // Label yang ditampilkan di UI
   String get label {
     switch (this) {
       case BookStatus.tersedia:
@@ -45,41 +45,21 @@ extension BookStatusExtension on BookStatus {
   }
 }
 
-/// Model data buku yang disimpan di Firestore.
+// Model buku yang merepresentasikan data buku dalam sistem
 class BookModel {
-  /// ID dokumen di Firestore (doc.id).
-  final String id;
+  final String id;               // ID dokumen Firestore
+  final String judul;            // Judul buku
+  final String penulis;          // Penulis buku
+  final String penerbit;         // Penerbit buku
+  final String tahun;            // Tahun terbit
+  final int stok;                // Jumlah stok buku
+  final BookStatus status;       // Status ketersediaan buku
+  final String kategori;         // Kategori buku
+  final String deskripsi;        // Deskripsi singkat buku
+  final String image;            // URL gambar buku
+  final Timestamp? createdAt;    // Waktu data dibuat
 
-  /// Judul buku.
-  final String judul;
-
-  /// Nama penulis buku.
-  final String penulis;
-
-  /// Nama penerbit buku.
-  final String penerbit;
-
-  /// Tahun terbit buku (disimpan sebagai string, misal "2020").
-  final String tahun;
-
-  /// Jumlah stok buku yang tersedia.
-  final int stok;
-
-  /// Status ketersediaan buku (tersedia / tidak tersedia).
-  final BookStatus status;
-
-  /// Kategori buku (misal: Pelajaran, Fiksi, Referensi).
-  final String kategori;
-
-  /// Deskripsi singkat buku.
-  final String deskripsi;
-
-  /// URL gambar cover buku.
-  final String image;
-
-  /// Waktu data buku dibuat (timestamp Firestore).
-  final Timestamp? createdAt;
-
+  // Konstruktor model buku
   BookModel({
     required this.id,
     required this.judul,
@@ -94,7 +74,7 @@ class BookModel {
     this.createdAt,
   });
 
-  /// Factory constructor untuk membangun [BookModel] dari dokumen Firestore.
+  // Factory constructor: mengubah data Firestore menjadi objek BookModel
   factory BookModel.fromDoc(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
 
@@ -115,7 +95,7 @@ class BookModel {
     );
   }
 
-  /// Mengubah objek [BookModel] menjadi Map untuk disimpan ke Firestore.
+  // Mengubah objek BookModel menjadi format Map untuk disimpan ke Firestore
   Map<String, dynamic> toJson() {
     return {
       'judul': judul,

@@ -14,9 +14,17 @@ class DashboardController extends GetxController {
 
   RxList<Menu> menus = <Menu>[
     Menu(title: 'Buku', count: 0, unit: 'Buah', icon: Icons.book_outlined),
-    Menu(title: 'Kategori', count: 0, unit: 'Jenis', icon: Icons.category_outlined),
+    Menu(
+        title: 'Kategori',
+        count: 0,
+        unit: 'Jenis',
+        icon: Icons.category_outlined),
     Menu(title: 'Riwayat', count: 0, unit: 'Data', icon: Icons.history_rounded),
-    Menu(title: 'Pengguna', count: 0, unit: 'Orang', icon: Icons.person_outline_rounded),
+    Menu(
+        title: 'Pengguna',
+        count: 0,
+        unit: 'Orang',
+        icon: Icons.person_outline_rounded),
   ].obs;
 
   @override
@@ -32,7 +40,10 @@ class DashboardController extends GetxController {
   }
 
   void _listenCollectionCount(String collection, int index) {
-    FirebaseFirestore.instance.collection(collection).snapshots().listen((snap) {
+    FirebaseFirestore.instance
+        .collection(collection)
+        .snapshots()
+        .listen((snap) {
       menus[index] = menus[index].copyWith(count: snap.docs.length);
       menus.refresh();
     });
@@ -61,6 +72,10 @@ class DashboardController extends GetxController {
     } finally {
       isLoading.value = false;
     }
+  }
+
+  Future<void> fetchData() async {
+    // nanti isi logic refresh di sini
   }
 
   Future<void> logout() async {
