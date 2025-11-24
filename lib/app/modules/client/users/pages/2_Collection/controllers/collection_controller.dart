@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:library_app/app/models/book_model.dart';
 
-
+// Controller untuk mengelola daftar koleksi buku dan fitur pencarian.
 class CollectionController extends GetxController {
 
   var books = <BookModel>[].obs;
@@ -17,7 +17,7 @@ class CollectionController extends GetxController {
     super.onInit();
     fetchBooks();
   }
-
+  // Mengambil data buku dari Firestore secara realtime.
   void fetchBooks() {
     FirebaseFirestore.instance
         .collection('books')
@@ -30,7 +30,7 @@ class CollectionController extends GetxController {
       books.value = fetchedBooks;
     });
   }
-
+  // Filter daftar buku berdasarkan query pencarian.
   List<BookModel> get filteredBooks {
     if (searchQuery.isEmpty) {
       return books;
@@ -41,7 +41,7 @@ class CollectionController extends GetxController {
           .toList();
     }
   }
-
+  // Menghapus query pencarian dan mengosongkan input field.
   void clearSearch() {
     searchQuery.value = '';
     searchController.clear();
