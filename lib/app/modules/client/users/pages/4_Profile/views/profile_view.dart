@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/profile_controller.dart';
-import 'edit_profile_view.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // pakai Get.put biar controller ke-register
     final controller = Get.put(ProfileController());
 
     return Scaffold(
-      backgroundColor: const Color(0xFFE8F7E9), // hijau muda bg
+      // background hijau muda biar soft kaya UI contoh
+      backgroundColor: const Color(0xFFE8F7E9),
       appBar: AppBar(
         backgroundColor: const Color(0xFFE8F7E9),
         elevation: 0,
@@ -28,7 +29,7 @@ class ProfileView extends StatelessWidget {
         children: [
           const SizedBox(height: 24),
 
-          // Avatar
+          // Avatar user
           CircleAvatar(
             radius: 48,
             backgroundColor: Colors.grey.shade300,
@@ -61,13 +62,25 @@ class ProfileView extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _profileRow(label: 'Nama', value: controller.name),
+                  _profileRow(
+                    label: 'Nama',
+                    value: 'Rakabima', // sementara dummy
+                  ),
                   const Divider(height: 24),
-                  _profileRow(label: 'Email', value: controller.email),
+                  _profileRow(
+                    label: 'Email',
+                    value: 'rakabima@perpustakaan.com',
+                  ),
                   const Divider(height: 24),
-                  _profileRow(label: 'Kelas', value: controller.className),
+                  _profileRow(
+                    label: 'Kelas',
+                    value: 'XI A',
+                  ),
                   const Divider(height: 24),
-                  _profileRow(label: 'Kontak', value: controller.phone),
+                  _profileRow(
+                    label: 'Kontak',
+                    value: '+62 812 3456 7890',
+                  ),
                 ],
               ),
             ),
@@ -80,15 +93,22 @@ class ProfileView extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFFFFC400), // kuning
               foregroundColor: Colors.black87,
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 24,
+                vertical: 12,
+              ),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(24),
               ),
               elevation: 2,
             ),
             onPressed: () {
-              Get.to(() => ());
+              // nanti bisa diarahkan ke EditProfileView
+              Get.snackbar(
+                'Info',
+                'Fitur edit profile belum diimplementasikan',
+                snackPosition: SnackPosition.BOTTOM,
+              );
             },
             icon: const Icon(Icons.edit),
             label: const Text(
@@ -99,12 +119,17 @@ class ProfileView extends StatelessWidget {
 
           const Spacer(),
 
-          // Contoh tombol logout kecil di bawah (opsional)
+          // Tombol logout di bawah
           TextButton(
-            onPressed: () => controller.logout(),
+            onPressed: () {
+              controller.logout();
+            },
             child: const Text(
               'Logout',
-              style: TextStyle(color: Colors.redAccent),
+              style: TextStyle(
+                color: Colors.redAccent,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
           const SizedBox(height: 16),
@@ -113,7 +138,10 @@ class ProfileView extends StatelessWidget {
     );
   }
 
-  Widget _profileRow({required String label, required String value}) {
+  Widget _profileRow({
+    required String label,
+    required String value,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
