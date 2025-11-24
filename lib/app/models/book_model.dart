@@ -1,11 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+// Enum yang menentukan status buku (tersedia atau tidak tersedia)
 enum BookStatus {
   tersedia,
   tidakTersedia,
 }
 
+// Extension untuk menambahkan fungsi tambahan pada enum BookStatus
 extension BookStatusExtension on BookStatus {
+  // Mengubah enum menjadi string untuk disimpan di database
   String toValue() {
     switch (this) {
       case BookStatus.tersedia:
@@ -15,6 +18,7 @@ extension BookStatusExtension on BookStatus {
     }
   }
 
+  // Label yang ditampilkan di UI
   String get label {
     switch (this) {
       case BookStatus.tersedia:
@@ -24,6 +28,7 @@ extension BookStatusExtension on BookStatus {
     }
   }
 
+  // Mengubah string status dari database menjadi enum
   static BookStatus fromValue(String value) {
     switch (value.toLowerCase()) {
       case "tersedia":
@@ -36,20 +41,21 @@ extension BookStatusExtension on BookStatus {
   }
 }
 
-
+// Model buku yang merepresentasikan data buku dalam sistem
 class BookModel {
-  final String id;
-  final String judul;
-  final String penulis;
-  final String penerbit;
-  final String tahun;
-  final int stok;
-  final BookStatus status;
-  final String kategori;
-  final String deskripsi;
-  final String image;
-  final Timestamp? createdAt;
+  final String id;               // ID dokumen Firestore
+  final String judul;            // Judul buku
+  final String penulis;          // Penulis buku
+  final String penerbit;         // Penerbit buku
+  final String tahun;            // Tahun terbit
+  final int stok;                // Jumlah stok buku
+  final BookStatus status;       // Status ketersediaan buku
+  final String kategori;         // Kategori buku
+  final String deskripsi;        // Deskripsi singkat buku
+  final String image;            // URL gambar buku
+  final Timestamp? createdAt;    // Waktu data dibuat
 
+  // Konstruktor model buku
   BookModel({
     required this.id,
     required this.judul,
@@ -64,6 +70,7 @@ class BookModel {
     this.createdAt,
   });
 
+  // Factory constructor: mengubah data Firestore menjadi objek BookModel
   factory BookModel.fromDoc(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
 
@@ -82,6 +89,7 @@ class BookModel {
     );
   }
 
+  // Mengubah objek BookModel menjadi format Map untuk disimpan ke Firestore
   Map<String, dynamic> toJson() {
     return {
       'judul': judul,
