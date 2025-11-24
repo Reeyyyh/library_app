@@ -17,7 +17,7 @@ class ListCategory extends StatelessWidget {
     final controller = Get.put(ListCategoryController());
 
     return Scaffold(
-      // AppBar custom untuk admin
+      // AppBar custom
       appBar: AdminAppBar(
         title: "Kategori",
         showBack: false,
