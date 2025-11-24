@@ -1,14 +1,27 @@
 import 'package:flutter/material.dart';
 
+// Model untuk item menu pada dashboard
 class Menu {
-  final String title;
-  final int count;
-  final String unit;
-  final IconData icon;
+  final String title;     // Nama menu
+  final int count;        // Jumlah atau angka yang ditampilkan
+  final String unit;      // Satuan dari angka (mis: "buku", "item")
+  final IconData icon;    // Ikon menu
 
-  Menu({required this.title, required this.count, required this.unit, required this.icon});
+  // Konstruktor utama
+  Menu({
+    required this.title,
+    required this.count,
+    required this.unit,
+    required this.icon,
+  });
 
-  Menu copyWith({String? title, int? count, String? unit, IconData? icon}) {
+  // Membuat salinan Menu dengan nilai yang dapat diubah sebagian
+  Menu copyWith({
+    String? title,
+    int? count,
+    String? unit,
+    IconData? icon,
+  }) {
     return Menu(
       title: title ?? this.title,
       count: count ?? this.count,
