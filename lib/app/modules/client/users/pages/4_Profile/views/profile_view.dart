@@ -4,7 +4,7 @@ import '../controllers/profile_controller.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
-
+  // next job
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(ProfileController());
