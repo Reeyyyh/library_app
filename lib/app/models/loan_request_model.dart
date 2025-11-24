@@ -1,6 +1,6 @@
 class LoanRequest {
-  final String borrowCode; // kode unik
-  final String uid;        // id user
+  final String borrowCode;
+  final String uid;
   final String nama;
   final String email;
   final String judulBuku;
@@ -8,7 +8,7 @@ class LoanRequest {
 
   final String tanggalPinjam;
   final String tanggalKembali;
-  final String status; // pending, accepted, canceled, returned, etc.
+  final String status;
 
   LoanRequest({
     required this.borrowCode,

@@ -6,6 +6,7 @@ import 'package:library_app/app/models/loan_request_model.dart';
 import 'package:library_app/app/modules/client/users/pages/2_Collection/views/success_borrow_view.dart';
 import 'package:library_app/app/modules/client/users/widgets/borrow_confirm_card.dart';
 import 'package:library_app/app/modules/config/custom_app_theme.dart';
+import 'package:library_app/app/widgets/custom_appbar.dart';
 import 'package:library_app/app/widgets/custom_button.dart';
 import 'package:library_app/app/widgets/custom_date_input.dart';
 import '../controllers/borrow_confirm_controller.dart';
@@ -20,10 +21,8 @@ class BorrowConfirmView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: CustomAppTheme.backgroundColor,
-      appBar: AppBar(
-        backgroundColor: CustomAppTheme.backgroundColor,
-        title: const Text("Sewa Buku"),
-        centerTitle: false,
+      appBar: CustomAppBar(
+        title: "Sewa Buku",
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),

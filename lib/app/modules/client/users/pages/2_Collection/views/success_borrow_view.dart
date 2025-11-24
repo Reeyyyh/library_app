@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter/services.dart';
 import 'package:library_app/app/modules/client/users/botnav/views/user_botnav_view.dart';
-import 'package:library_app/app/modules/client/users/pages/1_Home/views/home_view.dart';
 import 'package:library_app/app/modules/config/custom_app_theme.dart';
 
 class SuccessBorrowView extends StatelessWidget {
