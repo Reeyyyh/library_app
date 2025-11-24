@@ -15,16 +15,16 @@ class BorrowConfirmController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    // Ambil nama user dari AuthService
-    userName.value = authService.userData['name'] ?? "Pengguna";
 
-    // Jika data user berubah, update nama
-    ever(authService.userData, (_) {
-      userName.value = authService.userData['name'] ?? "Pengguna";
+    // Ambil pertama kali
+    userName.value = authService.userModel.value?.name ?? "Pengguna";
+
+    // Update kalau user berubah
+    ever(authService.userModel, (user) {
+      userName.value = user?.name ?? "Pengguna";
     });
   }
 
-  // Validasi tanggal pinjam
   void setBorrowDate(DateTime date) {
     final today = DateTime.now();
     if (date.isBefore(DateTime(today.year, today.month, today.day))) {
@@ -33,11 +33,8 @@ class BorrowConfirmController extends GetxController {
       return;
     }
     borrowDate.value = date;
-
-    if (duration.value < 1) duration.value = 1;
   }
 
-  // Validasi tanggal kembali
   void setReturnDate(DateTime date) {
     if (!date.isAfter(borrowDate.value)) {
       Get.snackbar("Error", "Tanggal kembali harus lebih dari tanggal pinjam",
@@ -49,8 +46,7 @@ class BorrowConfirmController extends GetxController {
 
   String generateBorrowCode() {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    final rand = Random();
-    return List.generate(6, (index) => chars[rand.nextInt(chars.length)])
+    return List.generate(6, (i) => chars[Random().nextInt(chars.length)])
         .join();
   }
 
@@ -63,8 +59,8 @@ class BorrowConfirmController extends GetxController {
       Get.snackbar(
         "Sukses",
         "Pengajuan peminjaman berhasil dikirim",
-        colorText: Colors.black,
         backgroundColor: Colors.white,
+        colorText: Colors.black,
       );
     } catch (e) {
       Get.snackbar(

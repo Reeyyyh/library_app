@@ -92,7 +92,7 @@ class LoginView extends StatelessWidget {
                           return;
                         }
                         
-                        String role = auth.userData['role'] ?? 'user';
+                        String role = auth.userModel.value?.role ?? 'user';
 
                         if (role == 'admin') {
                           Get.offAll(() => AdminBotNavView());

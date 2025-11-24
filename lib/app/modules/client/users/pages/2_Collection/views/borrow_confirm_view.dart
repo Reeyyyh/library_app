@@ -19,6 +19,7 @@ class BorrowConfirmView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currentUser = controller.authService.userModel.value;
     return Scaffold(
       backgroundColor: CustomAppTheme.backgroundColor,
       appBar: CustomAppBar(
@@ -144,9 +145,9 @@ class BorrowConfirmView extends StatelessWidget {
 
                 final loanRequest = LoanRequest(
                   borrowCode: borrowCode,
-                  uid: controller.authService.userData['uid'],
-                  nama: controller.authService.userData['name'],
-                  email: controller.authService.userData['email'],
+                  uid: currentUser!.uid,
+                  nama: currentUser.name,
+                  email: currentUser.email,
                   image: book.image,
                   judulBuku: book.judul,
                   category: book.kategori,
