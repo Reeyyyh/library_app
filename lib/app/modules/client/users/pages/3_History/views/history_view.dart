@@ -4,10 +4,10 @@ import 'package:library_app/app/modules/client/users/widgets/history_card.dart';
 import 'package:library_app/app/modules/client/users/widgets/history_empty.dart';
 import 'package:library_app/app/modules/client/users/pages/3_History/controllers/history_controller.dart';
 import 'package:library_app/app/modules/config/custom_app_theme.dart';
-
+//View yang menampilkan riwayat peminjaman buku oleh pengguna.
 class HistoryView extends StatelessWidget {
   HistoryView({super.key});
-
+  //fungsi untuk menampilkan history peminjaman buku
   final HistoryController controller = Get.put(HistoryController());
 
   @override
