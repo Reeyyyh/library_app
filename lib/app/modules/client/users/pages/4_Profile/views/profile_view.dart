@@ -7,11 +7,11 @@ class ProfileView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // pakai Get.put biar controller ke-register
+    // Registrasi ProfileController dengan GetX
     final controller = Get.put(ProfileController());
 
     return Scaffold(
-      // background hijau muda biar soft kaya UI contoh
+      // Background hijau muda supaya soft seperti UI contoh
       backgroundColor: const Color(0xFFE8F7E9),
       appBar: AppBar(
         backgroundColor: const Color(0xFFE8F7E9),
@@ -29,7 +29,7 @@ class ProfileView extends StatelessWidget {
         children: [
           const SizedBox(height: 24),
 
-          // Avatar user
+          // Avatar user di bagian atas
           CircleAvatar(
             radius: 48,
             backgroundColor: Colors.grey.shade300,
@@ -59,85 +59,110 @@ class ProfileView extends StatelessWidget {
                   ),
                 ],
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: Stack(
                 children: [
-                  _profileRow(
-                    label: 'Nama',
-                    value: 'Rakabima', // sementara dummy
+                  // Isi teks profile
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _profileRow(
+                        label: 'Nama',
+                        value: 'Rakabima', // sementara dummy
+                      ),
+                      const Divider(height: 24),
+                      _profileRow(
+                        label: 'Email',
+                        value: 'rakabima@perpustakaan.com',
+                      ),
+                      const Divider(height: 24),
+                      _profileRow(
+                        label: 'Kelas',
+                        value: 'XI A',
+                      ),
+                      const Divider(height: 24),
+                      _profileRow(
+                        label: 'Kontak',
+                        value: '+62 812 3456 7890',
+                      ),
+                    ],
                   ),
-                  const Divider(height: 24),
-                  _profileRow(
-                    label: 'Email',
-                    value: 'rakabima@perpustakaan.com',
-                  ),
-                  const Divider(height: 24),
-                  _profileRow(
-                    label: 'Kelas',
-                    value: 'XI A',
-                  ),
-                  const Divider(height: 24),
-                  _profileRow(
-                    label: 'Kontak',
-                    value: '+62 812 3456 7890',
+
+                  // Tombol Edit kecil di pojok kanan atas card
+                  Positioned(
+                    top: 0,
+                    right: 0,
+                    child: TextButton.icon(
+                      style: TextButton.styleFrom(
+                        foregroundColor: Colors.orange[800],
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
+                      ),
+                      onPressed: () {
+                        // nanti bisa diarahkan ke EditProfileView
+                        Get.snackbar(
+                          'Info',
+                          'Fitur edit profile belum diimplementasikan',
+                          snackPosition: SnackPosition.BOTTOM,
+                        );
+                      },
+                      icon: const Icon(
+                        Icons.edit,
+                        size: 16,
+                      ),
+                      label: const Text(
+                        'Edit',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),
             ),
           ),
 
-          const SizedBox(height: 24),
-
-          // Tombol Edit (kuning)
-          ElevatedButton.icon(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFFFC400), // kuning
-              foregroundColor: Colors.black87,
-              padding: const EdgeInsets.symmetric(
-                horizontal: 24,
-                vertical: 12,
-              ),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(24),
-              ),
-              elevation: 2,
-            ),
-            onPressed: () {
-              // nanti bisa diarahkan ke EditProfileView
-              Get.snackbar(
-                'Info',
-                'Fitur edit profile belum diimplementasikan',
-                snackPosition: SnackPosition.BOTTOM,
-              );
-            },
-            icon: const Icon(Icons.edit),
-            label: const Text(
-              'Edit',
-              style: TextStyle(fontWeight: FontWeight.w600),
-            ),
-          ),
-
           const Spacer(),
 
-          // Tombol logout di bawah
-          TextButton(
-            onPressed: () {
-              controller.logout();
-            },
-            child: const Text(
-              'Logout',
-              style: TextStyle(
-                color: Colors.redAccent,
-                fontWeight: FontWeight.w500,
+          // Tombol logout besar warna merah di bawah
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+            child: SizedBox(
+              width: double.infinity,
+              height: 48,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.redAccent,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  elevation: 2,
+                ),
+                onPressed: () {
+                  controller.logout();
+                },
+                child: const Text(
+                  'Logout',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                  ),
+                ),
               ),
             ),
           ),
+
           const SizedBox(height: 16),
         ],
       ),
     );
   }
 
+  /// Widget helper untuk 1 baris informasi profil (label + value).
   Widget _profileRow({
     required String label,
     required String value,
@@ -145,6 +170,7 @@ class ProfileView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // Label abu-abu kecil
         Text(
           label,
           style: const TextStyle(
@@ -153,6 +179,7 @@ class ProfileView extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 4),
+        // Value utama
         Text(
           value,
           style: const TextStyle(
