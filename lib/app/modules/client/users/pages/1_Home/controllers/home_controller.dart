@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
-
+// Controller untuk halaman Home: kategori & buku terbaru.
 class HomeController extends GetxController {
   var categories = <Map<String, dynamic>>[].obs;
   RxBool isLoading = false.obs;
@@ -10,7 +10,7 @@ class HomeController extends GetxController {
     super.onInit();
     getCategories();
   }
-
+  // Mengambil kategori dari Firestore (urutan berdasarkan posisi).
   Future<void> getCategories() async {
     try {
       isLoading.value = true;
@@ -33,7 +33,7 @@ class HomeController extends GetxController {
       isLoading.value = false;
     }
   }
-
+  // Stream realtime untuk mendapatkan 2 buku terbaru.
   Stream<QuerySnapshot> getLatestBooks() {
     return FirebaseFirestore.instance
         .collection('books')
@@ -41,7 +41,7 @@ class HomeController extends GetxController {
         .limit(2)
         .snapshots();
   }
-
+  // Stream realtime untuk mendapatkan kategori teratas (4 kategori).
   Stream<List<Map<String, dynamic>>> getTopCategoriesStream() {
     return FirebaseFirestore.instance
         .collection('categories')
@@ -55,7 +55,7 @@ class HomeController extends GetxController {
               };
             }).toList());
   }
-
+  // Mengambil 2 buku terbaru (tanpa stream).
   Future<List<Map<String, dynamic>>> fetchLatestBooks() async {
     QuerySnapshot snapshot = await FirebaseFirestore.instance
         .collection('books')
