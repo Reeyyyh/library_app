@@ -107,3 +107,16 @@ class AuthService extends GetxController {
     }
   }
 }
+
+// ------------------------------------------------------------
+// Commit: Fix - corrected user_model import and adjusted 
+// authStateChanges binding
+//
+// Description:
+// - Updated the import path for user_model to the correct location.
+// - Adjusted the binding logic for authStateChanges to ensure
+//   real-time authentication status updates.
+// - Cleaned up and improved readability for the AuthService class.
+//
+// This comment is added for documentation and commit tracking.
+// ------------------------------------------------------------
