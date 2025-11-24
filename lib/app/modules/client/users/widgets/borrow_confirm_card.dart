@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:library_app/app/models/admin/book_model.dart';
+import 'package:library_app/app/models/book_model.dart';
 import 'package:library_app/app/modules/config/custom_app_theme.dart';
 
 class BorrowConfirmCard extends StatelessWidget {
@@ -38,17 +38,17 @@ class BorrowConfirmCard extends StatelessWidget {
                 const SizedBox(height: 6),
                 Text(
                   book.penerbit,
-                  style: CustomAppTheme.bodyText.copyWith(
-                    color: Colors.black87,
-                    fontWeight: FontWeight.w600
+                  style: CustomAppTheme.mutedText.copyWith(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   book.tahun,
-                  style: CustomAppTheme.bodyText.copyWith(
-                    color: Colors.black87,
-                    fontWeight: FontWeight.w600
+                  style: CustomAppTheme.mutedText.copyWith(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ],

@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 class CustomAppTheme {
   static const Color primaryColor = Color(0xFF009140);
   static const Color backgroundColor = Color(0xFFE8F5E9);
-  
+
   static TextStyle heading1 = GoogleFonts.montserrat(
     fontSize: 32,
     fontWeight: FontWeight.bold,
@@ -57,5 +57,11 @@ class CustomAppTheme {
     fontSize: 12,
     fontWeight: FontWeight.normal,
     color: Colors.black54,
+  );
+
+  static TextStyle mutedText = GoogleFonts.montserrat(
+    fontSize: 14,
+    fontWeight: FontWeight.w600,
+    color: const Color(0xFF9E9E9E),
   );
 }

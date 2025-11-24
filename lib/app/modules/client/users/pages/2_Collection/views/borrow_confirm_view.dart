@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:library_app/app/models/admin/book_model.dart';
+import 'package:intl/intl.dart';
+import 'package:library_app/app/models/book_model.dart';
 import 'package:library_app/app/modules/client/users/widgets/borrow_confirm_card.dart';
 import 'package:library_app/app/modules/config/custom_app_theme.dart';
 import 'package:library_app/app/widgets/custom_button.dart';
@@ -74,7 +75,6 @@ class _BorrowConfirmViewState extends State<BorrowConfirmView> {
                   ),
                   const SizedBox(height: 6),
                   CustomDateInput(
-                    label: "Pilih tanggal",
                     selectedDate: borrowDate,
                     onDateChanged: (date) {
                       setState(() {
@@ -87,13 +87,12 @@ class _BorrowConfirmViewState extends State<BorrowConfirmView> {
                     "Tanggal Kembali",
                     style: CustomAppTheme.subheading.copyWith(
                       fontWeight: FontWeight.w600,
-                      fontSize: 15,
+                      fontSize: 16,
                       color: Colors.black87,
                     ),
                   ),
                   const SizedBox(height: 6),
                   CustomDateInput(
-                    label: "Pilih tanggal",
                     selectedDate: borrowDate.add(Duration(days: duration)),
                     onDateChanged: (date) {
                       setState(() {
@@ -134,53 +133,113 @@ class _BorrowConfirmViewState extends State<BorrowConfirmView> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Nama Peminjam:", style: CustomAppTheme.bodyText),
-                      Text("John Doe", style: CustomAppTheme.bodyText),
-                    ],
-                  ),
-                  const SizedBox(height: 6),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("Tanggal Pinjam:", style: CustomAppTheme.bodyText),
-                      Text("${borrowDate.toLocal()}".split(' ')[0],
-                          style: CustomAppTheme.bodyText),
-                    ],
-                  ),
-                  const SizedBox(height: 6),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("Tanggal Kembali:", style: CustomAppTheme.bodyText),
                       Text(
-                          "${borrowDate.add(Duration(days: duration)).toLocal()}"
-                              .split(' ')[0],
-                          style: CustomAppTheme.bodyText),
+                        "Nama :",
+                        style: CustomAppTheme.mutedText.copyWith(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Text(
+                        "John Doe",
+                        style: CustomAppTheme.bodyText
+                            .copyWith(fontWeight: FontWeight.w600),
+                      ),
                     ],
                   ),
                   const SizedBox(height: 6),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Durasi:", style: CustomAppTheme.bodyText),
-                      Text("$duration hari", style: CustomAppTheme.bodyText),
+                      Text(
+                        "Tanggal Pinjam:",
+                        style: CustomAppTheme.mutedText.copyWith(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Text(
+                        DateFormat('dd/MM/yyyy').format(borrowDate),
+                        style: CustomAppTheme.bodyText
+                            .copyWith(fontWeight: FontWeight.w600),
+                      ),
                     ],
                   ),
                   const SizedBox(height: 6),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Judul Buku:", style: CustomAppTheme.bodyText),
-                      Text(widget.book.judul, style: CustomAppTheme.bodyText),
+                      Text(
+                        "Tanggal Kembali:",
+                        style: CustomAppTheme.mutedText.copyWith(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Text(
+                        DateFormat('dd/MM/yyyy').format(
+                          borrowDate.add(
+                            Duration(days: duration),
+                          ),
+                        ),
+                        style: CustomAppTheme.bodyText
+                            .copyWith(fontWeight: FontWeight.w600),
+                      ),
                     ],
                   ),
                   const SizedBox(height: 6),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Kategori:", style: CustomAppTheme.bodyText),
-                      Text(widget.book.kategori,
-                          style: CustomAppTheme.bodyText),
+                      Text(
+                        "Durasi:",
+                        style: CustomAppTheme.mutedText.copyWith(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Text(
+                        "$duration hari",
+                        style: CustomAppTheme.bodyText
+                            .copyWith(fontWeight: FontWeight.w600),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 6),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Judul Buku:",
+                        style: CustomAppTheme.mutedText.copyWith(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Text(
+                        widget.book.judul,
+                        style: CustomAppTheme.bodyText.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 6),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Kategori:",
+                        style: CustomAppTheme.mutedText.copyWith(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Text(
+                        widget.book.kategori,
+                        style: CustomAppTheme.bodyText
+                            .copyWith(fontWeight: FontWeight.w600),
+                      ),
                     ],
                   ),
                 ],

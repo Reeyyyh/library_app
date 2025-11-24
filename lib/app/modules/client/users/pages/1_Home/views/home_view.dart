@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:library_app/app/models/admin/book_model.dart';
+import 'package:library_app/app/models/book_model.dart';
 import 'package:library_app/app/modules/auth/services/auth_service.dart';
 import 'package:library_app/app/modules/client/users/pages/1_Home/controllers/home_controller.dart';
 import 'package:library_app/app/modules/client/users/pages/1_Home/views/list_categories_view.dart';

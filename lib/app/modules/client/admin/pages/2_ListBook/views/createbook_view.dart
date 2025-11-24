@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:library_app/app/models/admin/book_model.dart';
+import 'package:library_app/app/models/book_model.dart';
 import 'package:library_app/app/modules/client/admin/pages/2_ListBook/controllers/createbook_controller.dart';
 import 'package:library_app/app/modules/client/admin/widgets/admin_appbar.dart';
 import 'package:library_app/app/modules/config/custom_app_theme.dart';

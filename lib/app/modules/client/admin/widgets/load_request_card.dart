@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:library_app/app/modules/config/custom_app_theme.dart';
-import 'package:library_app/app/models/admin/loan_request_model.dart'; // import model
+import 'package:library_app/app/models/loan_request_model.dart'; // import model
 
 class LoanRequestCard extends StatelessWidget {
   final LoanRequest data; // pakai model

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:library_app/app/models/admin/book_model.dart';
+import 'package:library_app/app/models/book_model.dart';
 import 'package:library_app/app/modules/config/custom_app_theme.dart';
 
 class CollectionCard extends StatelessWidget {
@@ -134,8 +134,8 @@ class CollectionCard extends StatelessWidget {
                           ? CustomAppTheme.primaryColor
                           : Color(0xFFAE3433),
                       borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(15),
-                        bottomRight: Radius.circular(14),
+                        topLeft: Radius.circular(16),
+                        bottomRight: Radius.circular(12),
                       ),
                     ),
                     child: RichText(
@@ -174,6 +174,7 @@ Widget _tag(String text) {
   return Container(
     padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
     decoration: BoxDecoration(
+
       color: Colors.green.withOpacity(0.1),
       borderRadius: BorderRadius.circular(8),
     ),
