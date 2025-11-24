@@ -109,7 +109,7 @@ class AuthService extends GetxController {
 }
 
 // ------------------------------------------------------------
-// Commit: Fix - corrected user_model import and adjusted 
+// Fix - corrected user_model import and adjusted 
 // authStateChanges binding
 //
 // Description:

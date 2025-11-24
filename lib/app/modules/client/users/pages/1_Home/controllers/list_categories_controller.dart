@@ -1,8 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 
+// Controller untuk mengambil dan menampilkan semua kategori buku.
 class ListCategoriesController extends GetxController {
+  // Menyimpan daftar kategori yang diambil dari Firestore.
   var categories = <Map<String, dynamic>>[].obs;
+
+  // Status loading saat mengambil data kategori.
   var isLoading = true.obs;
   var errorMessage = "".obs;
 
@@ -16,6 +20,8 @@ class ListCategoriesController extends GetxController {
   // FETCH (GET SEKALI)
   // -------------------------------------------------------------------
   Future<void> fetchCategories() async {
+    // Mengambil semua kategori dari Firestore (urutan berdasarkan posisi).
+
     try {
       isLoading.value = true;
 
@@ -36,53 +42,5 @@ class ListCategoriesController extends GetxController {
     } finally {
       isLoading.value = false;
     }
-  }
-
-  // -------------------------------------------------------------------
-  // STREAM (REAL-TIME)
-  // -------------------------------------------------------------------
-  Stream<List<Map<String, dynamic>>> categoryStream() {
-    return FirebaseFirestore.instance
-        .collection('categories')
-        .orderBy('position')
-        .snapshots()
-        .map((snapshot) {
-      return snapshot.docs.map((doc) {
-        return {
-          "id": doc.id,
-          ...doc.data() as Map<String, dynamic>,
-        };
-      }).toList();
-    });
-  }
-
-  // -------------------------------------------------------------------
-  // REFRESH (Untuk pull-to-refresh)
-  // -------------------------------------------------------------------
-  Future<void> refreshCategories() async {
-    await fetchCategories();
-  }
-
-  // -------------------------------------------------------------------
-  // SEARCH CATEGORY BY NAME
-  // -------------------------------------------------------------------
-  Stream<List<Map<String, dynamic>>> searchCategory(String keyword) {
-    if (keyword.trim().isEmpty) {
-      return categoryStream(); // default full list
-    }
-
-    return FirebaseFirestore.instance
-        .collection('categories')
-        .where('name', isGreaterThanOrEqualTo: keyword)
-        .where('name', isLessThanOrEqualTo: "$keyword\uf8ff")
-        .snapshots()
-        .map((snapshot) {
-      return snapshot.docs.map((doc) {
-        return {
-          "id": doc.id,
-          ...doc.data() as Map<String, dynamic>,
-        };
-      }).toList();
-    });
   }
 }
