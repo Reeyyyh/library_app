@@ -19,41 +19,24 @@ class SplashController extends GetxController {
   }
 
   void _checkUserLogin() {
-    final user = auth.firebaseUser.value;
+    final firebase = auth.firebaseUser.value;
+    final user = auth.userModel.value;
 
-    // Jika user belum login
-    if (user == null) {
+    if (firebase == null || user == null) {
       Get.offAll(() => WelcomeView());
       return;
     }
 
-    // Jika login → cek data Firestore
-    Future.delayed(Duration(milliseconds: 300), () {
-      final data = auth.userData;
+    if (!user.isActive) {
+      auth.logout();
+      Get.offAll(() => WelcomeView());
+      return;
+    }
 
-      if (data.isEmpty) {
-        // Jika tidak ditemukan datanya → anggap logout paksa
-        auth.logout();
-        Get.offAll(() => WelcomeView());
-        return;
-      }
-
-      final bool isActive = data['is_active'] ?? true;
-      final String role = data['role'] ?? 'user';
-
-      // Jika akun dinonaktifkan admin
-      if (!isActive) {
-        auth.logout();
-        Get.offAll(() => WelcomeView());
-        return;
-      }
-
-      // Role routing
-      if (role == 'admin') {
-        Get.offAll(() => AdminBotNavView());
-      } else {
-        Get.offAll(() => UserBotNavView());
-      }
-    });
+    if (user.role == 'admin') {
+      Get.offAll(() => AdminBotNavView());
+    } else {
+      Get.offAll(() => UserBotNavView());
+    }
   }
 }

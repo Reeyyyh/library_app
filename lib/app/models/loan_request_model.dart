@@ -5,6 +5,7 @@ class LoanRequest {
   final String email;
   final String judulBuku;
   final String category;
+  final String image;
 
   final String tanggalPinjam;
   final String tanggalKembali;
@@ -12,6 +13,7 @@ class LoanRequest {
 
   LoanRequest({
     required this.borrowCode,
+    required this.image,
     required this.uid,
     required this.nama,
     required this.email,
@@ -28,6 +30,7 @@ class LoanRequest {
       uid: map['uid'] ?? '',
       nama: map['nama'] ?? '',
       email: map['email'] ?? '',
+      image: map['image'] ?? '',
       judulBuku: map['judulBuku'] ?? '',
       category: map['category'] ?? '',
       tanggalPinjam: map['tanggalPinjam'] ?? '',
@@ -42,6 +45,7 @@ class LoanRequest {
       'uid': uid,
       'nama': nama,
       'email': email,
+      'image': image,
       'judulBuku': judulBuku,
       'category': category,
       'tanggalPinjam': tanggalPinjam,

@@ -27,7 +27,7 @@ class HomeView extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: CustomAppTheme.backgroundColor,
         title: Obx(() {
-          final user = auth.userData;
+          final user = auth.userModel.value;
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -35,7 +35,7 @@ class HomeView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Welcome, ${user['name'] ?? ''}",
+                    "Welcome, ${user?.name ?? ''}",
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -85,15 +85,15 @@ class HomeView extends StatelessWidget {
                 },
                 child: CircleAvatar(
                   radius: 20,
-                  backgroundImage: (user['image'] ?? '').isNotEmpty
-                      ? CachedNetworkImageProvider(user['image'])
+                  backgroundImage: (user?.image.isNotEmpty ?? false)
+                      ? CachedNetworkImageProvider(user!.image)
                       : null,
-                  backgroundColor: (user['image'] ?? '').isEmpty
+                  backgroundColor: (user?.image.isEmpty ?? true)
                       ? CustomAppTheme.primaryColor
                       : Colors.transparent,
-                  child: (user['image'] ?? '').isEmpty
+                  child: (user?.image.isEmpty ?? true)
                       ? Text(
-                          (user['name'] ?? "U")[0].toUpperCase(),
+                          user!.name.substring(0, 1).toUpperCase(),
                           style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,

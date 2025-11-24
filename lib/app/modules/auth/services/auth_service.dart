@@ -1,37 +1,31 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:library_app/app/models/user_model.dart';
 
 class AuthService extends GetxController {
-  // Firebase instance
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // Observable user
   Rx<User?> firebaseUser = Rx<User?>(null);
-
-  // Observable user data (Firestore)
-  RxMap<String, dynamic> userData = <String, dynamic>{}.obs;
+  Rx<UserModel?> userModel = Rx<UserModel?>(null);
 
   @override
   void onInit() {
     super.onInit();
 
-    // Listen auth state
     firebaseUser.bindStream(_auth.authStateChanges());
 
     ever(firebaseUser, (user) async {
       if (user != null) {
         await fetchUserData(user.uid);
       } else {
-        userData.clear();
+        userModel.value = null;
       }
     });
   }
 
-  // ===============================
   // REGISTER
-  // ===============================
   Future<String?> register({
     required String name,
     required String email,
@@ -39,28 +33,33 @@ class AuthService extends GetxController {
   }) async {
     try {
       UserCredential credential = await _auth.createUserWithEmailAndPassword(
-          email: email, password: password);
+        email: email,
+        password: password,
+      );
 
       String uid = credential.user!.uid;
 
-      await _firestore.collection("users").doc(uid).set({
-        "uid": uid,
-        "name": name,
-        "email": email,
-        "role": "user",
-        "is_active": true,
-        "created_at": FieldValue.serverTimestamp(),
-      });
+      UserModel user = UserModel(
+        uid: uid,
+        name: name,
+        email: email,
+        kelas: "",
+        kontak: "",
+        role: "user",
+        isActive: true,
+        image: '',
+        createdAt: DateTime.now(), 
+      );
 
-      return null; // success
+      await _firestore.collection("users").doc(uid).set(user.toMap());
+
+      return null;
     } on FirebaseAuthException catch (e) {
       return e.message ?? "Terjadi kesalahan";
     }
   }
 
-  // ===============================
   // LOGIN
-  // ===============================
   Future<String?> login(String email, String password) async {
     try {
       UserCredential credential = await _auth.signInWithEmailAndPassword(
@@ -70,7 +69,7 @@ class AuthService extends GetxController {
 
       String uid = credential.user!.uid;
 
-      DocumentSnapshot snap =
+      DocumentSnapshot<Map<String, dynamic>> snap =
           await _firestore.collection("users").doc(uid).get();
 
       if (!snap.exists) {
@@ -78,42 +77,33 @@ class AuthService extends GetxController {
         return "User tidak ditemukan";
       }
 
-      bool isActive = snap.get("is_active") ?? false;
+      bool isActive = snap.data()?["is_active"] ?? false;
 
       if (!isActive) {
         await _auth.signOut();
         return "Akun Anda dinonaktifkan oleh admin";
       }
 
-      userData.assignAll({
-        'uid': uid,
-        'name': snap.get("name") ?? "",
-        'email': snap.get("email") ?? "",
-        'role': snap.get("role") ?? "user",
-      });
+      userModel.value = UserModel.fromMap(snap.data()!);
 
-      return null; // success
+      return null;
     } on FirebaseAuthException catch (e) {
       return e.message ?? "Terjadi kesalahan";
     }
   }
 
-  // ===============================
   // LOGOUT
-  // ===============================
   Future<void> logout() async {
     await _auth.signOut();
   }
 
-  // ===============================
-  // FETCH USER DATA
-  // ===============================
+  // FETCH USER
   Future<void> fetchUserData(String uid) async {
     DocumentSnapshot<Map<String, dynamic>> snap =
         await _firestore.collection("users").doc(uid).get();
 
     if (snap.exists) {
-      userData.assignAll(snap.data()!);
+      userModel.value = UserModel.fromMap(snap.data()!);
     }
   }
 }
