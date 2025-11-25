@@ -15,11 +15,7 @@ class BorrowConfirmController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-
-    // Ambil pertama kali
     userName.value = authService.userModel.value?.name ?? "Pengguna";
-
-    // Update kalau user berubah
     ever(authService.userModel, (user) {
       userName.value = user?.name ?? "Pengguna";
     });
