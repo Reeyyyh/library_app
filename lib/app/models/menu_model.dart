@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Menu {
-  final String title;
+  final String title;     
   final int count;
   final String unit;
   final IconData icon;
