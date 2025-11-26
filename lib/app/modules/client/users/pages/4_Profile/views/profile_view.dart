@@ -7,188 +7,257 @@ class ProfileView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Registrasi ProfileController dengan GetX
     final controller = Get.put(ProfileController());
 
     return Scaffold(
-      // Background hijau muda supaya soft seperti UI contoh
-      backgroundColor: const Color(0xFFE8F7E9),
-      appBar: AppBar(
-        backgroundColor: const Color(0xFFE8F7E9),
-        elevation: 0,
-        centerTitle: true,
-        title: const Text(
-          'Profile',
-          style: TextStyle(
-            color: Colors.black87,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-      ),
-      body: Column(
+      backgroundColor: const Color(0xFFF4F9F4),
+      body: Stack(
         children: [
-          const SizedBox(height: 24),
-
-          // Avatar user di bagian atas
-          CircleAvatar(
-            radius: 48,
-            backgroundColor: Colors.grey.shade300,
-            child: const Icon(
-              Icons.person,
-              size: 56,
-              color: Colors.white,
+          // HEADER GRADIENT
+          Container(
+            height: 230,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Color(0xFF7BD99E),
+                  Color(0xFF4AB57B),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
             ),
           ),
 
-          const SizedBox(height: 24),
-
-          // Card data profile
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          // CURVED WHITE CONTAINER
+          Positioned(
+            top: 190,
+            left: 0,
+            right: 0,
             child: Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
-                    blurRadius: 8,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
+              height: MediaQuery.of(context).size.height,
+              decoration: const BoxDecoration(
+                color: Color(0xFFF4F9F4),
+                borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
               ),
-              child: Stack(
+            ),
+          ),
+
+          // MAIN CONTENT
+          Positioned.fill(
+            child: SingleChildScrollView(
+              child: Column(
                 children: [
-                  // Isi teks profile
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _profileRow(
-                        label: 'Nama',
-                        value: 'Rakabima', // sementara dummy
+                  const SizedBox(height: 60),
+
+                  /// AVATAR
+                  GestureDetector(
+                    onTap: () {
+                      Get.dialog(
+                        Dialog(
+                          child: Container(
+                            padding: const EdgeInsets.all(16),
+                            child: CircleAvatar(
+                              radius: 120,
+                              backgroundColor: Colors.grey[300],
+                              child: const Icon(Icons.person, size: 150),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.green.withOpacity(0.3),
+                            blurRadius: 20,
+                            spreadRadius: 3,
+                          )
+                        ],
                       ),
-                      const Divider(height: 24),
-                      _profileRow(
-                        label: 'Email',
-                        value: 'rakabima@perpustakaan.com',
+                      child: CircleAvatar(
+                        radius: 55,
+                        backgroundColor: Colors.white,
+                        child: CircleAvatar(
+                          radius: 50,
+                          backgroundColor: Colors.grey[300],
+                          child: const Icon(
+                            Icons.person,
+                            size: 60,
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
-                      const Divider(height: 24),
-                      _profileRow(
-                        label: 'Kelas',
-                        value: 'XI A',
-                      ),
-                      const Divider(height: 24),
-                      _profileRow(
-                        label: 'Kontak',
-                        value: '+62 812 3456 7890',
-                      ),
-                    ],
+                    ),
                   ),
 
-                  // Tombol Edit kecil di pojok kanan atas card
-                  Positioned(
-                    top: 0,
-                    right: 0,
-                    child: TextButton.icon(
-                      style: TextButton.styleFrom(
-                        foregroundColor: Colors.orange[800],
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 4,
+                  const SizedBox(height: 12),
+
+                  /// NAMA + EMAIL (Reactif)
+                  Obx(() => Column(
+                        children: [
+                          Text(
+                            controller.name.value,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 22,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            controller.email.value,
+                            style: TextStyle(
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                        ],
+                      )),
+
+                  const SizedBox(height: 32),
+
+                  /// CARD PROFILE
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Column(
+                      children: [
+                        _buildSectionTitle("Informasi Akun"),
+                        const SizedBox(height: 12),
+                        _infoCard([
+                          _profileItem("Nama", controller.name),
+                          _profileItem("Email", controller.email),
+                        ]),
+
+                        const SizedBox(height: 20),
+                        _buildSectionTitle("Detail Siswa"),
+                        const SizedBox(height: 12),
+                        _infoCard([
+                          _profileItem("Kelas", controller.kelas),
+                          _profileItem("Kontak", controller.kontak),
+                        ]),
+
+                        const SizedBox(height: 20),
+
+                        /// TOMBOL EDIT PROFIL
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: TextButton.icon(
+                            style: TextButton.styleFrom(
+                              backgroundColor:
+                                  Colors.white.withOpacity(0.4),
+                              foregroundColor: Colors.green[800],
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 14, vertical: 8),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                            onPressed: () {
+                              Get.snackbar(
+                                "Info",
+                                "Edit Profil belum tersedia",
+                                snackPosition: SnackPosition.BOTTOM,
+                              );
+                            },
+                            icon: const Icon(Icons.edit, size: 18),
+                            label: const Text(
+                              "Edit Profil",
+                              style: TextStyle(fontWeight: FontWeight.w600),
+                            ),
+                          ),
                         ),
-                      ),
-                      onPressed: () {
-                        // nanti bisa diarahkan ke EditProfileView
-                        Get.snackbar(
-                          'Info',
-                          'Fitur edit profile belum diimplementasikan',
-                          snackPosition: SnackPosition.BOTTOM,
-                        );
-                      },
-                      icon: const Icon(
-                        Icons.edit,
-                        size: 16,
-                      ),
-                      label: const Text(
-                        'Edit',
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
+
+                        const SizedBox(height: 40),
+                        _logoutButton(controller),
+                        const SizedBox(height: 40),
+                      ],
                     ),
                   ),
                 ],
               ),
             ),
-          ),
-
-          const Spacer(),
-
-          // Tombol logout besar warna merah di bawah
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0),
-            child: SizedBox(
-              width: double.infinity,
-              height: 48,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.redAccent,
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  elevation: 2,
-                ),
-                onPressed: () {
-                  controller.logout();
-                },
-                child: const Text(
-                  'Logout',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16,
-                  ),
-                ),
-              ),
-            ),
-          ),
-
-          const SizedBox(height: 16),
+          )
         ],
       ),
     );
   }
 
-  /// Widget helper untuk 1 baris informasi profil (label + value).
-  Widget _profileRow({
-    required String label,
-    required String value,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Label abu-abu kecil
-        Text(
-          label,
-          style: const TextStyle(
-            fontSize: 12,
-            color: Colors.grey,
-          ),
+  /// SECTION TITLE
+  Widget _buildSectionTitle(String text) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Text(
+        text,
+        style: const TextStyle(
+          fontWeight: FontWeight.w700,
+          fontSize: 16,
         ),
-        const SizedBox(height: 4),
-        // Value utama
-        Text(
-          value,
-          style: const TextStyle(
-            fontSize: 14,
-            color: Colors.black87,
-            fontWeight: FontWeight.w500,
+      ),
+    );
+  }
+
+  /// CARD WRAPPER
+  Widget _infoCard(List<Widget> children) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.green.withOpacity(0.1),
+            blurRadius: 8,
+            offset: const Offset(0, 3),
           ),
+        ],
+      ),
+      child: Column(children: children),
+    );
+  }
+
+  /// SINGLE PROFILE ROW
+  Widget _profileItem(String label, RxString value) {
+    return Obx(() => Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(label,
+                style: TextStyle(
+                    color: Colors.grey[600],
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500)),
+            const SizedBox(height: 4),
+            Text(
+              value.value,
+              style: const TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const Divider(height: 28),
+          ],
+        ));
+  }
+
+  /// LOGOUT BUTTON
+  Widget _logoutButton(ProfileController controller) {
+    return SizedBox(
+      width: double.infinity,
+      height: 48,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.redAccent,
+          foregroundColor: Colors.white,
+          elevation: 3,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
         ),
-      ],
+        onPressed: () => controller.logout(),
+        child: const Text(
+          "Logout",
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+        ),
+      ),
     );
   }
 }
