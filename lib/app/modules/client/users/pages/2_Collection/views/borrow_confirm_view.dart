@@ -141,29 +141,56 @@ class BorrowConfirmView extends StatelessWidget {
             CustomButton(
               text: "Submit Sewa",
               onPressed: () async {
+                if (currentUser!.kelas.isEmpty || currentUser.kontak.isEmpty) {
+                  Get.snackbar(
+                    "",
+                    "",
+                    titleText: Text(
+                      "Perhatian",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                        color: Colors.white,
+                      ),
+                    ),
+                    messageText: Text(
+                      "Silakan lengkapi Kelas dan Kontak di profil Anda sebelum meminjam buku.",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 14,
+                        color: Colors.white,
+                      ),
+                    ),
+                    backgroundColor: Colors.orange[800],
+                    snackPosition: SnackPosition.TOP,
+                  );
+                  return;
+                }
+
                 final borrowCode = controller.generateBorrowCode();
 
                 final loanRequest = LoanRequest(
                   borrowCode: borrowCode,
-                  uid: currentUser!.uid,
+                  uid: currentUser.uid,
                   nama: currentUser.name,
                   email: currentUser.email,
+                  kelas: currentUser.kelas,
+                  kontak: currentUser.kontak,
                   image: book.image,
                   judulBuku: book.judul,
                   category: book.kategori,
                   tanggalPinjam: DateFormat('dd/MM/yyyy')
                       .format(controller.borrowDate.value),
                   tanggalKembali: DateFormat('dd/MM/yyyy').format(
-                    controller.borrowDate.value
-                        .add(Duration(days: controller.duration.value)),
+                    controller.borrowDate.value.add(
+                      Duration(days: controller.duration.value),
+                    ),
                   ),
                   status: "pending",
                 );
 
-                // Submit ke Firestore
                 await controller.submitBorrow(loanRequest);
 
-                // Arahkan ke halaman sukses
                 Get.to(() => SuccessBorrowView(borrowCode: borrowCode));
               },
             )

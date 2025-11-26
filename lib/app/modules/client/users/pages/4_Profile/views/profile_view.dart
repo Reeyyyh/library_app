@@ -1,17 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:library_app/app/modules/config/custom_app_theme.dart';
 import '../controllers/profile_controller.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
-
+  // next job
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(ProfileController());
 
     return Scaffold(
+<<<<<<< HEAD
       backgroundColor: const Color(0xFFF4F9F4),
       body: Stack(
+=======
+      // Background hijau muda supaya soft seperti UI contoh
+      backgroundColor: CustomAppTheme.backgroundColor,
+      appBar: AppBar(
+        backgroundColor: CustomAppTheme.backgroundColor,
+        elevation: 0,
+        centerTitle: true,
+        title: const Text(
+          'Profile',
+          style: TextStyle(
+            color: Colors.black87,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
+      body: Column(
+>>>>>>> f8bdfbd2c1d0428351e5c0dc3f6cb62cf96cab20
         children: [
           // HEADER GRADIENT
           Container(
