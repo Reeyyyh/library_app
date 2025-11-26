@@ -11,6 +11,8 @@ class LoanRequest {
   final String tanggalPinjam;
   final String tanggalKembali;
   final String status;
+  final String? returnCode;
+  final String? returnDate;
 
   LoanRequest({
     required this.borrowCode,
@@ -25,6 +27,8 @@ class LoanRequest {
     required this.tanggalPinjam,
     required this.tanggalKembali,
     required this.status,
+    this.returnCode,
+    this.returnDate,
   });
 
   factory LoanRequest.fromMap(Map<String, dynamic> map) {
@@ -41,6 +45,8 @@ class LoanRequest {
       tanggalPinjam: map['tanggalPinjam'] ?? '',
       tanggalKembali: map['tanggalKembali'] ?? '',
       status: map['status'] ?? 'pending',
+      returnCode: map['returnCode'],
+      returnDate: map['returnDate'], // tanggal kembali lebih cepat
     );
   }
 
@@ -58,6 +64,8 @@ class LoanRequest {
       'tanggalPinjam': tanggalPinjam,
       'tanggalKembali': tanggalKembali,
       'status': status,
+      'returnCode': returnCode,
+      'returnDate': returnDate,
     };
   }
 }
