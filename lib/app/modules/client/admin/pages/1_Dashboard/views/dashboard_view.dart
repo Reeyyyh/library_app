@@ -119,8 +119,7 @@ class DashboardView extends StatelessWidget {
                     child: InkWell(
                       borderRadius: BorderRadius.circular(18),
                       onTap: () {
-                        // TODO: navigasi ke page sesuai menu
-                        debugPrint('Tap menu: ${item.title}');
+                        
                       },
                       child: Ink(
                         decoration: BoxDecoration(
@@ -281,7 +280,7 @@ class DashboardView extends StatelessWidget {
                       return LoanRequestCard(
                         data: request,
                         onTap: () {
-                          debugPrint('Tapped ${request.nama}');
+                          
                         },
                       );
                     },
