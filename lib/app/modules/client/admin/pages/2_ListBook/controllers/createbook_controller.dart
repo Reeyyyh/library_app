@@ -189,12 +189,12 @@ class CreatebookController extends GetxController {
         image: imageFile.value?.path ?? '',
         createdAt: Timestamp.now(),
         // opsional
-        isbn: isbnC.text.isEmpty ? '-' : isbnC.text,
+        isbn: isbnC.text.isEmpty ? null : isbnC.text,
         jumlahHalaman: jumlahHalamanC.text.isEmpty
-            ? 0
-            : int.tryParse(jumlahHalamanC.text) ?? 0,
-        bahasa: bahasaC.text.isEmpty ? '-' : bahasaC.text,
-        lokasiRak: lokasiRakC.text.isEmpty ? '-' : lokasiRakC.text,
+            ? null
+            : int.tryParse(jumlahHalamanC.text),
+        bahasa: bahasaC.text.isEmpty ? null : bahasaC.text,
+        lokasiRak: lokasiRakC.text.isEmpty ? null : lokasiRakC.text,
       );
 
       await FirebaseFirestore.instance

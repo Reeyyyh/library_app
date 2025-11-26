@@ -196,27 +196,27 @@ class CreatebookView extends StatelessWidget {
                 hintText: "ISBN",
                 controller: controller.isbnC,
               ),
-
+              const SizedBox(height: 16),
               CustomInput(
                 labelText: "Jumlah Halaman",
                 hintText: "jumlah halaman",
                 controller: controller.jumlahHalamanC,
                 keyboardType: TextInputType.number,
               ),
-
+              const SizedBox(height: 16),
               CustomInput(
-                labelText: "Bahasa",
-                hintText: "bahasa",
+                labelText: "Bahasa Buku",
+                hintText: "bahasa buku",
                 controller: controller.bahasaC,
               ),
-
+              const SizedBox(height: 16),
               CustomInput(
                 labelText: "Lokasi Rak",
                 hintText: "lokasi rak",
                 controller: controller.lokasiRakC,
               ),
 
-              const SizedBox(height: 30),
+              const SizedBox(height: 32),
 
               // ========== BUTTON SIMPAN ==========
               SizedBox(

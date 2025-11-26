@@ -84,11 +84,11 @@ class UpdatebookController extends GetxController {
     deskripsiC = TextEditingController(text: book.deskripsi);
     selectedCategory.value = book.kategori;
     status.value = book.status;
-    isbnC = TextEditingController(text: book.isbn ?? '-');
+    isbnC = TextEditingController(text: book.isbn ?? '');
+    bahasaC = TextEditingController(text: book.bahasa ?? '');
+    lokasiRakC = TextEditingController(text: book.lokasiRak ?? '');
     jumlahHalamanC =
         TextEditingController(text: book.jumlahHalaman?.toString() ?? '');
-    bahasaC = TextEditingController(text: book.bahasa ?? '-');
-    lokasiRakC = TextEditingController(text: book.lokasiRak ?? '-');
   }
 
   // Validasi field

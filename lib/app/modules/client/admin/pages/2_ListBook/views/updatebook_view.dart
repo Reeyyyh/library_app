@@ -125,34 +125,34 @@ class UpdatebookView extends StatelessWidget {
             const SizedBox(height: 16),
 
             // ========== STATUS DROPDOWN ==========
-              const Text("Status"),
-              Obx(() {
-                return Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.green,
-                    ),
-                    borderRadius: BorderRadius.circular(8),
+            const Text("Status"),
+            Obx(() {
+              return Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.green,
                   ),
-                  child: DropdownButton<BookStatus>(
-                    value: controller.status.value,
-                    isExpanded: true,
-                    hint: const Text("Pilih Status"),
-                    items: BookStatus.values.map((status) {
-                      return DropdownMenuItem(
-                        value: status,
-                        child: Text(status.label),
-                      );
-                    }).toList(),
-                    onChanged: (val) {
-                      if (val != null) controller.status.value = val;
-                    },
-                    underline: const SizedBox(),
-                  ),
-                );
-              }),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: DropdownButton<BookStatus>(
+                  value: controller.status.value,
+                  isExpanded: true,
+                  hint: const Text("Pilih Status"),
+                  items: BookStatus.values.map((status) {
+                    return DropdownMenuItem(
+                      value: status,
+                      child: Text(status.label),
+                    );
+                  }).toList(),
+                  onChanged: (val) {
+                    if (val != null) controller.status.value = val;
+                  },
+                  underline: const SizedBox(),
+                ),
+              );
+            }),
 
             Obx(
               () => CustomInput(
@@ -168,33 +168,41 @@ class UpdatebookView extends StatelessWidget {
 
             const SizedBox(height: 30),
 
-              const Text("Informasi Tambahan (Opsional)",
-                  style: TextStyle(fontWeight: FontWeight.bold)),
+            const Text("Informasi Tambahan (Opsional)",
+                style: TextStyle(fontWeight: FontWeight.bold)),
 
-              CustomInput(
-                labelText: "ISBN",
-                hintText: "ISBN",
-                controller: controller.isbnC,
-              ),
+            CustomInput(
+              labelText: "ISBN",
+              hintText: "ISBN",
+              controller: controller.isbnC,
+            ),
 
-              CustomInput(
-                labelText: "Jumlah Halaman",
-                hintText: "jumlah halaman",
-                controller: controller.jumlahHalamanC,
-                keyboardType: TextInputType.number,
-              ),
+            const SizedBox(height: 16),
 
-              CustomInput(
-                labelText: "Bahasa",
-                hintText: "bahasa",
-                controller: controller.bahasaC,
-              ),
+            CustomInput(
+              labelText: "Jumlah Halaman",
+              hintText: "jumlah halaman",
+              controller: controller.jumlahHalamanC,
+              keyboardType: TextInputType.number,
+            ),
 
-              CustomInput(
-                labelText: "Lokasi Rak",
-                hintText: "lokasi rak",
-                controller: controller.lokasiRakC,
-              ),
+            const SizedBox(height: 16),
+
+            CustomInput(
+              labelText: "Bahasa Buku",
+              hintText: "bahasa buku",
+              controller: controller.bahasaC,
+            ),
+
+            const SizedBox(height: 16),
+
+            CustomInput(
+              labelText: "Lokasi Rak",
+              hintText: "lokasi rak",
+              controller: controller.lokasiRakC,
+            ),
+
+            const SizedBox(height: 32),
 
             // ========== BUTTON SIMPAN PERUBAHAN ==========
             SizedBox(
