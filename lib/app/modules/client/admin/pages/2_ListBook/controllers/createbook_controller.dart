@@ -7,12 +7,18 @@ import 'package:library_app/app/models/book_model.dart';
 
 class CreatebookController extends GetxController {
   // Text Controllers
+  // data wajib
   final judulC = TextEditingController();
   final penulisC = TextEditingController();
   final penerbitC = TextEditingController();
   final tahunC = TextEditingController();
   final stokC = TextEditingController();
   final deskripsiC = TextEditingController();
+  // opsional
+  final isbnC = TextEditingController();
+  final jumlahHalamanC = TextEditingController();
+  final bahasaC = TextEditingController();
+  final lokasiRakC = TextEditingController();
 
   // Kategori
   var categories = <String>[].obs;
@@ -36,7 +42,6 @@ class CreatebookController extends GetxController {
   var kategoriError = ''.obs;
   var deskripsiError = ''.obs;
 
-
   var judulSuccess = false.obs;
   var penulisSuccess = false.obs;
   var penerbitSuccess = false.obs;
@@ -53,6 +58,10 @@ class CreatebookController extends GetxController {
     tahunC.dispose();
     stokC.dispose();
     deskripsiC.dispose();
+    isbnC.dispose();
+    jumlahHalamanC.dispose();
+    bahasaC.dispose();
+    lokasiRakC.dispose();
     super.onClose();
   }
 
@@ -179,6 +188,13 @@ class CreatebookController extends GetxController {
         deskripsi: deskripsiC.text,
         image: imageFile.value?.path ?? '',
         createdAt: Timestamp.now(),
+        // opsional
+        isbn: isbnC.text.isEmpty ? null : isbnC.text,
+        jumlahHalaman: jumlahHalamanC.text.isEmpty
+            ? null
+            : int.tryParse(jumlahHalamanC.text),
+        bahasa: bahasaC.text.isEmpty ? null : bahasaC.text,
+        lokasiRak: lokasiRakC.text.isEmpty ? null : lokasiRakC.text,
       );
 
       await FirebaseFirestore.instance
