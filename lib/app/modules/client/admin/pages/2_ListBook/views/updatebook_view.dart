@@ -165,7 +165,36 @@ class UpdatebookView extends StatelessWidget {
                 showSuccessBorder: controller.deskripsiC.text.isNotEmpty,
               ),
             ),
-            const SizedBox(height: 24),
+
+            const SizedBox(height: 30),
+
+              const Text("Informasi Tambahan (Opsional)",
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+
+              CustomInput(
+                labelText: "ISBN",
+                hintText: "ISBN",
+                controller: controller.isbnC,
+              ),
+
+              CustomInput(
+                labelText: "Jumlah Halaman",
+                hintText: "jumlah halaman",
+                controller: controller.jumlahHalamanC,
+                keyboardType: TextInputType.number,
+              ),
+
+              CustomInput(
+                labelText: "Bahasa",
+                hintText: "bahasa",
+                controller: controller.bahasaC,
+              ),
+
+              CustomInput(
+                labelText: "Lokasi Rak",
+                hintText: "lokasi rak",
+                controller: controller.lokasiRakC,
+              ),
 
             // ========== BUTTON SIMPAN PERUBAHAN ==========
             SizedBox(

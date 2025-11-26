@@ -12,8 +12,12 @@ class UpdatebookController extends GetxController {
   late TextEditingController stokC;
   late TextEditingController deskripsiC;
 
-  Rx<BookStatus> status = BookStatus.tersedia.obs;
+  late TextEditingController isbnC;
+  late TextEditingController jumlahHalamanC;
+  late TextEditingController bahasaC;
+  late TextEditingController lokasiRakC;
 
+  Rx<BookStatus> status = BookStatus.tersedia.obs;
 
   // Kategori
   var categories = <String>[].obs;
@@ -54,6 +58,10 @@ class UpdatebookController extends GetxController {
     tahunC.dispose();
     stokC.dispose();
     deskripsiC.dispose();
+    isbnC.dispose();
+    jumlahHalamanC.dispose();
+    bahasaC.dispose();
+    lokasiRakC.dispose();
     super.onClose();
   }
 
@@ -76,6 +84,11 @@ class UpdatebookController extends GetxController {
     deskripsiC = TextEditingController(text: book.deskripsi);
     selectedCategory.value = book.kategori;
     status.value = book.status;
+    isbnC = TextEditingController(text: book.isbn ?? '-');
+    jumlahHalamanC =
+        TextEditingController(text: book.jumlahHalaman?.toString() ?? '');
+    bahasaC = TextEditingController(text: book.bahasa ?? '-');
+    lokasiRakC = TextEditingController(text: book.lokasiRak ?? '-');
   }
 
   // Validasi field
@@ -178,6 +191,12 @@ class UpdatebookController extends GetxController {
         'kategori': selectedCategory.value,
         'deskripsi': deskripsiC.text,
         'status': status.value.toValue(),
+        'isbn': isbnC.text.isEmpty ? null : isbnC.text,
+        'jumlahHalaman': jumlahHalamanC.text.isEmpty
+            ? null
+            : int.tryParse(jumlahHalamanC.text),
+        'bahasa': bahasaC.text.isEmpty ? null : bahasaC.text,
+        'lokasiRak': lokasiRakC.text.isEmpty ? null : lokasiRakC.text,
         'updatedAt': Timestamp.now(),
       });
 
