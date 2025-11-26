@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:library_app/app/modules/config/custom_app_theme.dart';
 import '../controllers/profile_controller.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
-
+  // next job
   @override
   Widget build(BuildContext context) {
     // Registrasi ProfileController dengan GetX
@@ -12,9 +13,9 @@ class ProfileView extends StatelessWidget {
 
     return Scaffold(
       // Background hijau muda supaya soft seperti UI contoh
-      backgroundColor: const Color(0xFFE8F7E9),
+      backgroundColor: CustomAppTheme.backgroundColor,
       appBar: AppBar(
-        backgroundColor: const Color(0xFFE8F7E9),
+        backgroundColor: CustomAppTheme.backgroundColor,
         elevation: 0,
         centerTitle: true,
         title: const Text(
