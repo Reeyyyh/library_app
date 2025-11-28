@@ -60,8 +60,9 @@ class DashboardController extends GetxController {
           .orderBy('tanggalPinjam', descending: true)
           .get();
 
-      loanRequests.value =
-          snapshot.docs.map((doc) => LoanRequest.fromMap(doc.data())).toList();
+      loanRequests.value = snapshot.docs
+          .map((doc) => LoanRequest.fromMap(doc.data(), doc.id))
+          .toList();
     } catch (e) {
       Get.snackbar(
         'Error',

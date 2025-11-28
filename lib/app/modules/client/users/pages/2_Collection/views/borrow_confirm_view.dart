@@ -176,19 +176,24 @@ class BorrowConfirmView extends StatelessWidget {
                   email: currentUser.email,
                   kelas: currentUser.kelas,
                   kontak: currentUser.kontak,
+                  bookId: book.id,
                   image: book.image,
                   judulBuku: book.judul,
+                  tahun: book.tahun,
                   category: book.kategori,
+                  penulis: book.penulis,
+                  penerbit: book.penerbit,
                   tanggalPinjam: DateFormat('dd/MM/yyyy')
                       .format(controller.borrowDate.value),
-                  tanggalKembali: DateFormat('dd/MM/yyyy').format(
-                    controller.borrowDate.value.add(
-                      Duration(days: controller.duration.value),
-                    ),
-                  ),
-                  status: "pending",
+                  tanggalKembali: DateFormat('dd/MM/yyyy').format(controller
+                      .borrowDate.value
+                      .add(Duration(days: controller.duration.value))),
+                  requestStatus: "pending",
+                  isbn: book.isbn,
+                  jumlahHalaman: book.jumlahHalaman,
+                  bahasa: book.bahasa,
+                  lokasiRak: book.lokasiRak,
                 );
-
                 await controller.submitBorrow(loanRequest);
 
                 Get.to(() => SuccessBorrowView(borrowCode: borrowCode));
