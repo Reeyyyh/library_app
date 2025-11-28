@@ -25,11 +25,12 @@ class HistoryController extends GetxController {
 
       FirebaseFirestore.instance
           .collection('borrow_requests')
-          .where('uid', isEqualTo: user.uid) // <-- disamakan dengan field model
+          .where('uid', isEqualTo: user.uid)
           .snapshots()
           .listen((snapshot) {
-        borrowHistory.value =
-            snapshot.docs.map((doc) => LoanRequest.fromMap(doc.data())).toList();
+        borrowHistory.value = snapshot.docs
+            .map((doc) => LoanRequest.fromMap(doc.data(), doc.id))
+            .toList();
 
         isLoading.value = false;
       });
