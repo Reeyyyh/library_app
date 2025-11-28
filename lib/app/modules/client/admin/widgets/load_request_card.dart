@@ -50,15 +50,15 @@ class LoanRequestCard extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                     decoration: BoxDecoration(
-                      color: data.status == 'Pending'
+                      color: data.requestStatus == 'Pending'
                           ? Colors.orange.withOpacity(0.2)
                           : Colors.green.withOpacity(0.2),
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: Text(
-                      data.status,
+                      data.requestStatus,
                       style: CustomAppTheme.bodyText.copyWith(
-                        color: data.status == 'Pending' ? Colors.orange : Colors.green,
+                        color: data.requestStatus == 'Pending' ? Colors.orange : Colors.green,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
