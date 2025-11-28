@@ -56,7 +56,8 @@ class DashboardController extends GetxController {
       isLoading.value = true;
 
       final snapshot = await FirebaseFirestore.instance
-          .collection('loan_requests')
+          .collection('borrow_requests')
+          .where('requestStatus', isEqualTo: 'pending')
           .orderBy('tanggalPinjam', descending: true)
           .get();
 
@@ -75,10 +76,6 @@ class DashboardController extends GetxController {
     }
   }
 
-  Future<void> fetchData() async {
-    // nanti isi logic refresh di sini
-  }
-
   Future<void> logout() async {
     try {
       await auth.logout();
@@ -95,6 +92,27 @@ class DashboardController extends GetxController {
       Get.snackbar(
         "Error",
         "Gagal logout: $e",
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+    }
+  }
+
+  Future<void> refreshLoanRequests() async {
+    try {
+      final snapshot = await FirebaseFirestore.instance
+          .collection('borrow_requests')
+          .where('requestStatus', isEqualTo: 'pending')
+          .orderBy('tanggalPinjam', descending: true)
+          .get();
+
+      loanRequests.value = snapshot.docs
+          .map((doc) => LoanRequest.fromMap(doc.data(), doc.id))
+          .toList();
+    } catch (e) {
+      Get.snackbar(
+        'Error',
+        'Gagal mengambil data pengajuan: $e',
         backgroundColor: Colors.red,
         colorText: Colors.white,
       );

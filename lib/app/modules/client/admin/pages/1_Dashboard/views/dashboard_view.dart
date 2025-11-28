@@ -27,8 +27,7 @@ class DashboardView extends StatelessWidget {
 
         return RefreshIndicator(
           onRefresh: () async {
-            // kalau belum ada, sementara kosongin saja
-            // await controller.fetchData();
+            await controller.refreshLoanRequests();
           },
           child: ListView(
             padding: const EdgeInsets.all(20),
@@ -118,9 +117,7 @@ class DashboardView extends StatelessWidget {
                     color: Colors.transparent,
                     child: InkWell(
                       borderRadius: BorderRadius.circular(18),
-                      onTap: () {
-                        
-                      },
+                      onTap: () {},
                       child: Ink(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(18),
@@ -134,8 +131,8 @@ class DashboardView extends StatelessWidget {
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: CustomAppTheme.primaryColor
-                                  .withOpacity(0.25),
+                              color:
+                                  CustomAppTheme.primaryColor.withOpacity(0.25),
                               blurRadius: 12,
                               offset: const Offset(0, 6),
                             ),
@@ -145,8 +142,7 @@ class DashboardView extends StatelessWidget {
                           padding: const EdgeInsets.all(14),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Row(
                                 mainAxisAlignment:
@@ -158,8 +154,7 @@ class DashboardView extends StatelessWidget {
                                       item.title,
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
-                                      style:
-                                          CustomAppTheme.heading3.copyWith(
+                                      style: CustomAppTheme.heading3.copyWith(
                                         fontSize: 15,
                                         color: Colors.white,
                                         fontWeight: FontWeight.w700,
@@ -186,8 +181,7 @@ class DashboardView extends StatelessWidget {
                                 children: [
                                   Text(
                                     item.count.toString(),
-                                    style:
-                                        CustomAppTheme.heading1.copyWith(
+                                    style: CustomAppTheme.heading1.copyWith(
                                       color: Colors.white,
                                       fontSize: 22,
                                     ),
@@ -198,8 +192,7 @@ class DashboardView extends StatelessWidget {
                                       item.unit,
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
-                                      style: CustomAppTheme.bodyText
-                                          .copyWith(
+                                      style: CustomAppTheme.bodyText.copyWith(
                                         color: Colors.white,
                                         fontSize: 12,
                                         fontWeight: FontWeight.w700,
@@ -258,33 +251,23 @@ class DashboardView extends StatelessWidget {
                   return const LoadRequestEmpty();
                 }
 
-                return Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  elevation: 2,
-                  child: ListView.separated(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 4,
-                    ),
-                    itemCount: controller.loanRequests.length,
-                    separatorBuilder: (_, __) => Divider(
-                      color: Colors.grey[300],
-                      height: 1,
-                    ),
-                    itemBuilder: (context, index) {
-                      final request = controller.loanRequests[index];
-                      return LoanRequestCard(
-                        data: request,
-                        onTap: () {
-                          
-                        },
-                      );
-                    },
-                  ),
+                return ListView.separated(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  itemCount: controller.loanRequests.length,
+                  separatorBuilder: (_, __) =>
+                      const SizedBox(height: 8), // atau Divider
+                  itemBuilder: (context, index) {
+                    final request = controller.loanRequests[index];
+                    return LoanRequestCard(
+                      data: request,
+                      onTap: () {
+                        // aksi tap
+                      },
+                    );
+                  },
                 );
               }),
             ],
