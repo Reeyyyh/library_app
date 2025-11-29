@@ -44,7 +44,7 @@ class _CustomInputState extends State<CustomInput> {
     super.initState();
     _focusNode = FocusNode();
     _focusNode.addListener(() {
-      setState(() {}); // rebuild saat fokus berubah
+      setState(() {});
     });
   }
 
