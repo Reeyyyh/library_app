@@ -6,18 +6,19 @@ import 'package:library_app/app/modules/auth/views/login_view.dart';
 class ProfileController extends GetxController {
   final AuthService auth = Get.find<AuthService>();
 
-  String? get className => null;
+  // Akses langsung ke userModel
+  String? get name => auth.userModel.value?.name;
+  String? get email => auth.userModel.value?.email;
+  String? get className => auth.userModel.value?.kelas;
+  String? get phone => auth.userModel.value?.kontak;
+  String? get image => auth.userModel.value?.image;
+  String? get role => auth.userModel.value?.role;
 
-  String? get phone => null;
-
-  String? get email => null;
-
-  String? get name => null;
-
-  // Fungsi logout
+  // LOGOUT
   Future<void> logout() async {
     try {
       await auth.logout();
+
       Get.offAll(() => LoginView());
       Get.snackbar(
         'Success',
