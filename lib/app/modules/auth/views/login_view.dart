@@ -144,18 +144,4 @@ class LoginView extends StatelessWidget {
     );
   }
 }
-
-// ------------------------------------------------------------
-// Fix - improved login flow, validation handling, and 
-// navigation based on user role
-//
-// Description:
-// - Added clearer validation handling for email and password fields.
-// - Improved login button logic to show proper error feedback.
-// - Implemented role-based navigation (admin vs user) after login.
-// - Ensured GetX controllers are properly initialized and used.
-// - Updated UI text structure and spacing for better readability.
-//
-// This comment is added for documentation and commit tracking.
-// ------------------------------------------------------------
-
+// merge

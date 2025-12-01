@@ -47,3 +47,4 @@ class CollectionController extends GetxController {
     searchController.clear();
   }
 }
+// merge
