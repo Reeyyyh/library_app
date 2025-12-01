@@ -78,3 +78,4 @@ class _ImageCarouselState extends State<ImageCarousel> {
     );
   }
 }
+// merge

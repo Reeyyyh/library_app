@@ -59,3 +59,4 @@ class SplashView extends GetView<SplashController> {
     );
   }
 }
+// merge

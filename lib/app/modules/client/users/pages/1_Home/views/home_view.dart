@@ -47,89 +47,6 @@ class HomeView extends StatelessWidget {
                   ),
                 ],
               ),
-              // GestureDetector(
-              //   onTap: () {
-              //     Get.bottomSheet(
-              //       Container(
-              //         padding: const EdgeInsets.all(20),
-              //         decoration: BoxDecoration(
-              //           color: CustomAppTheme.backgroundColor,
-              //           borderRadius: const BorderRadius.only(
-              //             topLeft: Radius.circular(16),
-              //             topRight: Radius.circular(16),
-              //           ),
-              //         ),
-              //         child: Column(
-              //           mainAxisSize: MainAxisSize.min,
-              //           children: [
-              //             const Text(
-              //               "Logout dari aplikasi?",
-              //               textAlign: TextAlign.center,
-              //               style: TextStyle(
-              //                 fontSize: 20,
-              //                 fontWeight: FontWeight.bold,
-              //               ),
-              //             ),
-              //             const SizedBox(height: 8),
-              //             Text(
-              //               "Pastikan semua aktivitas tersimpan sebelum keluar.",
-              //               textAlign: TextAlign.center,
-              //               style: TextStyle(
-              //                 fontSize: 14,
-              //                 color: Colors.grey[600],
-              //               ),
-              //             ),
-              //             const SizedBox(height: 24),
-              //             Row(
-              //               children: [
-              //                 Expanded(
-              //                   child: OutlinedButton(
-              //                     onPressed: () => Get.back(),
-              //                     style: OutlinedButton.styleFrom(
-              //                       side:
-              //                           BorderSide(color: Colors.grey.shade400),
-              //                       padding: const EdgeInsets.symmetric(
-              //                           vertical: 14),
-              //                       shape: RoundedRectangleBorder(
-              //                         borderRadius: BorderRadius.circular(12),
-              //                       ),
-              //                     ),
-              //                     child: const Text(
-              //                       "Cancel",
-              //                       style: TextStyle(
-              //                           color: Colors.black87, fontSize: 16),
-              //                     ),
-              //                   ),
-              //                 ),
-              //                 const SizedBox(width: 12),
-              //                 Expanded(
-              //                   child: ElevatedButton(
-              //                     onPressed: () {
-
-              //                     },
-              //                     style: ElevatedButton.styleFrom(
-              //                       backgroundColor: Colors.redAccent,
-              //                       padding: const EdgeInsets.symmetric(
-              //                           vertical: 14),
-              //                       shape: RoundedRectangleBorder(
-              //                         borderRadius: BorderRadius.circular(12),
-              //                       ),
-              //                     ),
-              //                     child: const Text(
-              //                       "Logout",
-              //                       style: TextStyle(
-              //                           color: Colors.white, fontSize: 16),
-              //                     ),
-              //                   ),
-              //                 ),
-              //               ],
-              //             ),
-              //           ],
-              //         ),
-              //       ),
-              //     );
-              //   },
-              //   child: 
                 CircleAvatar(
                   radius: 20,
                   backgroundImage: (user?.image.isNotEmpty ?? false)
@@ -304,3 +221,4 @@ class HomeView extends StatelessWidget {
     );
   }
 }
+// merge

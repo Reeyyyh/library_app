@@ -188,3 +188,4 @@ class RegisterView extends StatelessWidget {
     );
   }
 }
+// merge

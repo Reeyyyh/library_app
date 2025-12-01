@@ -27,3 +27,4 @@ Future<String> uploadFileToCloudinary(File filePath) async {
     throw Exception('Error uploading file: $e');
   }
 }
+// merge

@@ -107,3 +107,4 @@ class AuthService extends GetxController {
     }
   }
 }
+// merge

@@ -212,3 +212,4 @@ class HistoryDetailView extends StatelessWidget {
     return const SizedBox.shrink();
   }
 }
+// merge
