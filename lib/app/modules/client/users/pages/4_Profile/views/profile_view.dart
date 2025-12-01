@@ -1,222 +1,143 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:library_app/app/modules/config/custom_app_theme.dart';
 import '../controllers/profile_controller.dart';
+import 'package:library_app/app/modules/config/custom_app_theme.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
-  // next job
+
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(ProfileController());
 
     return Scaffold(
-<<<<<<< HEAD
-      backgroundColor: const Color(0xFFF4F9F4),
-      body: Stack(
-=======
-      // Background hijau muda supaya soft seperti UI contoh
       backgroundColor: CustomAppTheme.backgroundColor,
-      appBar: AppBar(
-        backgroundColor: CustomAppTheme.backgroundColor,
-        elevation: 0,
-        centerTitle: true,
-        title: const Text(
-          'Profile',
-          style: TextStyle(
-            color: Colors.black87,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-      ),
       body: Column(
->>>>>>> f8bdfbd2c1d0428351e5c0dc3f6cb62cf96cab20
         children: [
-          // HEADER GRADIENT
-          Container(
-            height: 230,
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Color(0xFF7BD99E),
-                  Color(0xFF4AB57B),
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-            ),
-          ),
-
-          // CURVED WHITE CONTAINER
-          Positioned(
-            top: 190,
-            left: 0,
-            right: 0,
-            child: Container(
-              height: MediaQuery.of(context).size.height,
-              decoration: const BoxDecoration(
-                color: Color(0xFFF4F9F4),
-                borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
-              ),
-            ),
-          ),
-
-          // MAIN CONTENT
-          Positioned.fill(
+          _buildHeader(context, controller),
+          Expanded(
             child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 children: [
-                  const SizedBox(height: 60),
-
-                  /// AVATAR
-                  GestureDetector(
-                    onTap: () {
-                      Get.dialog(
-                        Dialog(
-                          child: Container(
-                            padding: const EdgeInsets.all(16),
-                            child: CircleAvatar(
-                              radius: 120,
-                              backgroundColor: Colors.grey[300],
-                              child: const Icon(Icons.person, size: 150),
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.green.withOpacity(0.3),
-                            blurRadius: 20,
-                            spreadRadius: 3,
-                          )
-                        ],
-                      ),
-                      child: CircleAvatar(
-                        radius: 55,
-                        backgroundColor: Colors.white,
-                        child: CircleAvatar(
-                          radius: 50,
-                          backgroundColor: Colors.grey[300],
-                          child: const Icon(
-                            Icons.person,
-                            size: 60,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(height: 12),
-
-                  /// NAMA + EMAIL (Reactif)
-                  Obx(() => Column(
-                        children: [
-                          Text(
-                            controller.name.value,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 22,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            controller.email.value,
-                            style: TextStyle(
-                              color: Colors.grey[600],
-                            ),
-                          ),
-                        ],
-                      )),
-
-                  const SizedBox(height: 32),
-
-                  /// CARD PROFILE
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: Column(
-                      children: [
-                        _buildSectionTitle("Informasi Akun"),
-                        const SizedBox(height: 12),
-                        _infoCard([
-                          _profileItem("Nama", controller.name),
-                          _profileItem("Email", controller.email),
-                        ]),
-
-                        const SizedBox(height: 20),
-                        _buildSectionTitle("Detail Siswa"),
-                        const SizedBox(height: 12),
-                        _infoCard([
-                          _profileItem("Kelas", controller.kelas),
-                          _profileItem("Kontak", controller.kontak),
-                        ]),
-
-                        const SizedBox(height: 20),
-
-                        /// TOMBOL EDIT PROFIL
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: TextButton.icon(
-                            style: TextButton.styleFrom(
-                              backgroundColor:
-                                  Colors.white.withOpacity(0.4),
-                              foregroundColor: Colors.green[800],
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 14, vertical: 8),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
-                            onPressed: () {
-                              Get.snackbar(
-                                "Info",
-                                "Edit Profil belum tersedia",
-                                snackPosition: SnackPosition.BOTTOM,
-                              );
-                            },
-                            icon: const Icon(Icons.edit, size: 18),
-                            label: const Text(
-                              "Edit Profil",
-                              style: TextStyle(fontWeight: FontWeight.w600),
-                            ),
-                          ),
-                        ),
-
-                        const SizedBox(height: 40),
-                        _logoutButton(controller),
-                        const SizedBox(height: 40),
-                      ],
-                    ),
-                  ),
+                  const SizedBox(height: 20),
+                  _buildAccountInfo(controller),
+                  const SizedBox(height: 20),
+                  _buildStudentInfo(controller),
+                  const SizedBox(height: 30),
+                  _editButton(),
+                  const SizedBox(height: 20),
+                  _logoutButton(controller),
+                  const SizedBox(height: 40),
                 ],
               ),
             ),
-          )
+          ),
         ],
       ),
     );
   }
 
-  /// SECTION TITLE
-  Widget _buildSectionTitle(String text) {
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: Text(
-        text,
-        style: const TextStyle(
-          fontWeight: FontWeight.w700,
-          fontSize: 16,
+  /// HEADER + AVATAR
+  Widget _buildHeader(BuildContext context, ProfileController controller) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.only(top: 60, bottom: 30),
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Color(0xFF7BD99E),
+            Color(0xFF4AB57B),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
+        borderRadius: BorderRadius.vertical(
+          bottom: Radius.circular(32),
+        ),
+      ),
+      child: Column(
+        children: [
+          GestureDetector(
+            onTap: () {
+              Get.dialog(
+                Dialog(
+                  child: Container(
+                    padding: const EdgeInsets.all(16),
+                    child: CircleAvatar(
+                      radius: 120,
+                      backgroundColor: Colors.grey[300],
+                      child: const Icon(Icons.person, size: 150),
+                    ),
+                  ),
+                ),
+              );
+            },
+            child: CircleAvatar(
+              radius: 55,
+              backgroundColor: Colors.white,
+              child: CircleAvatar(
+                radius: 50,
+                backgroundColor: Colors.grey[300],
+                child: const Icon(Icons.person, size: 55, color: Colors.white),
+              ),
+            ),
+          ),
+          const SizedBox(height: 14),
+
+          /// Reactive Name & Email
+          Obx(() => Column(
+                children: [
+                  Text(
+                    controller.name.value,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 20,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    controller.email.value,
+                    style: TextStyle(
+                      color: Colors.white.withOpacity(0.8),
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              )),
+        ],
       ),
     );
   }
 
-  /// CARD WRAPPER
-  Widget _infoCard(List<Widget> children) {
+  /// ACCOUNT INFO CARD
+  Widget _buildAccountInfo(ProfileController c) {
+    return _infoCard(
+      title: "Informasi Akun",
+      children: [
+        _infoRow("Nama", c.name),
+        _infoRow("Email", c.email),
+      ],
+    );
+  }
+
+  /// STUDENT INFO CARD
+  Widget _buildStudentInfo(ProfileController c) {
+    return _infoCard(
+      title: "Detail Siswa",
+      children: [
+        _infoRow("Kelas", c.kelas),
+        _infoRow("Kontak", c.kontak),
+      ],
+    );
+  }
+
+  /// UNIVERSAL CARD WRAPPER
+  Widget _infoCard({
+    required String title,
+    required List<Widget> children,
+  }) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(18),
@@ -225,56 +146,106 @@ class ProfileView extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.green.withOpacity(0.1),
-            blurRadius: 8,
-            offset: const Offset(0, 3),
+            color: Colors.green.withOpacity(0.08),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
-      child: Column(children: children),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+              fontWeight: FontWeight.w700,
+              fontSize: 16,
+            ),
+          ),
+          const SizedBox(height: 12),
+          ...children,
+        ],
+      ),
     );
   }
 
-  /// SINGLE PROFILE ROW
-  Widget _profileItem(String label, RxString value) {
-    return Obx(() => Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(label,
+  /// SINGLE ROW
+  Widget _infoRow(String label, RxString value) {
+    return Obx(() => Padding(
+          padding: const EdgeInsets.only(bottom: 12),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                label,
                 style: TextStyle(
-                    color: Colors.grey[600],
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500)),
-            const SizedBox(height: 4),
-            Text(
-              value.value,
-              style: const TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w600,
+                  color: Colors.grey[600],
+                  fontSize: 12,
+                ),
               ),
-            ),
-            const Divider(height: 28),
-          ],
+              const SizedBox(height: 4),
+              Text(
+                value.value,
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              Divider(color: Colors.grey[300]),
+            ],
+          ),
         ));
+  }
+
+  /// EDIT BUTTON
+  Widget _editButton() {
+    return Align(
+      alignment: Alignment.centerRight,
+      child: TextButton.icon(
+        style: TextButton.styleFrom(
+          backgroundColor: Colors.green.withOpacity(0.1),
+          foregroundColor: Colors.green[900],
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
+        ),
+        onPressed: () {
+          Get.snackbar(
+            "Info",
+            "Edit Profil belum tersedia",
+            snackPosition: SnackPosition.BOTTOM,
+          );
+        },
+        icon: const Icon(Icons.edit, size: 18),
+        label: const Text(
+          "Edit Profil",
+          style: TextStyle(fontWeight: FontWeight.w600),
+        ),
+      ),
+    );
   }
 
   /// LOGOUT BUTTON
   Widget _logoutButton(ProfileController controller) {
     return SizedBox(
       width: double.infinity,
-      height: 48,
+      height: 50,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.redAccent,
           foregroundColor: Colors.white,
-          elevation: 3,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
         ),
         onPressed: () => controller.logout(),
         child: const Text(
           "Logout",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
     );
