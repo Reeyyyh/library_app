@@ -43,10 +43,6 @@ class CreatebookController extends GetxController {
   var kategoriError = ''.obs;
   var deskripsiError = ''.obs;
 
-<<<<<<< HEAD
-=======
-  // Success indicator
->>>>>>> origin/rakarajinibadah
   var judulSuccess = false.obs;
   var penulisSuccess = false.obs;
   var penerbitSuccess = false.obs;
