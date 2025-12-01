@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -20,11 +21,11 @@ class CreatebookController extends GetxController {
   final bahasaC = TextEditingController();
   final lokasiRakC = TextEditingController();
 
-  // Kategori
+  // Categories (real-time)
   var categories = <String>[].obs;
   var selectedCategory = ''.obs;
 
-  // Image (optional)
+  // Image
   Rx<File?> imageFile = Rx<File?>(null);
 
   // Status
@@ -33,7 +34,7 @@ class CreatebookController extends GetxController {
   // Loading State
   RxBool isLoading = false.obs;
 
-  // Error Messages
+  // Error messages
   var judulError = ''.obs;
   var penulisError = ''.obs;
   var penerbitError = ''.obs;
@@ -42,6 +43,10 @@ class CreatebookController extends GetxController {
   var kategoriError = ''.obs;
   var deskripsiError = ''.obs;
 
+<<<<<<< HEAD
+=======
+  // Success indicator
+>>>>>>> origin/rakarajinibadah
   var judulSuccess = false.obs;
   var penulisSuccess = false.obs;
   var penerbitSuccess = false.obs;
@@ -49,6 +54,12 @@ class CreatebookController extends GetxController {
   var stokSuccess = false.obs;
   var kategoriSuccess = false.obs;
   var deskripsiSuccess = false.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    listenCategories();
+  }
 
   @override
   void onClose() {
@@ -65,31 +76,34 @@ class CreatebookController extends GetxController {
     super.onClose();
   }
 
-  @override
-  void onInit() {
-    super.onInit();
-    fetchCategories();
+
+  void listenCategories() {
+    FirebaseFirestore.instance
+        .collection('categories')
+        .orderBy('position')
+        .snapshots()
+        .listen((snapshot) {
+      categories.value =
+          snapshot.docs.map((doc) => doc['name'] as String).toList();
+
+      if (categories.isNotEmpty) {
+        selectedCategory.value = categories.first;
+      }
+    });
   }
 
-  void fetchCategories() async {
-    final snapshot =
-        await FirebaseFirestore.instance.collection('categories').get();
-    categories.value =
-        snapshot.docs.map((doc) => doc['name'] as String).toList();
-    if (categories.isNotEmpty) selectedCategory.value = categories.first;
-  }
-
+ 
   Future<void> pickImage() async {
-    final ImagePicker picker = ImagePicker();
+    final picker = ImagePicker();
     final XFile? picked = await picker.pickImage(source: ImageSource.gallery);
     if (picked != null) imageFile.value = File(picked.path);
   }
 
-  // VALIDASI FIELD
+ 
   bool validate() {
     bool isValid = true;
 
-    // Reset error & success
+    // Reset previous errors
     judulError.value = '';
     penulisError.value = '';
     penerbitError.value = '';
@@ -97,14 +111,6 @@ class CreatebookController extends GetxController {
     stokError.value = '';
     kategoriError.value = '';
     deskripsiError.value = '';
-
-    judulSuccess.value = false;
-    penulisSuccess.value = false;
-    penerbitSuccess.value = false;
-    tahunSuccess.value = false;
-    stokSuccess.value = false;
-    kategoriSuccess.value = false;
-    deskripsiSuccess.value = false;
 
     // Judul
     if (judulC.text.trim().isEmpty) {
@@ -130,9 +136,9 @@ class CreatebookController extends GetxController {
       penerbitSuccess.value = true;
     }
 
-    // Tahun
-    if (tahunC.text.trim().isEmpty) {
-      tahunError.value = 'Tahun wajib diisi';
+    // Tahun (validasi 4 digit)
+    if (!RegExp(r'^\d{4}$').hasMatch(tahunC.text)) {
+      tahunError.value = 'Tahun harus 4 digit angka';
       isValid = false;
     } else {
       tahunSuccess.value = true;
@@ -140,15 +146,15 @@ class CreatebookController extends GetxController {
 
     // Stok
     int stokValue = int.tryParse(stokC.text) ?? -1;
-    if (stokC.text.trim().isEmpty) {
-      stokError.value = 'Stok wajib diisi';
-      isValid = false;
-    } else if (stokValue < 0) {
-      stokError.value = 'Stok harus angka';
+    if (stokValue < 1) {
+      stokError.value = 'Stok harus angka dan minimal 1';
       isValid = false;
     } else {
       stokSuccess.value = true;
     }
+
+    // Status otomatis berdasarkan stok
+    status.value = stokValue == 0 ? BookStatus.tidakTersedia : BookStatus.tersedia;
 
     // Kategori
     if (selectedCategory.value.isEmpty) {
@@ -158,9 +164,9 @@ class CreatebookController extends GetxController {
       kategoriSuccess.value = true;
     }
 
-    // Deskripsi
-    if (deskripsiC.text.trim().isEmpty) {
-      deskripsiError.value = 'Deskripsi wajib diisi';
+    // Deskripsi minimal 10 karakter
+    if (deskripsiC.text.trim().length < 10) {
+      deskripsiError.value = 'Deskripsi minimal 10 karakter';
       isValid = false;
     } else {
       deskripsiSuccess.value = true;
@@ -169,12 +175,25 @@ class CreatebookController extends GetxController {
     return isValid;
   }
 
-  // CREATE BOOK
+  Future<String> uploadImage(File file) async {
+    String fileName = "books/${DateTime.now().millisecondsSinceEpoch}.jpg";
+    final ref = FirebaseStorage.instance.ref().child(fileName);
+    await ref.putFile(file);
+    return await ref.getDownloadURL();
+  }
+
+  
   Future<void> createBook() async {
     if (!validate()) return;
 
     try {
       isLoading.value = true;
+
+      // Upload image first
+      String imageUrl = "";
+      if (imageFile.value != null) {
+        imageUrl = await uploadImage(imageFile.value!);
+      }
 
       final newBook = BookModel(
         id: "",
@@ -186,7 +205,7 @@ class CreatebookController extends GetxController {
         status: status.value,
         kategori: selectedCategory.value,
         deskripsi: deskripsiC.text,
-        image: imageFile.value?.path ?? '',
+        image: imageUrl,
         createdAt: Timestamp.now(),
         // opsional
         isbn: isbnC.text.isEmpty ? null : isbnC.text,
@@ -201,22 +220,53 @@ class CreatebookController extends GetxController {
           .collection('books')
           .add(newBook.toJson());
 
+      resetForm();
+
       Get.back();
       Get.snackbar(
         "Berhasil",
         "Buku berhasil ditambahkan",
-        backgroundColor: const Color(0xFF4CAF50),
-        colorText: const Color(0xFFFFFFFF),
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+      );
+    } on FirebaseException catch (e) {
+      Get.snackbar(
+        "Firebase Error",
+        e.message ?? e.toString(),
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
       );
     } catch (e) {
       Get.snackbar(
         "Error",
         e.toString(),
-        backgroundColor: const Color(0xFFD32F2F),
-        colorText: const Color(0xFFFFFFFF),
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
       );
     } finally {
       isLoading.value = false;
     }
+  }
+
+ 
+  void resetForm() {
+    judulC.clear();
+    penulisC.clear();
+    penerbitC.clear();
+    tahunC.clear();
+    stokC.clear();
+    deskripsiC.clear();
+    imageFile.value = null;
+
+    selectedCategory.value =
+        categories.isNotEmpty ? categories.first : '';
+
+    judulSuccess.value = false;
+    penulisSuccess.value = false;
+    penerbitSuccess.value = false;
+    tahunSuccess.value = false;
+    stokSuccess.value = false;
+    kategoriSuccess.value = false;
+    deskripsiSuccess.value = false;
   }
 }
