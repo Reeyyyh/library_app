@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 
-// Model untuk item menu pada dashboard
 class Menu {
-  final String title;     // Nama menu
-  final int count;        // Jumlah atau angka yang ditampilkan
-  final String unit;      // Satuan dari angka (mis: "buku", "item")
-  final IconData icon;    // Ikon menu
+  final String title;     
+  final int count;
+  final String unit;
+  final IconData icon;
 
-  // Konstruktor utama
   Menu({
     required this.title,
     required this.count,
@@ -15,7 +13,6 @@ class Menu {
     required this.icon,
   });
 
-  // Membuat salinan Menu dengan nilai yang dapat diubah sebagian
   Menu copyWith({
     String? title,
     int? count,
@@ -28,5 +25,34 @@ class Menu {
       unit: unit ?? this.unit,
       icon: icon ?? this.icon,
     );
+  }
+
+  // 🔽 Tambahan 1 — Convert ke Map (untuk database atau local storage)
+  Map<String, dynamic> toMap() {
+    return {
+      'title': title,
+      'count': count,
+      'unit': unit,
+      'icon': icon.codePoint, // icon disimpan sebagai codePoint
+    };
+  }
+
+  // 🔽 Tambahan 2 — Convert dari Map
+  factory Menu.fromMap(Map<String, dynamic> map) {
+    return Menu(
+      title: map['title'],
+      count: map['count'],
+      unit: map['unit'],
+      icon: IconData(map['icon'], fontFamily: 'MaterialIcons'),
+    );
+  }
+
+  // 🔽 Tambahan 3 — Convert ke JSON
+  String toJson() => toMap().toString();
+
+  // 🔽 Tambahan 4 — Debug print yang lebih rapi
+  @override
+  String toString() {
+    return 'Menu(title: $title, count: $count, unit: $unit, icon: $icon)';
   }
 }
