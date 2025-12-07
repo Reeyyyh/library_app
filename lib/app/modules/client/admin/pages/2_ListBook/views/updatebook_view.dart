@@ -7,38 +7,41 @@ import 'package:library_app/app/widgets/custom_input.dart';
 import '../controllers/updatebook_controller.dart';
 
 class UpdatebookView extends StatelessWidget {
-  final BookModel book;
+  final BookModel book; // Menampung data buku yang akan diedit
 
   const UpdatebookView(this.book, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(UpdatebookController());
-    controller.loadBook(book);
+    final controller = Get.put(UpdatebookController()); // Memanggil controller edit buku
+    controller.loadBook(book); // Mengisi form input dengan data buku awal
 
     return Scaffold(
       appBar: const AdminAppBar(
-        title: "Edit Buku",
-        showBack: true,
+        title: "Edit Buku", // Judul halaman
+        showBack: true, // Tampilkan tombol kembali
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // ========== INPUT FIELD ==========
+            // =======================================
+            // ========== INPUT FIELD JUDUL ==========
+            // =======================================
             Obx(
               () => CustomInput(
                 labelText: "Judul",
                 hintText: "Masukkan Judul",
                 controller: controller.judulC,
-                onChanged: (_) => controller.judulError.value = '',
-                errorMessage: controller.judulError.value,
-                showSuccessBorder: controller.judulC.text.isNotEmpty,
+                onChanged: (_) => controller.judulError.value = '', // Hapus error jika user mengetik
+                errorMessage: controller.judulError.value, // Pesan error validasi
+                showSuccessBorder: controller.judulC.text.isNotEmpty, // Border hijau jika isi tidak kosong
               ),
             ),
             const SizedBox(height: 16),
 
+            // FIELD PENULIS
             Obx(
               () => CustomInput(
                 labelText: "Penulis",
@@ -51,6 +54,7 @@ class UpdatebookView extends StatelessWidget {
             ),
             const SizedBox(height: 16),
 
+            // FIELD PENERBIT
             Obx(
               () => CustomInput(
                 labelText: "Penerbit",
@@ -63,12 +67,13 @@ class UpdatebookView extends StatelessWidget {
             ),
             const SizedBox(height: 16),
 
+            // FIELD TAHUN TERBIT
             Obx(
               () => CustomInput(
                 labelText: "Tahun",
                 hintText: "Masukkan Tahun",
                 controller: controller.tahunC,
-                keyboardType: TextInputType.number,
+                keyboardType: TextInputType.number, // Input hanya angka
                 onChanged: (_) => controller.tahunError.value = '',
                 errorMessage: controller.tahunError.value,
                 showSuccessBorder: controller.tahunC.text.isNotEmpty,
@@ -76,6 +81,7 @@ class UpdatebookView extends StatelessWidget {
             ),
             const SizedBox(height: 16),
 
+            // FIELD STOK
             Obx(
               () => CustomInput(
                 labelText: "Stok",
@@ -89,17 +95,18 @@ class UpdatebookView extends StatelessWidget {
             ),
             const SizedBox(height: 16),
 
-            // ========== DROPDOWN KATEGORI ==========
-            const Text("Kategori"),
+            // ========================================
+            // ========== DROPDOWN KATEGORI ===========
+            // ========================================
+            const Text("Kategori"), // Label kategori buku
             Obx(() {
               return Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                 decoration: BoxDecoration(
                   border: Border.all(
                     color: controller.selectedCategory.value.isNotEmpty
-                        ? Colors.green
-                        : Colors.grey,
+                        ? Colors.green // Hijau jika kategori terisi
+                        : Colors.grey, // Abu jika belum dipilih
                   ),
                   borderRadius: BorderRadius.circular(8),
                 ),
@@ -124,42 +131,42 @@ class UpdatebookView extends StatelessWidget {
             }),
             const SizedBox(height: 16),
 
-            // ========== STATUS DROPDOWN ==========
-              const Text("Status"),
-              Obx(() {
-                return Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.green,
-                    ),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: DropdownButton<BookStatus>(
-                    value: controller.status.value,
-                    isExpanded: true,
-                    hint: const Text("Pilih Status"),
-                    items: BookStatus.values.map((status) {
-                      return DropdownMenuItem(
-                        value: status,
-                        child: Text(status.label),
-                      );
-                    }).toList(),
-                    onChanged: (val) {
-                      if (val != null) controller.status.value = val;
-                    },
-                    underline: const SizedBox(),
-                  ),
-                );
-              }),
+            // ====================================
+            // ========== DROPDOWN STATUS =========
+            // ====================================
+            const Text("Status"), // Menentukan status buku (tersedia / dipinjam / rusak)
+            Obx(() {
+              return Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.green), // Selalu border hijau
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: DropdownButton<BookStatus>(
+                  value: controller.status.value, // Status terpilih saat ini
+                  isExpanded: true,
+                  hint: const Text("Pilih Status"),
+                  items: BookStatus.values.map((status) {
+                    return DropdownMenuItem(
+                      value: status,
+                      child: Text(status.label), // Tampilkan label status
+                    );
+                  }).toList(),
+                  onChanged: (val) {
+                    if (val != null) controller.status.value = val;
+                  },
+                  underline: const SizedBox(),
+                ),
+              );
+            }),
 
+            // FIELD DESKRIPSI
             Obx(
               () => CustomInput(
                 labelText: "Deskripsi",
                 hintText: "Masukkan Deskripsi",
                 controller: controller.deskripsiC,
-                maxLines: 5,
+                maxLines: 5, // Input teks bisa lebih panjang
                 onChanged: (_) => controller.deskripsiError.value = '',
                 errorMessage: controller.deskripsiError.value,
                 showSuccessBorder: controller.deskripsiC.text.isNotEmpty,
@@ -167,7 +174,9 @@ class UpdatebookView extends StatelessWidget {
             ),
             const SizedBox(height: 24),
 
+            // =============================================
             // ========== BUTTON SIMPAN PERUBAHAN ==========
+            // =============================================
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
@@ -175,7 +184,7 @@ class UpdatebookView extends StatelessWidget {
                   backgroundColor: CustomAppTheme.primaryColor,
                   padding: const EdgeInsets.symmetric(vertical: 14),
                 ),
-                onPressed: controller.updateBook,
+                onPressed: controller.updateBook, // Menjalankan proses update
                 child: const Text(
                   "Simpan Perubahan",
                   style: TextStyle(color: Colors.white, fontSize: 16),
