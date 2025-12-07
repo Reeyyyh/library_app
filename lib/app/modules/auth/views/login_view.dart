@@ -75,12 +75,14 @@ class LoginView extends StatelessWidget {
                       onPressed: () async {
                         bool ok =
                             loginController.validate(emailC.text, passC.text);
-
                         if (!ok) return;
 
                         final auth = Get.find<AuthService>();
+
                         String? result = await auth.login(
-                            emailC.text.trim(), passC.text.trim());
+                          emailC.text.trim(),
+                          passC.text.trim(),
+                        );
 
                         if (result != null) {
                           Get.snackbar(
@@ -91,8 +93,21 @@ class LoginView extends StatelessWidget {
                           );
                           return;
                         }
-                        
-                        String role = auth.userModel.value?.role ?? 'user';
+
+                        // 🔥 Pastikan fetchUserData sudah update userModel
+                        await Future.delayed(Duration(milliseconds: 200));
+
+                        final role = auth.userModel.value?.role;
+
+                        if (role == null) {
+                          Get.snackbar(
+                            "Error",
+                            "Gagal memuat data pengguna",
+                            backgroundColor: Colors.red,
+                            colorText: Colors.white,
+                          );
+                          return;
+                        }
 
                         if (role == 'admin') {
                           Get.offAll(() => AdminBotNavView());

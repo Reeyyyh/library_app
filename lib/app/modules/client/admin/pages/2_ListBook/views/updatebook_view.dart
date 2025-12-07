@@ -97,31 +97,34 @@ class UpdatebookView extends StatelessWidget {
                     const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color: controller.selectedCategory.value.isNotEmpty
+                    color: controller.selectedCategoryId.value.isNotEmpty
                         ? Colors.green
                         : Colors.grey,
                   ),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: DropdownButton<String>(
-                  value: controller.selectedCategory.value.isEmpty
+                  value: controller.selectedCategoryId.value.isEmpty
                       ? null
-                      : controller.selectedCategory.value,
+                      : controller.selectedCategoryId.value,
                   isExpanded: true,
                   hint: const Text("Pilih Kategori"),
-                  items: controller.categories
-                      .map((cat) => DropdownMenuItem(
-                            value: cat,
-                            child: Text(cat),
-                          ))
-                      .toList(),
+                  items: controller.categories.map((cat) {
+                    return DropdownMenuItem<String>(
+                      value: cat.id, // ⚡ ID dikirim
+                      child: Text(cat.name), // ⚡ Name yang ditampilkan
+                    );
+                  }).toList(),
                   onChanged: (val) {
-                    if (val != null) controller.selectedCategory.value = val;
+                    if (val != null) {
+                      controller.selectedCategoryId.value = val; // simpan ID
+                    }
                   },
                   underline: const SizedBox(),
                 ),
               );
             }),
+
             const SizedBox(height: 16),
 
             // ========== STATUS DROPDOWN ==========

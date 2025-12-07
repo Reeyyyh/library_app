@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:library_app/app/models/book_model.dart';
+import 'package:library_app/app/dtos/book_with_category_model.dart';
 import 'package:library_app/app/models/loan_request_model.dart';
 import 'package:library_app/app/modules/client/users/pages/2_Collection/views/success_borrow_view.dart';
 import 'package:library_app/app/modules/client/users/widgets/borrow_confirm_card.dart';
@@ -12,8 +12,9 @@ import 'package:library_app/app/widgets/custom_date_input.dart';
 import '../controllers/borrow_confirm_controller.dart';
 
 class BorrowConfirmView extends StatelessWidget {
-  final BookModel book;
-  BorrowConfirmView({super.key, required this.book});
+  final BookWithCategoryModel bookData;
+
+  BorrowConfirmView({super.key, required this.bookData});
 
   final BorrowConfirmController controller = Get.put(BorrowConfirmController());
 
@@ -36,7 +37,7 @@ class BorrowConfirmView extends StatelessWidget {
               style: CustomAppTheme.heading1.copyWith(fontSize: 18),
             ),
             const SizedBox(height: 10),
-            BorrowConfirmCard(book: book),
+            BorrowConfirmCard(book: bookData.book),
             const SizedBox(height: 20),
 
             // Informasi Pinjam
@@ -129,9 +130,9 @@ class BorrowConfirmView extends StatelessWidget {
                       const SizedBox(height: 6),
                       _buildRow("Durasi:", "${controller.duration.value} hari"),
                       const SizedBox(height: 6),
-                      _buildRow("Judul Buku:", book.judul),
+                      _buildRow("Judul Buku:", bookData.book.judul),
                       const SizedBox(height: 6),
-                      _buildRow("Kategori:", book.kategori),
+                      _buildRow("Kategori:", bookData.category.name),
                     ],
                   ),
                 )),
@@ -169,30 +170,15 @@ class BorrowConfirmView extends StatelessWidget {
 
                 final borrowCode = controller.generateBorrowCode();
 
-                final loanRequest = LoanRequest(
+                final loanRequest = LoanRequestModel(
+                  id: "", // Supabase akan generate id otomatis, bisa kosong
                   borrowCode: borrowCode,
-                  uid: currentUser.uid,
-                  nama: currentUser.name,
-                  email: currentUser.email,
-                  kelas: currentUser.kelas,
-                  kontak: currentUser.kontak,
-                  bookId: book.id,
-                  image: book.image,
-                  judulBuku: book.judul,
-                  tahun: book.tahun,
-                  category: book.kategori,
-                  penulis: book.penulis,
-                  penerbit: book.penerbit,
-                  tanggalPinjam: DateFormat('dd/MM/yyyy')
-                      .format(controller.borrowDate.value),
-                  tanggalKembali: DateFormat('dd/MM/yyyy').format(controller
-                      .borrowDate.value
-                      .add(Duration(days: controller.duration.value))),
+                  userId: currentUser.id,
+                  bookId: bookData.book.id,
+                  tanggalPinjam: controller.borrowDate.value,
+                  tanggalKembali: controller.borrowDate.value
+                      .add(Duration(days: controller.duration.value)),
                   requestStatus: "pending",
-                  isbn: book.isbn,
-                  jumlahHalaman: book.jumlahHalaman,
-                  bahasa: book.bahasa,
-                  lokasiRak: book.lokasiRak,
                 );
                 await controller.submitBorrow(loanRequest);
 

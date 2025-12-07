@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:library_app/app/dtos/book_with_category_model.dart';
 import 'package:library_app/app/models/book_model.dart';
 import 'package:library_app/app/modules/client/users/pages/2_Collection/views/borrow_confirm_view.dart';
 import 'package:library_app/app/modules/config/custom_app_theme.dart';
@@ -8,14 +9,14 @@ import 'package:library_app/app/widgets/custom_appbar.dart';
 import 'package:library_app/app/widgets/custom_button.dart';
 
 class BookDetailView extends StatelessWidget {
-  final BookModel book;
+  final BookWithCategoryModel bookData;
 
-  const BookDetailView({super.key, required this.book});
+  const BookDetailView({super.key, required this.bookData});
 
   @override
   Widget build(BuildContext context) {
     final statusLabel =
-        book.status == BookStatus.tersedia ? 'Tersedia' : 'Tidak Tersedia';
+        bookData.book.status == BookStatus.tersedia ? 'Tersedia' : 'Tidak Tersedia';
 
     return Scaffold(
       backgroundColor: CustomAppTheme.backgroundColor,
@@ -23,10 +24,10 @@ class BookDetailView extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 20, 16, 40),
         children: [
-          _buildBookImage(book.image),
+          _buildBookImage(bookData.book.image),
           const SizedBox(height: 22),
           Text(
-            book.judul,
+            bookData.book.judul,
             style: CustomAppTheme.heading1.copyWith(
               color: Colors.black,
               fontSize: 24,
@@ -35,7 +36,7 @@ class BookDetailView extends StatelessWidget {
           const SizedBox(height: 12),
           _buildInformationTitle('Informasi'),
           const SizedBox(height: 8),
-          _buildBookInfoTable(book, statusLabel),
+          _buildBookInfoTable(bookData, statusLabel),
           const SizedBox(height: 8),
           _buildInformationTitle('Deskripsi Buku'),
           const SizedBox(height: 8),
@@ -54,18 +55,18 @@ class BookDetailView extends StatelessWidget {
               ],
             ),
             child: Text(
-              book.deskripsi,
+              bookData.book.deskripsi,
               style: CustomAppTheme.bodyText,
             ),
           ),
           const SizedBox(height: 20),
           CustomButton(
-            text: book.status == BookStatus.tersedia
+            text: bookData.book.status == BookStatus.tersedia
                 ? 'Sewa Sekarang'
                 : 'Tidak Tersedia',
-            onPressed: book.status == BookStatus.tersedia
+            onPressed: bookData.book.status == BookStatus.tersedia
                 ? () {
-                    Get.to(() => BorrowConfirmView(book: book));
+                    Get.to(() => BorrowConfirmView(bookData: bookData));
                   }
                 : null, // null = otomatis disabled
           ),
@@ -132,14 +133,14 @@ class BookDetailView extends StatelessWidget {
     );
   }
 
-  Widget _buildBookInfoTable(BookModel book, String statusLabel) {
+  Widget _buildBookInfoTable(BookWithCategoryModel book, String statusLabel) {
     final List<TableRow> rows = [
-      _buildTableRow('Penulis', book.penulis, 0),
-      _buildTableRow('Penerbit', book.penerbit, 1),
-      _buildTableRow('Tahun Terbit', book.tahun, 2),
-      _buildTableRow('Stok', book.stok.toString(), 3),
+      _buildTableRow('Penulis', book.book.judul, 0),
+      _buildTableRow('Penerbit', book.book.penerbit, 1),
+      _buildTableRow('Tahun Terbit', book.book.tahun, 2),
+      _buildTableRow('Stok', book.book.stok.toString(), 3),
       _buildTableRow('Status', statusLabel, 4),
-      _buildTableRow('Kategori', book.kategori, 5),
+      _buildTableRow('Kategori', book.category.name, 5),
     ];
 
     return ClipRRect(

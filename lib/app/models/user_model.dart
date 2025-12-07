@@ -1,7 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class UserModel {
-  final String uid;
+  final String id;
   final String name;
   final String email;
   final String kelas;
@@ -12,7 +10,7 @@ class UserModel {
   final DateTime? createdAt;
 
   UserModel({
-    required this.uid,
+    required this.id,
     required this.name,
     required this.email,
     required this.kelas,
@@ -25,7 +23,7 @@ class UserModel {
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
-      uid: map['uid'] ?? '',
+      id: map['id'] ?? '',
       name: map['name'] ?? '',
       email: map['email'] ?? '',
       kelas: map['kelas'] ?? '',
@@ -33,13 +31,14 @@ class UserModel {
       role: map['role'] ?? 'user',
       isActive: map['is_active'] ?? true,
       image: map['image'] ?? '',
-      createdAt: (map['created_at'] as Timestamp?)?.toDate(),
+      createdAt: map['created_at'] != null
+          ? DateTime.tryParse(map['created_at'])
+          : null,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      "uid": uid,
       "name": name,
       "email": email,
       "kelas": kelas,
@@ -47,8 +46,6 @@ class UserModel {
       "role": role,
       "is_active": isActive,
       "image": image,
-      "created_at": createdAt,
     };
   }
 }
-// merge

@@ -1,10 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:library_app/app/models/category_model.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ListCategoryController extends GetxController {
-  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final supabase = Supabase.instance.client;
 
-  RxList<Map<String, dynamic>> categories = <Map<String, dynamic>>[].obs;
+  RxList<CategoryModel> categories = <CategoryModel>[].obs;
   RxBool isLoading = false.obs;
 
   @override
@@ -13,59 +14,57 @@ class ListCategoryController extends GetxController {
     fetchCategories();
   }
 
-  // Getter: top 4 kategori
-  List<Map<String, dynamic>> get top4 =>
+  // Getter: top 4
+  List<CategoryModel> get top4 =>
       categories.length > 4 ? categories.sublist(0, 4) : categories;
 
-  // Getter: kategori lain
-  List<Map<String, dynamic>> get otherCategories =>
+  // Getter: other
+  List<CategoryModel> get otherCategories =>
       categories.length > 4 ? categories.sublist(4) : [];
 
+  // ==============================
+  // GET CATEGORY
+  // ==============================
   Future<void> fetchCategories() async {
     try {
       isLoading.value = true;
 
-      final snapshot = await firestore
-          .collection('categories')
-          .orderBy('position', descending: false)
-          .get();
+      final res = await supabase
+          .from('categories')
+          .select()
+          .order('position', ascending: true);
 
-      categories.value = snapshot.docs.map((doc) {
-        final data = doc.data();
-        return {
-          'id': doc.id,
-          'name': data['name'],
-          'position': data['position'],
-        };
-      }).toList();
+      categories.value = res.map((e) => CategoryModel.fromMap(e)).toList();
     } catch (e) {
-      Get.snackbar('Error', 'Gagal mengambil data category: $e');
+      Get.snackbar('Error', 'Gagal mengambil category: $e');
     } finally {
       isLoading.value = false;
     }
   }
 
-  // Tambah category
+  // ==============================
+  // CREATE
+  // ==============================
   Future<void> addCategory(String name) async {
     try {
       isLoading.value = true;
 
-      final last = await firestore
-          .collection('categories')
-          .orderBy('position', descending: true)
-          .limit(1)
-          .get();
+      // Ambil posisi terakhir
+      final last = await supabase
+          .from('categories')
+          .select('position')
+          .order('position', ascending: false)
+          .limit(1);
 
-      int newPosition =
-          last.docs.isNotEmpty ? last.docs.first['position'] + 1 : 0;
+      int newPosition = last.isNotEmpty ? (last.first['position'] ?? 0) + 1 : 0;
 
-      await firestore.collection('categories').add({
+      await supabase.from('categories').insert({
         'name': name,
         'position': newPosition,
-        'created_at': FieldValue.serverTimestamp(),
+        'created_at': DateTime.now().toIso8601String(),
       });
 
-      await fetchCategories();
+      fetchCategories();
     } catch (e) {
       Get.snackbar("Error", "Gagal menambah kategori: $e");
     } finally {
@@ -73,31 +72,36 @@ class ListCategoryController extends GetxController {
     }
   }
 
-  // Edit
+  // ==============================
+  // UPDATE
+  // ==============================
   Future<void> updateCategory(String id, String newName) async {
     try {
       isLoading.value = true;
 
-      await firestore.collection('categories').doc(id).update({
+      await supabase.from('categories').update({
         'name': newName,
-      });
+      }).eq('id', id);
 
-      await fetchCategories();
+      fetchCategories();
     } catch (e) {
-      Get.snackbar('Error', 'Gagal mengubah kategori: $e');
+      Get.snackbar('Error', 'Gagal update kategori: $e');
     } finally {
       isLoading.value = false;
     }
   }
 
-  // Delete
+  // ==============================
+  // DELETE
+  // ==============================
   Future<void> deleteCategory(String id) async {
     try {
       isLoading.value = true;
 
-      await firestore.collection('categories').doc(id).delete();
+      await supabase.from('categories').delete().eq('id', id);
+
       await fetchCategories();
-      await saveOrderToFirebase();
+      await saveOrder();
     } catch (e) {
       Get.snackbar('Error', 'Gagal menghapus kategori: $e');
     } finally {
@@ -105,22 +109,24 @@ class ListCategoryController extends GetxController {
     }
   }
 
+  // ==============================
+  // REORDER
+  // ==============================
   void reorderAll(int oldIndex, int newIndex) async {
     if (newIndex > oldIndex) newIndex--;
 
     final item = categories.removeAt(oldIndex);
     categories.insert(newIndex, item);
 
-    await saveOrderToFirebase();
+    await saveOrder();
   }
 
-  Future<void> saveOrderToFirebase() async {
+  // Simpan posisi baru
+  Future<void> saveOrder() async {
     for (int i = 0; i < categories.length; i++) {
-      await firestore
-          .collection("categories")
-          .doc(categories[i]['id'])
-          .update({'position': i});
+      await supabase.from('categories').update({
+        'position': i,
+      }).eq('id', categories[i].id);
     }
   }
 }
-// merge

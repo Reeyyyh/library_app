@@ -24,20 +24,18 @@ class HistoryView extends StatelessWidget {
           return const Center(child: CircularProgressIndicator());
         }
 
-        if (controller.borrowHistory.isEmpty) {
-          return const HistoryEmpty();
-        }
-
-        return ListView.builder(
-          padding: const EdgeInsets.all(16),
-          itemCount: controller.borrowHistory.length,
-          itemBuilder: (context, index) {
-            final item = controller.borrowHistory[index];
-
-            return HistoryCard(
-              data: item,
-            );
-          },
+        return RefreshIndicator(
+          onRefresh: controller.fetchHistory,
+          child: controller.borrowHistory.isEmpty
+              ? const HistoryEmpty()
+              : ListView.builder(
+                  padding: const EdgeInsets.all(16),
+                  itemCount: controller.borrowHistory.length,
+                  itemBuilder: (context, index) {
+                    final item = controller.borrowHistory[index];
+                    return HistoryCard(data: item);
+                  },
+                ),
         );
       }),
     );

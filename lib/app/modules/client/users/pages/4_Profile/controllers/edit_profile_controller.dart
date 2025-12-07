@@ -1,10 +1,11 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:library_app/app/modules/auth/services/auth_service.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class EditProfileController extends GetxController {
   final AuthService auth = Get.find<AuthService>();
+  final supabase = Supabase.instance.client;
 
   late TextEditingController nameC;
   late TextEditingController emailC;
@@ -23,21 +24,24 @@ class EditProfileController extends GetxController {
     super.onInit();
   }
 
+  // ============================
+  // UPDATE PROFILE (SUPABASE)
+  // ============================
   Future<void> updateProfile() async {
     try {
-      final uid = auth.firebaseUser.value!.uid;
+      final uid = auth.userModel.value!.id;
 
-      await FirebaseFirestore.instance.collection('users').doc(uid).update({
+      await supabase.from('users').update({
         "name": nameC.text.trim(),
         "kelas": kelasC.text.trim(),
         "kontak": kontakC.text.trim(),
-        // email tidak diedit karena FirebaseAuth wajib update via method khusus
-      });
+        // email tidak diupdate karena harus via Supabase Auth API jika mau ubah
+      }).eq('id', uid);
 
-      // refresh data user di AuthService
+      // Refresh user di AuthService
       await auth.fetchUserData(uid);
 
-      Get.back(); // kembali ke ProfileView
+      Get.back();
       Get.snackbar(
         "Sukses",
         "Profil berhasil diperbarui",
@@ -63,4 +67,3 @@ class EditProfileController extends GetxController {
     super.onClose();
   }
 }
-// merge

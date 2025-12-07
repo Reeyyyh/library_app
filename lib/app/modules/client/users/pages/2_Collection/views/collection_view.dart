@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:library_app/app/modules/client/users/pages/2_Collection/controllers/collection_controller.dart';
 import 'package:library_app/app/modules/client/users/pages/2_Collection/views/book_detail_view.dart';
+import 'package:library_app/app/modules/client/users/widgets/book_not_found.dart';
 import 'package:library_app/app/modules/client/users/widgets/collection_card.dart';
 import 'package:library_app/app/modules/config/custom_app_theme.dart';
 
@@ -66,7 +67,15 @@ class CollectionView extends StatelessWidget {
         padding: const EdgeInsets.all(12.0),
         child: Obx(
           () {
+            if (controller.isLoading.value) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
             final filteredBooks = controller.filteredBooks;
+            if (filteredBooks.isEmpty) {
+              return const BookNotFound();
+            }
+
             return Column(
               children: [
                 if (controller.searchQuery.isNotEmpty)
@@ -101,10 +110,10 @@ class CollectionView extends StatelessWidget {
                     ),
                     itemBuilder: (context, index) {
                       return CollectionCard(
-                        book: filteredBooks[index],
+                        bookData: filteredBooks[index],
                         onTap: () {
-                          Get.to(() => BookDetailView(book: filteredBooks[index]),
-                          );
+                          Get.to(() =>
+                              BookDetailView(bookData: filteredBooks[index]));
                         },
                       );
                     },
