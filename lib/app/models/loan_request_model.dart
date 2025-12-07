@@ -1,180 +1,83 @@
-class LoanRequest {
-  final String? id;
+class LoanRequestModel {
+  final String id;
   final String borrowCode;
-  // user model
-  final String uid;
-  final String nama;
-  final String email;
-  final String kelas;
-  final String kontak;
-  // book model
+  final String userId;
   final String bookId;
-  final String judulBuku;
-  final String tahun;
-  final String penulis;
-  final String penerbit;
-  final String category;
-  final String image;
-  final String? isbn;
-  final int? jumlahHalaman;
-  final String? bahasa;
-  final String? lokasiRak;
-  final String tanggalPinjam;
-  final String tanggalKembali;
+  final DateTime tanggalPinjam;
+  final DateTime tanggalKembali;
   final String requestStatus;
   final String? returnCode;
-  final String? returnDate;
+  final DateTime? returnDate;
+  final DateTime? createdAt;
 
-  LoanRequest({
-    this.id,
+  LoanRequestModel({
+    required this.id,
     required this.borrowCode,
-    // user model
-    required this.uid,
-    required this.nama,
-    required this.email,
-    required this.kelas,
-    required this.kontak,
-    // book model
+    required this.userId,
     required this.bookId,
-    required this.judulBuku,
-    required this.tahun,
-    required this.penulis,
-    required this.penerbit,
-    required this.category,
-    required this.image,
-    this.isbn,
-    this.jumlahHalaman,
-    this.bahasa,
-    this.lokasiRak,
-    // for load
     required this.tanggalPinjam,
     required this.tanggalKembali,
     required this.requestStatus,
     this.returnCode,
     this.returnDate,
+    this.createdAt,
   });
 
-  factory LoanRequest.fromMap(Map<String, dynamic> map, String id) {
-    return LoanRequest(
-      id: id,
-      borrowCode: map['borrowCode'] ?? '',
-      // user model
-      uid: map['uid'] ?? '',
-      nama: map['nama'] ?? '',
-      email: map['email'] ?? '',
-      kelas: map['kelas'] ?? '',
-      kontak: map['kontak'] ?? '',
-      // book model
-      bookId: map['bookId'] ?? '',
-      judulBuku: map['judulBuku'] ?? '',
-      penulis: map['penulis'] ?? '',
-      tahun: map['tahun'] ?? '',
-      penerbit: map['penerbit'] ?? '',
-      category: map['category'] ?? '',
-      image: map['image'] ?? '',
-      isbn: map['isbn'],
-      jumlahHalaman: map['jumlahHalaman'],
-      bahasa: map['bahasa'],
-      lokasiRak: map['lokasiRak'],
-      // for loan
-      tanggalPinjam: map['tanggalPinjam'] ?? '',
-      tanggalKembali: map['tanggalKembali'] ?? '',
-      requestStatus: map['requestStatus'] ?? 'pending',
-      returnCode: map['returnCode'],
-      returnDate: map['returnDate'],
+  factory LoanRequestModel.fromMap(Map<String, dynamic> map) {
+    return LoanRequestModel(
+      id: map['id'],
+      borrowCode: map['borrow_code'],
+      userId: map['user_id'],
+      bookId: map['book_id'],
+      tanggalPinjam: DateTime.parse(map['tanggal_pinjam']),
+      tanggalKembali: DateTime.parse(map['tanggal_kembali']),
+      requestStatus: map['request_status'],
+      returnCode: map['return_code'],
+      returnDate: map['return_date'] != null
+          ? DateTime.parse(map['return_date'])
+          : null,
+      createdAt:
+          map['created_at'] != null ? DateTime.parse(map['created_at']) : null,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'borrowCode': borrowCode,
-      'uid': uid,
-      // user model
-      'nama': nama,
-      'email': email,
-      'kelas': kelas,
-      'kontak': kontak,
-      // book model
-      'bookId': bookId,
-      'judulBuku': judulBuku,
-      'penulis': penulis,
-      'tahun': tahun,
-      'penerbit': penerbit,
-      'category': category,
-      'image': image,
-      'isbn': isbn,
-      'jumlahHalaman': jumlahHalaman,
-      'bahasa': bahasa,
-      'lokasiRak': lokasiRak,
-      // for loan
-      'tanggalPinjam': tanggalPinjam,
-      'tanggalKembali': tanggalKembali,
-      'requestStatus': requestStatus,
-      'returnCode': returnCode,
-      'returnDate': returnDate,
+      'borrow_code': borrowCode,
+      'user_id': userId,
+      'book_id': bookId,
+      'tanggal_pinjam': tanggalPinjam.toIso8601String(),
+      'tanggal_kembali': tanggalKembali.toIso8601String(),
+      'request_status': requestStatus,
+      'return_code': returnCode,
+      'return_date': returnDate?.toIso8601String(),
+      // created_at otomatis oleh Supabase
     };
   }
 
-  // loan copy for update request
-  LoanRequest copyWith({
+  LoanRequestModel copyWith({
     String? id,
+    String? borrowCode,
+    String? userId,
+    String? bookId,
+    DateTime? tanggalPinjam,
+    DateTime? tanggalKembali,
     String? requestStatus,
     String? returnCode,
-    String? returnDate,
+    DateTime? returnDate,
+    DateTime? createdAt,
   }) {
-    return LoanRequest(
+    return LoanRequestModel(
       id: id ?? this.id,
-      borrowCode: borrowCode,
-      uid: uid,
-      nama: nama,
-      email: email,
-      kelas: kelas,
-      kontak: kontak,
-      bookId: bookId,
-      judulBuku: judulBuku,
-      tahun: tahun,
-      penulis: penulis,
-      penerbit: penerbit,
-      category: category,
-      image: image,
-      isbn: isbn,
-      jumlahHalaman: jumlahHalaman,
-      bahasa: bahasa,
-      lokasiRak: lokasiRak,
-      tanggalPinjam: tanggalPinjam,
-      tanggalKembali: tanggalKembali,
+      borrowCode: borrowCode ?? this.borrowCode,
+      userId: userId ?? this.userId,
+      bookId: bookId ?? this.bookId,
+      tanggalPinjam: tanggalPinjam ?? this.tanggalPinjam,
+      tanggalKembali: tanggalKembali ?? this.tanggalKembali,
       requestStatus: requestStatus ?? this.requestStatus,
       returnCode: returnCode ?? this.returnCode,
       returnDate: returnDate ?? this.returnDate,
-    );
-  }
-
-  factory LoanRequest.empty() {
-    return LoanRequest(
-      id: "",
-      borrowCode: "",
-      uid: "",
-      nama: "",
-      email: "",
-      kelas: "",
-      kontak: "",
-      bookId: "",
-      judulBuku: "",
-      tahun: "",
-      penulis: "",
-      penerbit: "",
-      category: "",
-      image: "",
-      isbn: "",
-      jumlahHalaman: 0,
-      bahasa: "",
-      lokasiRak: "",
-      tanggalPinjam: "",
-      tanggalKembali: "",
-      requestStatus: "",
-      returnCode: "",
-      returnDate: "",
+      createdAt: createdAt ?? this.createdAt,
     );
   }
 }
-// merge
