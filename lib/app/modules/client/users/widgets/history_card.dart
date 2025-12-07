@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get/instance_manager.dart';
-import 'package:library_app/app/models/loan_request_model.dart';
+import 'package:library_app/app/dtos/loan_request_with_detail.dart';
 import 'package:library_app/app/modules/client/users/pages/3_History/views/history_detail_view.dart';
 
 class HistoryCard extends StatelessWidget {
-  final LoanRequest data;
+  final LoanRequestWithDetail data;
 
   const HistoryCard({
     super.key,
@@ -13,32 +13,27 @@ class HistoryCard extends StatelessWidget {
   });
 
   // ==== Helper format tanggal (dd/MM/yyyy -> dd MMM yyyy) ====
-  String formatTanggal(String input) {
-    try {
-      final parts = input.split('/');
-      final day = parts[0];
-      final month = parts[1];
-      final year = parts[2];
+  String formatTanggal(DateTime date) {
+    final day = date.day.toString().padLeft(2, '0');
+    final month = date.month.toString().padLeft(2, '0');
+    final year = date.year.toString();
 
-      const monthNames = {
-        '01': 'Jan',
-        '02': 'Feb',
-        '03': 'Mar',
-        '04': 'Apr',
-        '05': 'Mei',
-        '06': 'Jun',
-        '07': 'Jul',
-        '08': 'Agu',
-        '09': 'Sep',
-        '10': 'Okt',
-        '11': 'Nov',
-        '12': 'Des',
-      };
+    const monthNames = {
+      '01': 'Jan',
+      '02': 'Feb',
+      '03': 'Mar',
+      '04': 'Apr',
+      '05': 'Mei',
+      '06': 'Jun',
+      '07': 'Jul',
+      '08': 'Agu',
+      '09': 'Sep',
+      '10': 'Okt',
+      '11': 'Nov',
+      '12': 'Des',
+    };
 
-      return "$day ${monthNames[month]} $year";
-    } catch (_) {
-      return input;
-    }
+    return "$day ${monthNames[month]} $year";
   }
 
   @override
@@ -60,7 +55,7 @@ class HistoryCard extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: Image.network(
-                  data.image,
+                  data.book.book.image,
                   width: 70,
                   height: 70,
                   fit: BoxFit.cover,
@@ -85,7 +80,7 @@ class HistoryCard extends StatelessWidget {
                   children: [
                     // Judul Buku
                     Text(
-                      data.judulBuku,
+                      data.book.book.judul,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
@@ -98,7 +93,7 @@ class HistoryCard extends StatelessWidget {
 
                     // Tanggal pinjam - kembali (formatted)
                     Text(
-                      "${formatTanggal(data.tanggalPinjam)} - ${formatTanggal(data.tanggalKembali)}",
+                      "${formatTanggal(data.request.tanggalPinjam)} - ${formatTanggal(data.request.tanggalKembali)}",
                       style: TextStyle(
                         fontSize: 14,
                         color: Colors.grey.shade700,

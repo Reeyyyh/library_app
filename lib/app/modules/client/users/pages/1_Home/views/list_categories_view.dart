@@ -30,25 +30,27 @@ class ListCategoriesView extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
           itemCount: controller.categories.length,
           itemBuilder: (context, index) {
-            final category = controller.categories[index];
+            final category = controller.categories[index]; // sekarang Category model
             return Container(
-              margin: const EdgeInsets.symmetric(vertical: 10), // lebih lega
+              margin: const EdgeInsets.symmetric(vertical: 10),
               child: Card(
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16), // lebih bulat
+                  borderRadius: BorderRadius.circular(16),
                 ),
-                elevation: 3, // sedikit lebih tinggi
+                elevation: 3,
                 child: InkWell(
                   borderRadius: BorderRadius.circular(16),
                   onTap: () {
                     // Optional: aksi saat kategori diklik
+                    // Misal: navigate ke daftar buku berdasarkan kategori
+                    // Get.to(() => BooksByCategoryView(category: category));
                   },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
-                        vertical: 20, horizontal: 16), // lebih besar
+                        vertical: 20, horizontal: 16),
                     child: Center(
                       child: Text(
-                        category['name'] ?? 'Unnamed',
+                        category.name, // gunakan property model
                         style: CustomAppTheme.bodyText.copyWith(
                           fontWeight: FontWeight.w600,
                           fontSize: 18,
@@ -66,4 +68,3 @@ class ListCategoriesView extends StatelessWidget {
     );
   }
 }
-// merge

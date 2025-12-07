@@ -12,22 +12,29 @@ class SplashController extends GetxController {
   void onReady() {
     super.onReady();
 
-    // Tunggu animasi Splash 3 detik
     Future.delayed(const Duration(seconds: 3), () {
       _checkUserLogin();
     });
   }
 
-  void _checkUserLogin() {
-    final firebase = auth.firebaseUser.value;
-    final user = auth.userModel.value;
+  void _checkUserLogin() async {
+    final session = auth.session.value;
 
-    if (firebase == null || user == null) {
+    if (session == null) {
       Get.offAll(() => WelcomeView());
       return;
     }
 
-    if (!user.isActive) {
+    // Tunggu userModel terisi max 3 detik
+    await Future.doWhile(() async {
+      if (auth.userModel.value != null) return false;
+      await Future.delayed(const Duration(milliseconds: 100));
+      return true;
+    });
+
+    final user = auth.userModel.value;
+
+    if (user == null || !user.isActive) {
       auth.logout();
       Get.offAll(() => WelcomeView());
       return;
@@ -40,4 +47,3 @@ class SplashController extends GetxController {
     }
   }
 }
-// merge

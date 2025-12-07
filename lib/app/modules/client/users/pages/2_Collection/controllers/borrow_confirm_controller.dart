@@ -1,12 +1,13 @@
 import 'dart:math';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:library_app/app/models/loan_request_model.dart';
 import 'package:library_app/app/modules/auth/services/auth_service.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class BorrowConfirmController extends GetxController {
   final AuthService authService = Get.find<AuthService>();
+  final SupabaseClient supabase = Supabase.instance.client;
 
   var borrowDate = DateTime.now().obs;
   var duration = 7.obs;
@@ -46,11 +47,18 @@ class BorrowConfirmController extends GetxController {
         .join();
   }
 
-  Future<void> submitBorrow(LoanRequest request) async {
+  Future<void> submitBorrow(LoanRequestModel request) async {
     try {
-      await FirebaseFirestore.instance
-          .collection("borrow_requests")
-          .add(request.toMap());
+
+      final response = await supabase
+          .from('loan_requests')
+          .insert(request.toMap())
+          .select(); // <- pastikan .select() biar return data terbaru
+
+      // Cek apakah response kosong
+      if ((response.isEmpty)) {
+        throw "Gagal mengirim peminjaman";
+      }
 
       Get.snackbar(
         "Sukses",
@@ -59,6 +67,7 @@ class BorrowConfirmController extends GetxController {
         colorText: Colors.black,
       );
     } catch (e) {
+
       Get.snackbar(
         "Error",
         "Gagal mengirim peminjaman: $e",
@@ -68,4 +77,3 @@ class BorrowConfirmController extends GetxController {
     }
   }
 }
-// merge
