@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:library_app/app/models/category_model.dart';
 import 'package:library_app/app/modules/auth/services/auth_service.dart';
+import 'package:library_app/app/modules/client/users/botnav/controllers/user_botnav_controller.dart';
 import 'package:library_app/app/modules/client/users/pages/1_Home/controllers/home_controller.dart';
 import 'package:library_app/app/modules/client/users/pages/1_Home/views/list_categories_view.dart';
+import 'package:library_app/app/modules/client/users/pages/2_Collection/controllers/collection_controller.dart';
 import 'package:library_app/app/modules/client/users/pages/2_Collection/views/book_detail_view.dart';
 import 'package:library_app/app/modules/client/users/widgets/book_empty.dart';
 import 'package:library_app/app/modules/client/users/widgets/category_empty.dart';
@@ -95,7 +97,9 @@ class HomeView extends StatelessWidget {
                 ),
               ),
               GestureDetector(
-                onTap: () => Get.to(() => ListCategoriesView()),
+                onTap: () => Get.to(
+                  () => ListCategoriesView(),
+                ),
                 child: Text(
                   "Show More",
                   style: CustomAppTheme.smallText.copyWith(
@@ -134,7 +138,13 @@ class HomeView extends StatelessWidget {
                     color: Colors.transparent,
                     child: InkWell(
                       borderRadius: BorderRadius.circular(12),
-                      onTap: () {},
+                      onTap: () {
+                        if (Get.isRegistered<CollectionController>()) {
+                          Get.delete<CollectionController>();
+                        }
+                        Get.find<UserBotNavController>()
+                            .goToCollectionByCategory(category);
+                      },
                       child: Container(
                         alignment: Alignment.center,
                         padding: const EdgeInsets.all(12),

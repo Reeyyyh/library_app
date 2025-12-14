@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:library_app/app/models/category_model.dart';
 import 'package:library_app/app/modules/client/users/pages/1_Home/views/home_view.dart';
 import 'package:library_app/app/modules/client/users/pages/2_Collection/views/collection_view.dart';
 import 'package:library_app/app/modules/client/users/pages/3_history/views/history_view.dart';
@@ -7,13 +8,12 @@ import 'package:library_app/app/modules/client/users/pages/4_Profile/views/profi
 
 class UserBotNavController extends GetxController {
   RxInt selectedIndex = 0.obs;
+  var selectedCategory = Rx<CategoryModel?>(null);
 
   final List<Map<String, dynamic>> userMenus = [
     {
       'title': 'Beranda',
-      // icon garis (inactive)
       'icon': Icons.home_outlined,
-      // icon filled (active)
       'activeIcon': Icons.home_rounded,
       'page': HomeView(),
     },
@@ -25,7 +25,7 @@ class UserBotNavController extends GetxController {
     },
     {
       'title': 'Riwayat',
-      'icon': Icons.history_toggle_off, // boleh diganti sesuai selera
+      'icon': Icons.history_toggle_off,
       'activeIcon': Icons.history_rounded,
       'page': HistoryView(),
     },
@@ -42,6 +42,12 @@ class UserBotNavController extends GetxController {
   void changeTabIndex(int index) {
     if (selectedIndex.value == index) return;
     selectedIndex.value = index;
+    // selectedCategory.value = null;
+  }
+
+  void goToCollectionByCategory(CategoryModel category) {
+    selectedCategory.value = category;
+    selectedIndex.value = 1;
   }
 }
 // merge

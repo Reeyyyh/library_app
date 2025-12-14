@@ -3,11 +3,14 @@ import 'package:get/get.dart';
 import 'package:library_app/app/modules/client/users/pages/2_Collection/controllers/collection_controller.dart';
 import 'package:library_app/app/modules/client/users/pages/2_Collection/views/book_detail_view.dart';
 import 'package:library_app/app/modules/client/users/widgets/book_not_found.dart';
+import 'package:library_app/app/modules/client/users/widgets/category_without_book.dart';
 import 'package:library_app/app/modules/client/users/widgets/collection_card.dart';
 import 'package:library_app/app/modules/config/custom_app_theme.dart';
 
 class CollectionView extends StatelessWidget {
   const CollectionView({super.key});
+
+  // final selectedCategory = Get.find<UserBotNavController>().selectedCategory.value;
 
   @override
   Widget build(BuildContext context) {
@@ -72,12 +75,38 @@ class CollectionView extends StatelessWidget {
             }
 
             final filteredBooks = controller.filteredBooks;
+            final isSearching = controller.searchQuery.isNotEmpty;
+            final hasSelectedCategory =
+                controller.selectedCategoryName != 'Semua';
+
             if (filteredBooks.isEmpty) {
+              if (isSearching) {
+                return const BookNotFound();
+              }
+
+              if (hasSelectedCategory) {
+                return CategoryWithoutBook(
+                  categoryName: controller.selectedCategoryName,
+                );
+              }
+
               return const BookNotFound();
             }
 
             return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // ===== CATEGORY TEXT =====
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: Text(
+                    'Category : ${controller.selectedCategoryName}',
+                    style: CustomAppTheme.smallText.copyWith(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14,
+                        color: Colors.black),
+                  ),
+                ),
                 if (controller.searchQuery.isNotEmpty)
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
