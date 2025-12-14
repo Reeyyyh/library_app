@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:library_app/app/modules/client/users/botnav/controllers/user_botnav_controller.dart';
 import 'package:library_app/app/modules/client/users/pages/1_Home/controllers/list_categories_controller.dart';
 import 'package:library_app/app/modules/client/users/widgets/category_empty.dart';
 import 'package:library_app/app/modules/config/custom_app_theme.dart';
 
 class ListCategoriesView extends StatelessWidget {
-  final ListCategoriesController controller = Get.put(ListCategoriesController());
+  final ListCategoriesController controller =
+      Get.put(ListCategoriesController());
 
   ListCategoriesView({super.key});
 
@@ -28,9 +30,10 @@ class ListCategoriesView extends StatelessWidget {
 
         return ListView.builder(
           padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-          itemCount: controller.categories.length,
+          itemCount: controller.categories.length + 1,
           itemBuilder: (context, index) {
-            final category = controller.categories[index]; // sekarang Category model
+            final isAllCategory = index == controller.categories.length;
+
             return Container(
               margin: const EdgeInsets.symmetric(vertical: 10),
               child: Card(
@@ -41,16 +44,27 @@ class ListCategoriesView extends StatelessWidget {
                 child: InkWell(
                   borderRadius: BorderRadius.circular(16),
                   onTap: () {
-                    // Optional: aksi saat kategori diklik
-                    // Misal: navigate ke daftar buku berdasarkan kategori
-                    // Get.to(() => BooksByCategoryView(category: category));
+                    final botNav = Get.find<UserBotNavController>();
+
+                    if (isAllCategory) {
+                      // 🔥 RESET FILTER
+                      botNav.selectedCategory.value = null;
+                    } else {
+                      final category = controller.categories[index];
+                      botNav.selectedCategory.value = category;
+                    }
+
+                    botNav.changeTabIndex(1);
+                    Get.back();
                   },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                         vertical: 20, horizontal: 16),
                     child: Center(
                       child: Text(
-                        category.name, // gunakan property model
+                        isAllCategory
+                            ? 'Semua'
+                            : controller.categories[index].name,
                         style: CustomAppTheme.bodyText.copyWith(
                           fontWeight: FontWeight.w600,
                           fontSize: 18,
