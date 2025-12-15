@@ -1,24 +1,23 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:library_app/app/models/user_model.dart';
 
 class AuthService extends GetxController {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final SupabaseClient supabase = Supabase.instance.client;
 
-  Rx<User?> firebaseUser = Rx<User?>(null);
+  Rx<Session?> session = Rx<Session?>(null);
   Rx<UserModel?> userModel = Rx<UserModel?>(null);
 
   @override
   void onInit() {
     super.onInit();
 
-    firebaseUser.bindStream(_auth.authStateChanges());
+    supabase.auth.onAuthStateChange.listen((event) async {
+      final currentSession = event.session;
+      session.value = currentSession;
 
-    ever(firebaseUser, (user) async {
-      if (user != null) {
-        await fetchUserData(user.uid);
+      if (currentSession != null) {
+        await fetchUserData(currentSession.user.id);
       } else {
         userModel.value = null;
       }
@@ -32,79 +31,77 @@ class AuthService extends GetxController {
     required String password,
   }) async {
     try {
-      UserCredential credential = await _auth.createUserWithEmailAndPassword(
+      final res = await supabase.auth.signUp(
         email: email,
         password: password,
       );
 
-      String uid = credential.user!.uid;
+      final uid = res.user?.id;
+      if (uid == null) {
+        return "Registrasi gagal (UID null)";
+      }
 
-      UserModel user = UserModel(
-        uid: uid,
-        name: name,
-        email: email,
-        kelas: "",
-        kontak: "",
-        role: "user",
-        isActive: true,
-        image: '',
-        createdAt: DateTime.now(), 
-      );
-
-      await _firestore.collection("users").doc(uid).set(user.toMap());
+      await supabase.from("users").insert({
+        "id": uid,
+        "name": name,
+        "email": email,
+        "kelas": "",
+        "kontak": "",
+        "role": "user",
+        "is_active": true,
+        "image": "",
+        "created_at": DateTime.now().toIso8601String(),
+      });
 
       return null;
-    } on FirebaseAuthException catch (e) {
-      return e.message ?? "Terjadi kesalahan";
+    } on AuthException catch (e) {
+      return e.message;
+    } catch (e) {
+      return "Terjadi error saat register";
     }
   }
 
   // LOGIN
   Future<String?> login(String email, String password) async {
     try {
-      UserCredential credential = await _auth.signInWithEmailAndPassword(
+      final res = await supabase.auth.signInWithPassword(
         email: email,
         password: password,
       );
 
-      String uid = credential.user!.uid;
-
-      DocumentSnapshot<Map<String, dynamic>> snap =
-          await _firestore.collection("users").doc(uid).get();
-
-      if (!snap.exists) {
-        await _auth.signOut();
-        return "User tidak ditemukan";
+      final uid = res.user?.id;
+      if (uid == null) {
+        return "Login gagal (UID null)";
       }
 
-      bool isActive = snap.data()?["is_active"] ?? false;
+      await fetchUserData(uid);
 
-      if (!isActive) {
-        await _auth.signOut();
-        return "Akun Anda dinonaktifkan oleh admin";
-      }
-
-      userModel.value = UserModel.fromMap(snap.data()!);
-
-      return null;
-    } on FirebaseAuthException catch (e) {
-      return e.message ?? "Terjadi kesalahan";
+      return null; // sukses
+    } on AuthException catch (e) {
+      return e.message;
+    } catch (e) {
+      return "Terjadi error saat login";
     }
   }
 
   // LOGOUT
   Future<void> logout() async {
-    await _auth.signOut();
+    await supabase.auth.signOut();
   }
 
-  // FETCH USER
+  // FETCH USER DATA
   Future<void> fetchUserData(String uid) async {
-    DocumentSnapshot<Map<String, dynamic>> snap =
-        await _firestore.collection("users").doc(uid).get();
+    try {
+      final data =
+          await supabase.from("users").select().eq("id", uid).maybeSingle();
+      print("DEBUG fetchUserData: $data");
 
-    if (snap.exists) {
-      userModel.value = UserModel.fromMap(snap.data()!);
+      if (data != null) {
+        userModel.value = UserModel.fromMap(data);
+        print("DEBUG userModel: ${userModel.value?.role}");
+      }
+    } catch (e) {
+      print("ERROR fetchUserData: $e");
     }
   }
 }
-// merge

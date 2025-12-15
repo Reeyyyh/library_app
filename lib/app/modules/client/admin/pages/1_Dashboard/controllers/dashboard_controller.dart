@@ -1,13 +1,14 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:library_app/app/models/loan_request_model.dart';
+import 'package:library_app/app/dtos/loan_request_with_detail.dart';
 import 'package:library_app/app/models/menu_model.dart';
 import 'package:library_app/app/modules/auth/services/auth_service.dart';
 import 'package:library_app/app/modules/auth/views/login_view.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class DashboardController extends GetxController {
   final AuthService auth = Get.find<AuthService>();
+  final supabase = Supabase.instance.client;
 
   RxString name = 'Admin'.obs;
   RxBool isLoading = false.obs;
@@ -30,93 +31,149 @@ class DashboardController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    // listen real-time untuk semua collection
-    _listenCollectionCount('books', 0);
-    _listenCollectionCount('categories', 1);
-    _listenCollectionCount('history', 2);
-    _listenCollectionCount('users', 3);
 
+    _fetchAllCounts();
     fetchLoanRequests();
+
+    _setupRealtimeListeners();
   }
 
-  void _listenCollectionCount(String collection, int index) {
-    FirebaseFirestore.instance
-        .collection(collection)
-        .snapshots()
-        .listen((snap) {
-      menus[index] = menus[index].copyWith(count: snap.docs.length);
-      menus.refresh();
-    });
+  // =====================================================
+  // FETCH ALL COUNTS
+  // =====================================================
+  Future<void> _fetchAllCounts() async {
+    await _fetchCount('books', 0);
+    await _fetchCount('categories', 1);
+    await _fetchCount('loan_requests', 2);
+    await _fetchCount('users', 3);
   }
 
-  RxList<LoanRequest> loanRequests = <LoanRequest>[].obs;
+  Future<void> _fetchCount(String table, int index) async {
+    List<dynamic> result;
+
+    if (table == 'loan_requests') {
+      result = await supabase
+          .from(table)
+          .select('id')
+          .eq('request_status', 'pending');
+    } else {
+      result = await supabase.from(table).select('id');
+    }
+
+    menus[index] = menus[index].copyWith(count: result.length);
+    menus.refresh();
+  }
+
+  // =====================================================
+  // LOAN REQUESTS DETAIL
+  // =====================================================
+  RxList<LoanRequestWithDetail> loanRequests = <LoanRequestWithDetail>[].obs;
 
   Future<void> fetchLoanRequests() async {
     try {
       isLoading.value = true;
 
-      final snapshot = await FirebaseFirestore.instance
-          .collection('borrow_requests')
-          .where('requestStatus', isEqualTo: 'pending')
-          .orderBy('tanggalPinjam', descending: true)
-          .get();
+      final data = await supabase
+          .from('loan_requests')
+          .select('''
+            *,
+            users (*),
+            books (*, categories (*))
+          ''')
+          .eq('request_status', 'pending')
+          .order('tanggal_pinjam', ascending: false);
 
-      loanRequests.value = snapshot.docs
-          .map((doc) => LoanRequest.fromMap(doc.data(), doc.id))
+      loanRequests.value = data
+          .map<LoanRequestWithDetail>(LoanRequestWithDetail.fromMap)
           .toList();
     } catch (e) {
-      Get.snackbar(
-        'Error',
-        'Gagal mengambil data pengajuan: $e',
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-      );
+      Get.snackbar('Error', 'Gagal mengambil data pengajuan: $e',
+          backgroundColor: Colors.red, colorText: Colors.white);
     } finally {
       isLoading.value = false;
     }
   }
 
+  // =====================================================
+  // REALTIME SUBSCRIPTIONS
+  // =====================================================
+  void _setupRealtimeListeners() {
+    // Books
+    supabase
+        .channel('realtime:books')
+        .onPostgresChanges(
+          event: PostgresChangeEvent.all,
+          schema: 'public',
+          table: 'books',
+          callback: (payload) {
+            _fetchCount('books', 0);
+          },
+        )
+        .subscribe();
+
+    // Categories
+    supabase
+        .channel('realtime:categories')
+        .onPostgresChanges(
+          event: PostgresChangeEvent.all,
+          schema: 'public',
+          table: 'categories',
+          callback: (payload) {
+            _fetchCount('categories', 1);
+          },
+        )
+        .subscribe();
+
+    // Loan Requests
+    supabase
+        .channel('realtime:loan_requests')
+        .onPostgresChanges(
+          event: PostgresChangeEvent.all,
+          schema: 'public',
+          table: 'loan_requests',
+          callback: (payload) {
+            _fetchCount('loan_requests', 2);
+            fetchLoanRequests();
+          },
+        )
+        .subscribe();
+
+    // Users
+    supabase
+        .channel('realtime:users')
+        .onPostgresChanges(
+          event: PostgresChangeEvent.all,
+          schema: 'public',
+          table: 'users',
+          callback: (payload) {
+            _fetchCount('users', 3);
+          },
+        )
+        .subscribe();
+  }
+
+  // =====================================================
+  // REFRESH
+  // =====================================================
+  Future<void> refreshLoanRequests() async {
+    await fetchLoanRequests();
+  }
+
+  // =====================================================
+  // LOGOUT
+  // =====================================================
   Future<void> logout() async {
     try {
       await auth.logout();
-      Get.snackbar(
-        "Sukses",
-        "Logout berhasil",
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-        snackPosition: SnackPosition.TOP,
-      );
+
+      Get.snackbar("Sukses", "Logout berhasil",
+          backgroundColor: Colors.green, colorText: Colors.white);
+
       await Future.delayed(const Duration(milliseconds: 500));
       Get.offAll(() => LoginView());
     } catch (e) {
-      Get.snackbar(
-        "Error",
-        "Gagal logout: $e",
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-      );
-    }
-  }
-
-  Future<void> refreshLoanRequests() async {
-    try {
-      final snapshot = await FirebaseFirestore.instance
-          .collection('borrow_requests')
-          .where('requestStatus', isEqualTo: 'pending')
-          .orderBy('tanggalPinjam', descending: true)
-          .get();
-
-      loanRequests.value = snapshot.docs
-          .map((doc) => LoanRequest.fromMap(doc.data(), doc.id))
-          .toList();
-    } catch (e) {
-      Get.snackbar(
-        'Error',
-        'Gagal mengambil data pengajuan: $e',
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-      );
+      Get.snackbar("Error", "Gagal logout: $e",
+          backgroundColor: Colors.red, colorText: Colors.white);
     }
   }
 }
-// merge

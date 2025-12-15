@@ -1,30 +1,32 @@
 import 'dart:io';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:library_app/app/models/book_model.dart';
+import 'package:library_app/app/models/category_model.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class CreatebookController extends GetxController {
+  final supabase = Supabase.instance.client;
+
   // Text Controllers
-  // data wajib
   final judulC = TextEditingController();
   final penulisC = TextEditingController();
   final penerbitC = TextEditingController();
   final tahunC = TextEditingController();
   final stokC = TextEditingController();
   final deskripsiC = TextEditingController();
-  // opsional
   final isbnC = TextEditingController();
   final jumlahHalamanC = TextEditingController();
   final bahasaC = TextEditingController();
   final lokasiRakC = TextEditingController();
 
   // Kategori
-  var categories = <String>[].obs;
-  var selectedCategory = ''.obs;
+  var categories = <CategoryModel>[].obs;
+  Rx<CategoryModel?> selectedCategory = Rx<CategoryModel?>(null);
+  var selectedCategoryId = ''.obs;
 
-  // Image (optional)
+  // Image
   Rx<File?> imageFile = Rx<File?>(null);
 
   // Status
@@ -33,7 +35,7 @@ class CreatebookController extends GetxController {
   // Loading State
   RxBool isLoading = false.obs;
 
-  // Error Messages
+  // Error messages
   var judulError = ''.obs;
   var penulisError = ''.obs;
   var penerbitError = ''.obs;
@@ -51,6 +53,12 @@ class CreatebookController extends GetxController {
   var deskripsiSuccess = false.obs;
 
   @override
+  void onInit() {
+    super.onInit();
+    fetchCategories();
+  }
+
+  @override
   void onClose() {
     judulC.dispose();
     penulisC.dispose();
@@ -65,31 +73,40 @@ class CreatebookController extends GetxController {
     super.onClose();
   }
 
-  @override
-  void onInit() {
-    super.onInit();
-    fetchCategories();
+  // =====================================================================
+  // FETCH CATEGORIES FROM SUPABASE
+  // =====================================================================
+  Future<void> fetchCategories() async {
+    final res = await supabase.from('categories').select('*');
+
+    categories.value = res.map<CategoryModel>((map) {
+      return CategoryModel.fromMap(map);
+    }).toList();
+
+    if (categories.isNotEmpty) {
+      selectedCategory.value = categories.first;
+      selectedCategoryId.value = categories.first.id;
+    }
   }
 
-  void fetchCategories() async {
-    final snapshot =
-        await FirebaseFirestore.instance.collection('categories').get();
-    categories.value =
-        snapshot.docs.map((doc) => doc['name'] as String).toList();
-    if (categories.isNotEmpty) selectedCategory.value = categories.first;
-  }
-
+  // =====================================================================
+  // PICK IMAGE
+  // =====================================================================
   Future<void> pickImage() async {
-    final ImagePicker picker = ImagePicker();
-    final XFile? picked = await picker.pickImage(source: ImageSource.gallery);
-    if (picked != null) imageFile.value = File(picked.path);
+    final picker = ImagePicker();
+    final picked = await picker.pickImage(source: ImageSource.gallery);
+    if (picked != null) {
+      imageFile.value = File(picked.path);
+    }
   }
 
-  // VALIDASI FIELD
+  // =====================================================================
+  // VALIDATION
+  // =====================================================================
   bool validate() {
     bool isValid = true;
 
-    // Reset error & success
+    // reset errors
     judulError.value = '';
     penulisError.value = '';
     penerbitError.value = '';
@@ -106,61 +123,54 @@ class CreatebookController extends GetxController {
     kategoriSuccess.value = false;
     deskripsiSuccess.value = false;
 
-    // Judul
     if (judulC.text.trim().isEmpty) {
-      judulError.value = 'Judul wajib diisi';
+      judulError.value = "Judul wajib diisi";
       isValid = false;
     } else {
       judulSuccess.value = true;
     }
 
-    // Penulis
     if (penulisC.text.trim().isEmpty) {
-      penulisError.value = 'Penulis wajib diisi';
+      penulisError.value = "Penulis wajib diisi";
       isValid = false;
     } else {
       penulisSuccess.value = true;
     }
 
-    // Penerbit
     if (penerbitC.text.trim().isEmpty) {
-      penerbitError.value = 'Penerbit wajib diisi';
+      penerbitError.value = "Penerbit wajib diisi";
       isValid = false;
     } else {
       penerbitSuccess.value = true;
     }
 
-    // Tahun
     if (tahunC.text.trim().isEmpty) {
-      tahunError.value = 'Tahun wajib diisi';
+      tahunError.value = "Tahun wajib diisi";
       isValid = false;
     } else {
       tahunSuccess.value = true;
     }
 
-    // Stok
     int stokValue = int.tryParse(stokC.text) ?? -1;
     if (stokC.text.trim().isEmpty) {
-      stokError.value = 'Stok wajib diisi';
+      stokError.value = "Stok wajib diisi";
       isValid = false;
     } else if (stokValue < 0) {
-      stokError.value = 'Stok harus angka';
+      stokError.value = "Stok harus angka";
       isValid = false;
     } else {
       stokSuccess.value = true;
     }
 
-    // Kategori
-    if (selectedCategory.value.isEmpty) {
-      kategoriError.value = 'Kategori wajib dipilih';
+    if (selectedCategoryId.value.isEmpty) {
+      kategoriError.value = "Kategori wajib dipilih";
       isValid = false;
     } else {
       kategoriSuccess.value = true;
     }
 
-    // Deskripsi
     if (deskripsiC.text.trim().isEmpty) {
-      deskripsiError.value = 'Deskripsi wajib diisi';
+      deskripsiError.value = "Deskripsi wajib diisi";
       isValid = false;
     } else {
       deskripsiSuccess.value = true;
@@ -169,12 +179,35 @@ class CreatebookController extends GetxController {
     return isValid;
   }
 
-  // CREATE BOOK
+  // =====================================================================
+  // UPLOAD IMAGE TO SUPABASE STORAGE
+  // =====================================================================
+  Future<String> uploadImage() async {
+    if (imageFile.value == null) return '';
+
+    final filename = 'book_${DateTime.now().millisecondsSinceEpoch}.jpg';
+
+    await supabase.storage
+        .from('book_images')
+        .upload(filename, imageFile.value!);
+
+    final publicUrl =
+        supabase.storage.from('book_images').getPublicUrl(filename);
+
+    return publicUrl;
+  }
+
+  // =====================================================================
+  // CREATE BOOK (SUPABASE)
+  // =====================================================================
   Future<void> createBook() async {
     if (!validate()) return;
 
     try {
       isLoading.value = true;
+
+      // Upload image if any
+      final imageUrl = await uploadImage();
 
       final newBook = BookModel(
         id: "",
@@ -184,11 +217,9 @@ class CreatebookController extends GetxController {
         tahun: tahunC.text,
         stok: int.parse(stokC.text),
         status: status.value,
-        kategori: selectedCategory.value,
+        kategoriId: selectedCategoryId.value,
         deskripsi: deskripsiC.text,
-        image: imageFile.value?.path ?? '',
-        createdAt: Timestamp.now(),
-        // opsional
+        image: imageUrl,
         isbn: isbnC.text.isEmpty ? null : isbnC.text,
         jumlahHalaman: jumlahHalamanC.text.isEmpty
             ? null
@@ -197,27 +228,24 @@ class CreatebookController extends GetxController {
         lokasiRak: lokasiRakC.text.isEmpty ? null : lokasiRakC.text,
       );
 
-      await FirebaseFirestore.instance
-          .collection('books')
-          .add(newBook.toJson());
+      await supabase.from('books').insert(newBook.toMap());
 
       Get.back();
       Get.snackbar(
         "Berhasil",
         "Buku berhasil ditambahkan",
         backgroundColor: const Color(0xFF4CAF50),
-        colorText: const Color(0xFFFFFFFF),
+        colorText: Colors.white,
       );
     } catch (e) {
       Get.snackbar(
         "Error",
         e.toString(),
         backgroundColor: const Color(0xFFD32F2F),
-        colorText: const Color(0xFFFFFFFF),
+        colorText: Colors.white,
       );
     } finally {
       isLoading.value = false;
     }
   }
 }
-// merge

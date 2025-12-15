@@ -35,7 +35,7 @@ class HistoryEmpty extends StatelessWidget {
             // DESCRIPTION
             Text(
               "Anda belum pernah melakukan peminjaman buku. "
-              "Silakan lihat katalog dan ajukan peminjaman.",
+              "Silakan lihat koleksi dan ajukan peminjaman.",
               textAlign: TextAlign.center,
               style: CustomAppTheme.bodyText.copyWith(
                 color: Colors.grey.shade600,

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:library_app/app/models/loan_request_model.dart';
+import 'package:library_app/app/dtos/loan_request_with_detail.dart';
 import 'package:library_app/app/modules/config/custom_app_theme.dart';
 
 class HistoryDetailCard extends StatelessWidget {
-  final LoanRequest loan;
+  final LoanRequestWithDetail loan;
   final VoidCallback? onDetailTap;
 
   const HistoryDetailCard({
@@ -32,7 +32,7 @@ class HistoryDetailCard extends StatelessWidget {
                 child: SizedBox(
                   width: 80,
                   child: Image.network(
-                    loan.image,
+                    loan.book.book.image,
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) {
                       return Container(
@@ -57,17 +57,17 @@ class HistoryDetailCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      loan.judulBuku,
+                      loan.book.book.judul,
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     const SizedBox(height: 4),
-                    _info("Tahun Terbit", loan.tahun),
-                    _info("Penulis", loan.penulis),
-                    _info("Penerbit", loan.penerbit),
-                    _info("Kategori", loan.category),
+                    _info("Tahun Terbit", loan.book.book.tahun),
+                    _info("Penulis", loan.book.book.penulis),
+                    _info("Penerbit", loan.book.book.penerbit),
+                    _info("Kategori", loan.book.category.name),
                     const SizedBox(height: 8),
                     InkWell(
                       onTap: onDetailTap,

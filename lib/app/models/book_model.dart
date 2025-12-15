@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 enum BookStatus {
   tersedia,
   tidakTersedia,
@@ -44,16 +42,14 @@ class BookModel {
   final String tahun;
   final int stok;
   final BookStatus status;
-  final String kategori;
+  final String kategoriId;
   final String deskripsi;
   final String image;
-  final Timestamp? createdAt;
-
-  // Tambahan opsional
   final String? isbn;
   final int? jumlahHalaman;
   final String? bahasa;
   final String? lokasiRak;
+  final DateTime? createdAt;
 
   BookModel({
     required this.id,
@@ -63,39 +59,39 @@ class BookModel {
     required this.tahun,
     required this.stok,
     required this.status,
-    required this.kategori,
+    required this.kategoriId,
     required this.deskripsi,
     required this.image,
-    this.createdAt,
     this.isbn,
     this.jumlahHalaman,
     this.bahasa,
     this.lokasiRak,
+    this.createdAt,
   });
 
-  factory BookModel.fromDoc(DocumentSnapshot doc) {
-    final data = doc.data() as Map<String, dynamic>;
-
+  factory BookModel.fromMap(Map<String, dynamic> map) {
     return BookModel(
-      id: doc.id,
-      judul: data['judul'] ?? '',
-      penulis: data['penulis'] ?? '',
-      penerbit: data['penerbit'] ?? '',
-      tahun: data['tahun'] ?? '',
-      stok: data['stok'] ?? 0,
-      status: BookStatusExtension.fromValue(data['status'] ?? 'tidak_tersedia'),
-      kategori: data['kategori'] ?? '',
-      deskripsi: data['deskripsi'] ?? '',
-      image: data['image'] ?? '',
-      createdAt: data['createdAt'],
-      isbn: data['isbn'],
-      jumlahHalaman: data['jumlahHalaman'],
-      bahasa: data['bahasa'],
-      lokasiRak: data['lokasiRak'],
+      id: map['id'],
+      judul: map['judul'],
+      penulis: map['penulis'],
+      penerbit: map['penerbit'],
+      tahun: map['tahun'],
+      stok: map['stok'] ?? 0,
+      status: BookStatusExtension.fromValue(map['status'] ?? "tersedia"),
+      kategoriId: map['kategori_id'] ?? '',
+      deskripsi: map['deskripsi'] ?? '',
+      image: map['image'] ?? '',
+      isbn: map['isbn'],
+      jumlahHalaman: map['jumlah_halaman'],
+      bahasa: map['bahasa'],
+      lokasiRak: map['lokasi_rak'],
+      createdAt: map['created_at'] != null
+          ? DateTime.parse(map['created_at'])
+          : null,
     );
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toMap() {
     return {
       'judul': judul,
       'penulis': penulis,
@@ -103,16 +99,13 @@ class BookModel {
       'tahun': tahun,
       'stok': stok,
       'status': status.toValue(),
-      'kategori': kategori,
+      'kategori_id': kategoriId,
       'deskripsi': deskripsi,
       'image': image,
-      'createdAt': createdAt ?? Timestamp.now(),
-      // Tambahan opsional
       'isbn': isbn,
-      'jumlahHalaman': jumlahHalaman,
+      'jumlah_halaman': jumlahHalaman,
       'bahasa': bahasa,
-      'lokasiRak': lokasiRak,
+      'lokasi_rak': lokasiRak,
     };
   }
 }
-// merge

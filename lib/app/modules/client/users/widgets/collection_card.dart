@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:library_app/app/dtos/book_with_category_model.dart';
 import 'package:library_app/app/models/book_model.dart';
 import 'package:library_app/app/modules/config/custom_app_theme.dart';
 
 class CollectionCard extends StatelessWidget {
-  final BookModel book;
+  final BookWithCategoryModel bookData;
   final VoidCallback? onTap;
 
   const CollectionCard({
     super.key,
-    required this.book,
+    required this.bookData,
     this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
 
-    int kategoriFlex = book.kategori.length <= 6 ? 1 : 2;
+    int kategoriFlex = bookData.category.name.length <= 6 ? 1 : 2;
 
     return GestureDetector(
       onTap: onTap,
@@ -39,14 +40,14 @@ class CollectionCard extends StatelessWidget {
                       color: Colors.grey[300],
                       borderRadius:
                           const BorderRadius.vertical(top: Radius.circular(12)),
-                      image: book.image.isNotEmpty
+                      image: bookData.book.image.isNotEmpty
                           ? DecorationImage(
-                              image: NetworkImage(book.image),
+                              image: NetworkImage(bookData.book.image),
                               fit: BoxFit.cover,
                             )
                           : null,
                     ),
-                    child: book.image.isEmpty
+                    child: bookData.book.image.isEmpty
                         ? const Center(child: Icon(Icons.book, size: 50))
                         : null,
                   ),
@@ -58,7 +59,7 @@ class CollectionCard extends StatelessWidget {
                       children: [
                         // Judul
                         Text(
-                          book.judul,
+                          bookData.book.judul,
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
@@ -77,7 +78,7 @@ class CollectionCard extends StatelessWidget {
                               child: FittedBox(
                                 fit: BoxFit.scaleDown,
                                 alignment: Alignment.centerLeft,
-                                child: _tag(book.kategori),
+                                child: _tag(bookData.category.name),
                               ),
                             ),
                             const SizedBox(width: 6),
@@ -88,7 +89,7 @@ class CollectionCard extends StatelessWidget {
                               child: FittedBox(
                                 fit: BoxFit.scaleDown,
                                 alignment: Alignment.centerLeft,
-                                child: _tag(book.tahun),
+                                child: _tag(bookData.book.tahun),
                               ),
                             ),
                             const SizedBox(width: 6),
@@ -99,7 +100,7 @@ class CollectionCard extends StatelessWidget {
                               child: FittedBox(
                                 fit: BoxFit.scaleDown,
                                 alignment: Alignment.centerLeft,
-                                child: _statusTag(book.status),
+                                child: _statusTag(bookData.book.status),
                               ),
                             ),
                           ],
@@ -109,7 +110,7 @@ class CollectionCard extends StatelessWidget {
 
                         // Deskripsi buku
                         Text(
-                          book.deskripsi,
+                          bookData.book.deskripsi,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
@@ -130,7 +131,7 @@ class CollectionCard extends StatelessWidget {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     decoration: BoxDecoration(
-                      color: book.status == BookStatus.tersedia
+                      color: bookData.book.status == BookStatus.tersedia
                           ? CustomAppTheme.primaryColor
                           : Color(0xFFAE3433),
                       borderRadius: const BorderRadius.only(
@@ -142,7 +143,7 @@ class CollectionCard extends StatelessWidget {
                       text: TextSpan(
                         children: [
                           TextSpan(
-                            text: '${book.stok} ', // angka stok
+                            text: '${bookData.book.stok} ', // angka stok
                             style: const TextStyle(
                               color: Colors.white,
                               fontSize: 16,

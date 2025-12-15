@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:library_app/app/models/book_model.dart';
+import 'package:library_app/app/models/category_model.dart';
 import 'package:library_app/app/modules/client/admin/pages/2_ListBook/controllers/createbook_controller.dart';
 import 'package:library_app/app/modules/client/admin/widgets/admin_appbar.dart';
 import 'package:library_app/app/modules/config/custom_app_theme.dart';
@@ -109,39 +110,42 @@ class CreatebookView extends StatelessWidget {
               ),
 
               const Text("Kategori"),
-              Obx(() {
-                return Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: controller.kategoriSuccess.value
-                          ? Colors.green
-                          : (controller.kategoriError.value.isNotEmpty
-                              ? Colors.red
-                              : Colors.grey),
+              Obx(
+                () {
+                  return Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: controller.kategoriSuccess.value
+                            ? Colors.green
+                            : (controller.kategoriError.value.isNotEmpty
+                                ? Colors.red
+                                : Colors.grey),
+                      ),
+                      borderRadius: BorderRadius.circular(8),
                     ),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: DropdownButton<String>(
-                    value: controller.selectedCategory.value.isEmpty
-                        ? null
-                        : controller.selectedCategory.value,
-                    isExpanded: true,
-                    hint: const Text("Pilih Kategori"),
-                    items: controller.categories
-                        .map((cat) => DropdownMenuItem(
-                              value: cat,
-                              child: Text(cat),
-                            ))
-                        .toList(),
-                    onChanged: (val) {
-                      if (val != null) controller.selectedCategory.value = val;
-                    },
-                    underline: const SizedBox(), // hilangkan underline default
-                  ),
-                );
-              }),
+                    child: DropdownButton<CategoryModel>(
+                      value: controller.selectedCategory.value,
+                      isExpanded: true,
+                      hint: const Text("Pilih Kategori"),
+                      items: controller.categories.map((cat) {
+                        return DropdownMenuItem<CategoryModel>(
+                          value: cat,
+                          child: Text(cat.name),
+                        );
+                      }).toList(),
+                      onChanged: (val) {
+                        if (val != null) {
+                          controller.selectedCategory.value = val;
+                          controller.selectedCategoryId.value = val.id;
+                        }
+                      },
+                      underline: const SizedBox(),
+                    ),
+                  );
+                },
+              ),
 
               // ========== STATUS DROPDOWN ==========
               const Text("Status"),

@@ -1,16 +1,20 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:library_app/app/dtos/book_with_category_model.dart';
 import 'package:library_app/app/models/book_model.dart';
 import 'package:library_app/app/modules/config/custom_app_theme.dart';
 
 class LatesBookCard extends StatelessWidget {
-  final BookModel book;
+  final BookWithCategoryModel bookWithCategory;
 
-  const LatesBookCard({super.key, required this.book});
+  const LatesBookCard({super.key, required this.bookWithCategory});
 
   @override
   Widget build(BuildContext context) {
-    int kategoriFlex = (book.kategori).length <= 6 ? 2 : 1;
+    final book = bookWithCategory.book; // akses BookModel
+    final kategori = bookWithCategory.category.name; // akses Category
+
+    int kategoriFlex = kategori.length <= 6 ? 2 : 1;
     int tahunFlex = kategoriFlex == 1 ? 2 : 1;
 
     return Container(
@@ -78,7 +82,7 @@ class LatesBookCard extends StatelessWidget {
                       child: FittedBox(
                         fit: BoxFit.scaleDown,
                         alignment: Alignment.centerLeft,
-                        child: _tag(book.kategori),
+                        child: _tag(kategori),
                       ),
                     ),
                     const SizedBox(width: 6),
@@ -170,4 +174,3 @@ class LatesBookCard extends StatelessWidget {
     );
   }
 }
-// merge
