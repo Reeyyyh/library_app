@@ -20,6 +20,7 @@ class HistoryView extends StatelessWidget {
         title: 'Riwayat Peminjaman',
       ),
       body: Obx(() {
+  
         if (controller.isLoading.value) {
           return const Center(child: CircularProgressIndicator());
         }
