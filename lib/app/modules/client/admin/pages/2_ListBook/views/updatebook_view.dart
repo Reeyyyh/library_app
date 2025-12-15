@@ -104,7 +104,7 @@ class UpdatebookView extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color: controller.selectedCategory.value.isNotEmpty
+                    color: controller.selectedCategoryId.value.isNotEmpty
                         ? Colors.green // Hijau jika kategori terisi
                         : Colors.grey, // Abu jika belum dipilih
                   ),
