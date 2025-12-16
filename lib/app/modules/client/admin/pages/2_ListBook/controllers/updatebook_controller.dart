@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:library_app/app/models/book_model.dart';
 
 class UpdatebookController extends GetxController {
-  // Text Controllers
+  // TextEditingController untuk menampung input form edit buku
   late TextEditingController judulC;
   late TextEditingController penulisC;
   late TextEditingController penerbitC;
@@ -12,14 +12,14 @@ class UpdatebookController extends GetxController {
   late TextEditingController stokC;
   late TextEditingController deskripsiC;
 
+  // Status ketersediaan buku
   Rx<BookStatus> status = BookStatus.tersedia.obs;
 
-
-  // Kategori
+  // Daftar kategori dan kategori terpilih
   var categories = <String>[].obs;
   var selectedCategory = ''.obs;
 
-  // Error Messages
+  // Pesan error validasi setiap field
   var judulError = ''.obs;
   var penulisError = ''.obs;
   var penerbitError = ''.obs;
@@ -28,7 +28,7 @@ class UpdatebookController extends GetxController {
   var kategoriError = ''.obs;
   var deskripsiError = ''.obs;
 
-  // Success Flags (untuk border hijau)
+  // Flag sukses validasi (untuk tampilan border hijau)
   var judulSuccess = false.obs;
   var penulisSuccess = false.obs;
   var penerbitSuccess = false.obs;
@@ -37,7 +37,10 @@ class UpdatebookController extends GetxController {
   var kategoriSuccess = false.obs;
   var deskripsiSuccess = false.obs;
 
+  // ID buku yang sedang diedit
   late String bookId;
+
+  // Status loading saat proses update
   RxBool isLoading = false.obs;
 
   @override
@@ -48,6 +51,7 @@ class UpdatebookController extends GetxController {
 
   @override
   void onClose() {
+    // Membersihkan controller untuk mencegah memory leak
     judulC.dispose();
     penulisC.dispose();
     penerbitC.dispose();
@@ -57,7 +61,7 @@ class UpdatebookController extends GetxController {
     super.onClose();
   }
 
-  // Fetch categories
+  // Mengambil daftar kategori dari Firestore
   void fetchCategories() async {
     final snapshot =
         await FirebaseFirestore.instance.collection('categories').get();
@@ -65,7 +69,7 @@ class UpdatebookController extends GetxController {
         snapshot.docs.map((doc) => doc['name'] as String).toList();
   }
 
-  // Load book data
+  // Mengisi form dengan data buku yang akan diedit
   void loadBook(BookModel book) {
     bookId = book.id;
     judulC = TextEditingController(text: book.judul);
@@ -78,11 +82,11 @@ class UpdatebookController extends GetxController {
     status.value = book.status;
   }
 
-  // Validasi field
+  // Validasi seluruh field input sebelum update
   bool validate() {
     bool isValid = true;
 
-    // reset error & success
+    // Reset error dan status sukses
     judulError.value = '';
     penulisError.value = '';
     penerbitError.value = '';
@@ -99,7 +103,7 @@ class UpdatebookController extends GetxController {
     kategoriSuccess.value = false;
     deskripsiSuccess.value = false;
 
-    // Judul
+    // Validasi judul
     if (judulC.text.trim().isEmpty) {
       judulError.value = 'Judul wajib diisi';
       isValid = false;
@@ -107,7 +111,7 @@ class UpdatebookController extends GetxController {
       judulSuccess.value = true;
     }
 
-    // Penulis
+    // Validasi penulis
     if (penulisC.text.trim().isEmpty) {
       penulisError.value = 'Penulis wajib diisi';
       isValid = false;
@@ -115,7 +119,7 @@ class UpdatebookController extends GetxController {
       penulisSuccess.value = true;
     }
 
-    // Penerbit
+    // Validasi penerbit
     if (penerbitC.text.trim().isEmpty) {
       penerbitError.value = 'Penerbit wajib diisi';
       isValid = false;
@@ -123,7 +127,7 @@ class UpdatebookController extends GetxController {
       penerbitSuccess.value = true;
     }
 
-    // Tahun
+    // Validasi tahun
     if (tahunC.text.trim().isEmpty) {
       tahunError.value = 'Tahun wajib diisi';
       isValid = false;
@@ -131,7 +135,7 @@ class UpdatebookController extends GetxController {
       tahunSuccess.value = true;
     }
 
-    // Stok
+    // Validasi stok
     int stokValue = int.tryParse(stokC.text) ?? -1;
     if (stokC.text.trim().isEmpty) {
       stokError.value = 'Stok wajib diisi';
@@ -143,7 +147,7 @@ class UpdatebookController extends GetxController {
       stokSuccess.value = true;
     }
 
-    // Kategori
+    // Validasi kategori
     if (selectedCategory.value.isEmpty) {
       kategoriError.value = 'Kategori wajib dipilih';
       isValid = false;
@@ -151,7 +155,7 @@ class UpdatebookController extends GetxController {
       kategoriSuccess.value = true;
     }
 
-    // Deskripsi
+    // Validasi deskripsi
     if (deskripsiC.text.trim().isEmpty) {
       deskripsiError.value = 'Deskripsi wajib diisi';
       isValid = false;
@@ -162,7 +166,7 @@ class UpdatebookController extends GetxController {
     return isValid;
   }
 
-  // Update book
+  // Memperbarui data buku ke Firestore
   Future<void> updateBook() async {
     if (!validate()) return;
 
@@ -182,11 +186,19 @@ class UpdatebookController extends GetxController {
       });
 
       Get.back();
-      Get.snackbar("Berhasil", "Buku berhasil diperbarui",
-          backgroundColor: const Color(0xFF4CAF50), colorText: Colors.white);
+      Get.snackbar(
+        "Berhasil",
+        "Buku berhasil diperbarui",
+        backgroundColor: const Color(0xFF4CAF50),
+        colorText: Colors.white,
+      );
     } catch (e) {
-      Get.snackbar("Error", e.toString(),
-          backgroundColor: Colors.red, colorText: Colors.white);
+      Get.snackbar(
+        "Error",
+        e.toString(),
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
     } finally {
       isLoading.value = false;
     }
