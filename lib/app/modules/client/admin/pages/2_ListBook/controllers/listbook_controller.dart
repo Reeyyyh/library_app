@@ -3,7 +3,8 @@ import 'package:get/get.dart';
 import 'package:library_app/app/models/book_model.dart';
 
 class ListBookController extends GetxController {
-  // Stream semua buku
+  // Mengambil stream daftar buku dari Firestore
+  // Data diurutkan berdasarkan waktu pembuatan terbaru
   Stream<List<BookModel>> getBooks() {
     return FirebaseFirestore.instance
         .collection('books')
@@ -16,7 +17,7 @@ class ListBookController extends GetxController {
     });
   }
 
-  // Hapus buku
+  // Menghapus data buku berdasarkan ID
   Future<void> deleteBook(String id) async {
     await FirebaseFirestore.instance.collection('books').doc(id).delete();
   }
