@@ -41,7 +41,7 @@ class ListBook extends StatelessWidget {
             padding: const EdgeInsets.all(16),
             itemCount: books.length,
             itemBuilder: (_, index) {
-              final book = books[index]; // Item buku
+              final book = books[index]; // Jenis Item buku
               return BookCard(
                 book: book, // Menampilkan data buku ke card
                 onTap: () => Get.to(() => UpdatebookView(book)), // Navigasi ke update buku
@@ -77,7 +77,7 @@ class ListBook extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              "Hapus Buku?", // Judul konfirmasi
+              "Hapus Buku?", // konfirmasi hapus buku
               style: CustomAppTheme.heading2.copyWith(fontSize: 18),
             ),
             const SizedBox(height: 8),
