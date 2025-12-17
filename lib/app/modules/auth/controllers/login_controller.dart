@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 
+/// Controller for handling login validation
 class LoginController extends GetxController {
   var emailError = ''.obs;
   var passwordError = ''.obs;
