@@ -1,42 +1,63 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:library_app/app/modules/auth/services/auth_service.dart';
+import 'package:library_app/app/routes/app_pages.dart'; // Sesuaikan dengan routing kamu
 import 'package:library_app/app/modules/auth/views/login_view.dart';
 
 class RegisterController extends GetxController {
-  final AuthService auth = Get.find<AuthService>();
+  final AuthService _auth = Get.find<AuthService>();
 
-  // Error state reactive
-  var nameError = ''.obs;
-  var emailError = ''.obs;
-  var passwordError = ''.obs;
-  var confirmPasswordError = ''.obs;
+  // ===========================
+  // Text Controllers
+  // ===========================
+  final nameC = TextEditingController();
+  final emailC = TextEditingController();
+  final passwordC = TextEditingController();
+  final confirmPasswordC = TextEditingController();
 
+  // ===========================
+  // Reactive Variables
+  // ===========================
+  var isLoading = false.obs;
+
+  // Menggunakan RxnString (Nullable). Jika null = tidak ada error.
+  var nameError = RxnString();
+  var emailError = RxnString();
+  var passwordError = RxnString();
+  var confirmPasswordError = RxnString();
+
+  // Indikator Sukses (Opsional, untuk UI feedback warna hijau)
   var nameSuccess = false.obs;
   var emailSuccess = false.obs;
   var passwordSuccess = false.obs;
   var confirmPasswordSuccess = false.obs;
 
-  bool validate({
-    required String name,
-    required String email,
-    required String password,
-    required String confirmPassword,
-  }) {
+  @override
+  void onClose() {
+    // Bersihkan controller dari memori saat halaman ditutup
+    nameC.dispose();
+    emailC.dispose();
+    passwordC.dispose();
+    confirmPasswordC.dispose();
+    super.onClose();
+  }
+
+  // ===========================
+  // Fungsi Validasi
+  // ===========================
+  bool validate() {
     bool isValid = true;
 
-    // Reset state
-    nameError.value = '';
-    emailError.value = '';
-    passwordError.value = '';
-    confirmPasswordError.value = '';
+    // Ambil value dari controller
+    String name = nameC.text.trim();
+    String email = emailC.text.trim();
+    String password = passwordC.text;
+    String confirmPassword = confirmPasswordC.text;
 
-    nameSuccess.value = false;
-    emailSuccess.value = false;
-    passwordSuccess.value = false;
-    confirmPasswordSuccess.value = false;
+    // Reset State
+    _resetValidationState();
 
-    // VALIDASI
+    // 1. Validasi Nama
     if (name.isEmpty) {
       nameError.value = "Nama tidak boleh kosong";
       isValid = false;
@@ -44,16 +65,18 @@ class RegisterController extends GetxController {
       nameSuccess.value = true;
     }
 
+    // 2. Validasi Email
     if (email.isEmpty) {
       emailError.value = "Email wajib diisi";
       isValid = false;
-    } else if (!email.contains("@")) {
+    } else if (!GetUtils.isEmail(email)) {
       emailError.value = "Format email tidak valid";
       isValid = false;
     } else {
       emailSuccess.value = true;
     }
 
+    // 3. Validasi Password
     if (password.isEmpty) {
       passwordError.value = "Password wajib diisi";
       isValid = false;
@@ -64,14 +87,12 @@ class RegisterController extends GetxController {
       passwordSuccess.value = true;
     }
 
+    // 4. Validasi Konfirmasi Password
     if (confirmPassword.isEmpty) {
       confirmPasswordError.value = "Konfirmasi wajib diisi";
       isValid = false;
-    } else if (confirmPassword.length < 6) {
-      confirmPasswordError.value = "Minimal 6 karakter";
-      isValid = false;
     } else if (confirmPassword != password) {
-      confirmPasswordError.value = "Konfirmasi tidak sesuai";
+      confirmPasswordError.value = "Password tidak sama";
       isValid = false;
     } else {
       confirmPasswordSuccess.value = true;
@@ -80,38 +101,69 @@ class RegisterController extends GetxController {
     return isValid;
   }
 
-  // ===========================
-  // REGISTER FUNCTION
-  // ===========================
-  Future<void> doRegister({
-    required String name,
-    required String email,
-    required String password,
-  }) async {
-    String? result = await auth.register(
-      name: name,
-      email: email,
-      password: password,
-    );
+  void _resetValidationState() {
+    nameError.value = null;
+    emailError.value = null;
+    passwordError.value = null;
+    confirmPasswordError.value = null;
 
-    if (result != null) {
-      // gagal → tampilkan snackbar
-      Get.snackbar(
-        "Gagal",
-        result,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-      );
-    } else {
-      // sukses
-      Get.snackbar(
-        "Sukses",
-        "Registrasi berhasil, silakan login",
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
+    nameSuccess.value = false;
+    emailSuccess.value = false;
+    passwordSuccess.value = false;
+    confirmPasswordSuccess.value = false;
+  }
+
+  // ===========================
+  // Fungsi Register
+  // ===========================
+  Future<void> doRegister() async {
+    // Lakukan validasi dulu sebelum request ke server
+    if (!validate()) return;
+
+    try {
+      isLoading.value = true;
+
+      String? result = await _auth.register(
+        name: nameC.text.trim(),
+        email: emailC.text.trim(),
+        password: passwordC.text,
       );
 
-      Get.offAll(() => LoginView());
+      isLoading.value = false;
+
+      if (result != null) {
+        // Gagal (Result berisi pesan error dari service)
+        Get.snackbar(
+          "Registrasi Gagal",
+          result,
+          backgroundColor: Colors.redAccent,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM,
+          margin: const EdgeInsets.all(10),
+        );
+      } else {
+        // Sukses
+        Get.snackbar(
+          "Berhasil",
+          "Akun berhasil dibuat, silakan login",
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM,
+          margin: const EdgeInsets.all(10),
+        );
+
+        // Reset form agar bersih jika user kembali (opsional)
+        nameC.clear();
+        emailC.clear();
+        passwordC.clear();
+        confirmPasswordC.clear();
+        _resetValidationState();
+
+        Get.offAll(() => LoginView());
+      }
+    } catch (e) {
+      isLoading.value = false;
+      Get.snackbar("Error", "Terjadi kesalahan sistem");
     }
   }
 }
