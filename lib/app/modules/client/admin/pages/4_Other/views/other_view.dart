@@ -4,7 +4,7 @@ import 'package:library_app/app/modules/client/admin/widgets/admin_appbar.dart';
 // Halaman "Lainnya" untuk menu admin
 class Other extends StatelessWidget {
   const Other({super.key});
-
+// Build method untuk membangun tampilan halaman
   @override
   Widget build(BuildContext context) {
     return Scaffold(

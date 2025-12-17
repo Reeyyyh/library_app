@@ -52,10 +52,18 @@ class ListCategory extends StatelessWidget {
                       ),
                     ),
 
+<<<<<<< HEAD
+=======
+                  // Kartu item pada kategori
+>>>>>>> Srellica
                   CategoryCard(
                     categoryName: category.name, // FIX ✔
 
                     onEdit: () {
+<<<<<<< HEAD
+=======
+                      // Dialog untuk mengedit pada kategori
+>>>>>>> Srellica
                       showCategoryAddUpdateDialog(
                         controller: controller,
                         isEdit: true,
@@ -65,6 +73,10 @@ class ListCategory extends StatelessWidget {
                     },
 
                     onDelete: () {
+<<<<<<< HEAD
+=======
+                      // Konfirmasi hapus pada kategori
+>>>>>>> Srellica
                       showCustomDeleteDialog(
                         title: 'Hapus Category',
                         message: 'Apakah yakin ingin menghapus category ini?',
@@ -84,6 +96,10 @@ class ListCategory extends StatelessWidget {
         );
       }),
 
+<<<<<<< HEAD
+=======
+      // Tombol tambah pada kategori
+>>>>>>> Srellica
       floatingActionButton: FloatingActionButton(
         backgroundColor: CustomAppTheme.primaryColor,
         onPressed: () {

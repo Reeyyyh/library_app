@@ -72,9 +72,13 @@ class ListCategoryController extends GetxController {
     }
   }
 
+<<<<<<< HEAD
   // ==============================
   // UPDATE
   // ==============================
+=======
+  // Edit Category
+>>>>>>> Srellica
   Future<void> updateCategory(String id, String newName) async {
     try {
       isLoading.value = true;
@@ -91,9 +95,13 @@ class ListCategoryController extends GetxController {
     }
   }
 
+<<<<<<< HEAD
   // ==============================
   // DELETE
   // ==============================
+=======
+  // Delete Category
+>>>>>>> Srellica
   Future<void> deleteCategory(String id) async {
     try {
       isLoading.value = true;
@@ -108,21 +116,31 @@ class ListCategoryController extends GetxController {
       isLoading.value = false;
     }
   }
+<<<<<<< HEAD
 
   // ==============================
   // REORDER
   // ==============================
+=======
+  // Reorder Category
+>>>>>>> Srellica
   void reorderAll(int oldIndex, int newIndex) async {
     if (newIndex > oldIndex) newIndex--;
 
     final item = categories.removeAt(oldIndex);
     categories.insert(newIndex, item);
 
+<<<<<<< HEAD
     await saveOrder();
   }
 
   // Simpan posisi baru
   Future<void> saveOrder() async {
+=======
+    await saveOrderToFirebase();
+  }// Simpan urutan category ke database Firebase
+  Future<void> saveOrderToFirebase() async {
+>>>>>>> Srellica
     for (int i = 0; i < categories.length; i++) {
       await supabase.from('categories').update({
         'position': i,

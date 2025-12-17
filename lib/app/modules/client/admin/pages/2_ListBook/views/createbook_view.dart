@@ -192,6 +192,7 @@ class CreatebookView extends StatelessWidget {
 
               const SizedBox(height: 30),
 
+<<<<<<< HEAD
               const Text("Informasi Tambahan (Opsional)",
                   style: TextStyle(fontWeight: FontWeight.bold)),
 
@@ -223,6 +224,9 @@ class CreatebookView extends StatelessWidget {
               const SizedBox(height: 32),
 
               // ========== BUTTON SIMPAN ==========
+=======
+              // ========== TAMPILAN BUTTON SIMPAN ==========
+>>>>>>> Srellica
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(

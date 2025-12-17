@@ -7,7 +7,7 @@ import 'package:library_app/app/widgets/custom_input.dart';
 import '../controllers/updatebook_controller.dart';
 
 class UpdatebookView extends StatelessWidget {
-  final BookModel book; // Menampung data buku yang akan diedit
+  final BookModel book; // Method Menampung data buku yang akan diedit
 
   const UpdatebookView(this.book, {super.key});
 
@@ -18,7 +18,7 @@ class UpdatebookView extends StatelessWidget {
 
     return Scaffold(
       appBar: const AdminAppBar(
-        title: "Edit Buku", // Judul halaman
+        title: "Edit Buku", // Tampilan Judul halaman
         showBack: true, // Tampilkan tombol kembali
       ),
       body: SingleChildScrollView(
