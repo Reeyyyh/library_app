@@ -43,3 +43,10 @@ app.*.map.json
 /android/app/release
 
 /assets/env.env
+
+
+
+lib/app/modules/client/users/pages/4_Profile/controllers/api_service.dart
+lib/app/modules/client/users/pages/4_Profile/controllers/admin_profile_controller.dart
+lib/app/modules/client/users/pages/3_History/controllers/historypx_controller.dart
+lib/app/modules/client/users/pages/3_History/controllers/collection_controller.dart
