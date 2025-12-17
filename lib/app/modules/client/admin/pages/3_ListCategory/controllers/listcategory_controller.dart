@@ -73,7 +73,7 @@ class ListCategoryController extends GetxController {
     }
   }
 
-  // Edit
+  // Edit Category
   Future<void> updateCategory(String id, String newName) async {
     try {
       isLoading.value = true;
@@ -90,7 +90,7 @@ class ListCategoryController extends GetxController {
     }
   }
 
-  // Delete
+  // Delete Category
   Future<void> deleteCategory(String id) async {
     try {
       isLoading.value = true;
@@ -104,7 +104,7 @@ class ListCategoryController extends GetxController {
       isLoading.value = false;
     }
   }
-
+  // Reorder Category
   void reorderAll(int oldIndex, int newIndex) async {
     if (newIndex > oldIndex) newIndex--;
 
@@ -112,8 +112,7 @@ class ListCategoryController extends GetxController {
     categories.insert(newIndex, item);
 
     await saveOrderToFirebase();
-  }
-
+  }// Simpan urutan category ke database Firebase
   Future<void> saveOrderToFirebase() async {
     for (int i = 0; i < categories.length; i++) {
       await firestore
