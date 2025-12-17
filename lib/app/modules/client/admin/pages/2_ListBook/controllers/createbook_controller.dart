@@ -7,13 +7,10 @@ import 'package:library_app/app/models/category_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class CreatebookController extends GetxController {
-<<<<<<< HEAD
   final supabase = Supabase.instance.client;
 
   // Text Controllers
-=======
   // Controller untuk input form buku
->>>>>>> Srellica
   final judulC = TextEditingController();
   final penulisC = TextEditingController();
   final penerbitC = TextEditingController();
@@ -25,20 +22,17 @@ class CreatebookController extends GetxController {
   final bahasaC = TextEditingController();
   final lokasiRakC = TextEditingController();
 
-<<<<<<< HEAD
   // Kategori
   var categories = <CategoryModel>[].obs;
   Rx<CategoryModel?> selectedCategory = Rx<CategoryModel?>(null);
   var selectedCategoryId = ''.obs;
 
   // Image
-=======
   // Data kategori dari Firestore
   var categories = <String>[].obs;
   var selectedCategory = ''.obs;
 
   // File gambar buku (opsional)
->>>>>>> Srellica
   Rx<File?> imageFile = Rx<File?>(null);
 
   // Status buku (tersedia / dipinjam)
@@ -47,11 +41,8 @@ class CreatebookController extends GetxController {
   // State loading untuk tombol simpan
   RxBool isLoading = false.obs;
 
-<<<<<<< HEAD
   // Error messages
-=======
   // Pesan error validasi form
->>>>>>> Srellica
   var judulError = ''.obs;
   var penulisError = ''.obs;
   var penerbitError = ''.obs;
@@ -60,10 +51,7 @@ class CreatebookController extends GetxController {
   var kategoriError = ''.obs;
   var deskripsiError = ''.obs;
 
-<<<<<<< HEAD
-=======
   // Indikator validasi sukses tiap field
->>>>>>> Srellica
   var judulSuccess = false.obs;
   var penulisSuccess = false.obs;
   var penerbitSuccess = false.obs;
@@ -94,7 +82,6 @@ class CreatebookController extends GetxController {
     super.onClose();
   }
 
-<<<<<<< HEAD
   // =====================================================================
   // FETCH CATEGORIES FROM SUPABASE
   // =====================================================================
@@ -114,7 +101,6 @@ class CreatebookController extends GetxController {
   // =====================================================================
   // PICK IMAGE
   // =====================================================================
-=======
   // Mengambil data kategori saat halaman dibuka
   @override
   void onInit() {
@@ -132,7 +118,6 @@ class CreatebookController extends GetxController {
   }
 
   // Mengambil gambar dari galeri
->>>>>>> Srellica
   Future<void> pickImage() async {
     final picker = ImagePicker();
     final picked = await picker.pickImage(source: ImageSource.gallery);
@@ -141,7 +126,6 @@ class CreatebookController extends GetxController {
     }
   }
 
-<<<<<<< HEAD
   // =====================================================================
   // VALIDATION
   // =====================================================================
@@ -149,13 +133,11 @@ class CreatebookController extends GetxController {
     bool isValid = true;
 
     // reset errors
-=======
   // Validasi seluruh input form
   bool validate() {
     bool isValid = true;
 
     // Reset pesan error & status sukses
->>>>>>> Srellica
     judulError.value = '';
     penulisError.value = '';
     penerbitError.value = '';
@@ -172,10 +154,7 @@ class CreatebookController extends GetxController {
     kategoriSuccess.value = false;
     deskripsiSuccess.value = false;
 
-<<<<<<< HEAD
-=======
     // Validasi judul
->>>>>>> Srellica
     if (judulC.text.trim().isEmpty) {
       judulError.value = "Judul wajib diisi";
       isValid = false;
@@ -183,10 +162,7 @@ class CreatebookController extends GetxController {
       judulSuccess.value = true;
     }
 
-<<<<<<< HEAD
-=======
     // Validasi penulis
->>>>>>> Srellica
     if (penulisC.text.trim().isEmpty) {
       penulisError.value = "Penulis wajib diisi";
       isValid = false;
@@ -194,10 +170,7 @@ class CreatebookController extends GetxController {
       penulisSuccess.value = true;
     }
 
-<<<<<<< HEAD
-=======
     // Validasi penerbit
->>>>>>> Srellica
     if (penerbitC.text.trim().isEmpty) {
       penerbitError.value = "Penerbit wajib diisi";
       isValid = false;
@@ -205,10 +178,7 @@ class CreatebookController extends GetxController {
       penerbitSuccess.value = true;
     }
 
-<<<<<<< HEAD
-=======
     // Validasi tahun
->>>>>>> Srellica
     if (tahunC.text.trim().isEmpty) {
       tahunError.value = "Tahun wajib diisi";
       isValid = false;
@@ -219,10 +189,7 @@ class CreatebookController extends GetxController {
 <<<<<<< HEAD
 =======
     // Validasi stok
->>>>>>> Srellica
-    int stokValue = int.tryParse(stokC.text) ?? -1;
     if (stokC.text.trim().isEmpty) {
-      stokError.value = "Stok wajib diisi";
       isValid = false;
     } else if (stokValue < 0) {
       stokError.value = "Stok harus angka";
@@ -237,14 +204,11 @@ class CreatebookController extends GetxController {
 =======
     // Validasi kategori
     if (selectedCategory.value.isEmpty) {
-      kategoriError.value = 'Kategori wajib dipilih';
 >>>>>>> Srellica
       isValid = false;
-    } else {
       kategoriSuccess.value = true;
     }
 
-<<<<<<< HEAD
 =======
     // Validasi deskripsi
 >>>>>>> Srellica
@@ -267,7 +231,6 @@ class CreatebookController extends GetxController {
 
     final filename = 'book_${DateTime.now().millisecondsSinceEpoch}.jpg';
 
-    await supabase.storage
         .from('book_images')
         .upload(filename, imageFile.value!);
 
@@ -289,9 +252,7 @@ class CreatebookController extends GetxController {
     try {
       isLoading.value = true;
 
-      // Upload image if any
       final imageUrl = await uploadImage();
-
       final newBook = BookModel(
         id: "",
         judul: judulC.text,
