@@ -60,11 +60,11 @@ class ListCategory extends StatelessWidget {
                       ),
                     ),
 
-                  // Kartu item kategori
+                  // Kartu item pada kategori
                   CategoryCard(
                     categoryName: category['name'],
                     onEdit: () {
-                      // Dialog untuk mengedit kategori
+                      // Dialog untuk mengedit pada kategori
                       showCategoryAddUpdateDialog(
                         controller: controller,
                         isEdit: true,
@@ -73,7 +73,7 @@ class ListCategory extends StatelessWidget {
                       );
                     },
                     onDelete: () {
-                      // Konfirmasi hapus kategori
+                      // Konfirmasi hapus pada kategori
                       showCustomDeleteDialog(
                         title: 'Hapus Category',
                         message: 'Apakah yakin ingin menghapus category ini?',
@@ -93,7 +93,7 @@ class ListCategory extends StatelessWidget {
         );
       }),
 
-      // Tombol tambah kategori
+      // Tombol tambah pada kategori
       floatingActionButton: FloatingActionButton(
         backgroundColor: CustomAppTheme.primaryColor,
         onPressed: () {
