@@ -5,7 +5,7 @@ class CategoryCard extends StatelessWidget {
   final String categoryName;
   final VoidCallback? onEdit;   // Fungsi ketika tombol edit ditekan
   final VoidCallback? onDelete; // Fungsi ketika tombol hapus ditekan
-
+// Konstruktor Category Card
   const CategoryCard({
     super.key,
     required this.categoryName,
