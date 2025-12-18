@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+// widget untuk menampilkan pesan ketika tidak ada buku yang tersedia
 class BookEmpty extends StatelessWidget {
   const BookEmpty({super.key});
 
