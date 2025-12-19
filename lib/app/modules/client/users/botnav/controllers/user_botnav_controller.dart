@@ -4,7 +4,7 @@ import 'package:library_app/app/modules/client/users/pages/1_Home/views/home_vie
 import 'package:library_app/app/modules/client/users/pages/2_Collection/views/collection_view.dart';
 import 'package:library_app/app/modules/client/users/pages/3_history/views/history_view.dart';
 import 'package:library_app/app/modules/client/users/pages/4_Profile/views/profile_view.dart';
-
+// Controller untuk navigasi bawah pengguna
 class UserBotNavController extends GetxController {
   RxInt selectedIndex = 0.obs;
 
