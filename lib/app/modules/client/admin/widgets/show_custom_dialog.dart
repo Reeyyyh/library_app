@@ -3,40 +3,70 @@ import 'package:get/get.dart';
 import 'package:library_app/app/modules/client/admin/pages/3_ListCategory/controllers/listcategory_controller.dart';
 import 'package:library_app/app/modules/config/custom_app_theme.dart';
 
+// Dialog konfirmasi umum (hapus / aksi penting)
 void showCustomDeleteDialog({
-  required String title,
-  required String message,
-  required VoidCallback onConfirm,
-  String confirmText = 'OK',
-  Color confirmColor = CustomAppTheme.primaryColor,
-  bool showCancel = true,
+  required String title,        // Judul dialog
+  required String message,      // Pesan konfirmasi
+  required VoidCallback onConfirm, // Aksi saat tombol konfirmasi ditekan
+  String confirmText = 'OK',    // Teks tombol konfirmasi
+  Color confirmColor = CustomAppTheme.primaryColor, // Warna tombol konfirmasi
+  bool showCancel = true,       // Menampilkan tombol batal atau tidak
 }) {
   Get.dialog(
     Dialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16), // Sudut dialog melengkung
+      ),
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisSize: MainAxisSize.min, // Tinggi dialog menyesuaikan isi
           children: [
-            Text(title, style: CustomAppTheme.heading4.copyWith(color: confirmColor)),
+            // Judul dialog
+            Text(
+              title,
+              style: CustomAppTheme.heading4.copyWith(color: confirmColor),
+            ),
             const SizedBox(height: 10),
-            Text(message, style: CustomAppTheme.bodyText, textAlign: TextAlign.center),
+
+            // Pesan konfirmasi
+            Text(
+              message,
+              style: CustomAppTheme.bodyText,
+              textAlign: TextAlign.center,
+            ),
             const SizedBox(height: 20),
+
+            // Tombol aksi
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
+                // Tombol batal (opsional)
                 if (showCancel)
                   OutlinedButton(
-                    onPressed: () => Get.back(),
-                    style: OutlinedButton.styleFrom(side: BorderSide(color: confirmColor)),
-                    child: Text('Batal', style: CustomAppTheme.buttonText.copyWith(color: confirmColor)),
+                    onPressed: () => Get.back(), // Tutup dialog
+                    style: OutlinedButton.styleFrom(
+                      side: BorderSide(color: confirmColor),
+                    ),
+                    child: Text(
+                      'Batal',
+                      style: CustomAppTheme.buttonText.copyWith(
+                        color: confirmColor,
+                      ),
+                    ),
                   ),
                 if (showCancel) const SizedBox(width: 10),
+
+                // Tombol konfirmasi
                 ElevatedButton(
-                  onPressed: onConfirm,
-                  style: ElevatedButton.styleFrom(backgroundColor: confirmColor),
-                  child: Text(confirmText, style: CustomAppTheme.buttonText),
+                  onPressed: onConfirm, // Jalankan aksi konfirmasi
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: confirmColor,
+                  ),
+                  child: Text(
+                    confirmText,
+                    style: CustomAppTheme.buttonText,
+                  ),
                 ),
               ],
             ),
@@ -47,22 +77,29 @@ void showCustomDeleteDialog({
   );
 }
 
+// Dialog tambah & edit kategori
 void showCategoryAddUpdateDialog({
-  required ListCategoryController controller,
-  bool isEdit = false,
-  String? currentName,
-  String? id,
+  required ListCategoryController controller, // Controller kategori
+  bool isEdit = false,        // Mode edit atau tambah
+  String? currentName,        // Nama kategori lama (jika edit)
+  String? id,                 // ID kategori (jika edit)
 }) {
-  final nameController = TextEditingController(text: currentName ?? '');
+  // Controller input nama kategori
+  final nameController = TextEditingController(
+    text: currentName ?? '',
+  );
 
   Get.dialog(
     Dialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            // Judul dialog
             Text(
               isEdit ? 'Edit Category' : 'Tambah Category',
               style: CustomAppTheme.heading4.copyWith(
@@ -70,6 +107,8 @@ void showCategoryAddUpdateDialog({
               ),
             ),
             const SizedBox(height: 20),
+
+            // Input nama kategori
             TextField(
               controller: nameController,
               decoration: InputDecoration(
@@ -78,22 +117,31 @@ void showCategoryAddUpdateDialog({
                 labelStyle: CustomAppTheme.subheading,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(color: CustomAppTheme.primaryColor),
+                  borderSide: BorderSide(
+                    color: CustomAppTheme.primaryColor,
+                  ),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(color: CustomAppTheme.primaryColor),
+                  borderSide: BorderSide(
+                    color: CustomAppTheme.primaryColor,
+                  ),
                 ),
               ),
             ),
             const SizedBox(height: 20),
+
+            // Tombol aksi
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
+                // Tombol batal
                 OutlinedButton(
                   onPressed: () => Get.back(),
                   style: OutlinedButton.styleFrom(
-                    side: BorderSide(color: CustomAppTheme.primaryColor),
+                    side: BorderSide(
+                      color: CustomAppTheme.primaryColor,
+                    ),
                   ),
                   child: Text(
                     'Batal',
@@ -103,16 +151,23 @@ void showCategoryAddUpdateDialog({
                   ),
                 ),
                 const SizedBox(width: 10),
+
+                // Tombol tambah / update
                 ElevatedButton(
                   onPressed: () {
                     final name = nameController.text.trim();
                     if (name.isEmpty) return;
+
+                    // Mode edit kategori
                     if (isEdit && id != null) {
                       controller.updateCategory(id, name);
-                    } else {
+                    } 
+                    // Mode tambah kategori
+                    else {
                       controller.addCategory(name);
                     }
-                    Get.back();
+
+                    Get.back(); // Tutup dialog
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: CustomAppTheme.primaryColor,
