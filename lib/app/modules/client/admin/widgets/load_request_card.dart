@@ -7,7 +7,7 @@ class LoanRequestCard extends StatelessWidget {
   final VoidCallback? onTap;
 
   const LoanRequestCard({super.key, required this.data, this.onTap});
-
+// widget untuk menampilkan kartu permintaan pinjaman buku
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
