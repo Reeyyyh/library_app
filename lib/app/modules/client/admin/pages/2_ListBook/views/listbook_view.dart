@@ -8,7 +8,7 @@ import 'package:library_app/app/modules/client/admin/widgets/admin_appbar.dart';
 import 'package:library_app/app/modules/client/admin/widgets/book_card.dart';
 import 'package:library_app/app/modules/client/admin/widgets/book_empty.dart';
 import 'package:library_app/app/modules/config/custom_app_theme.dart';
-
+// Halaman untuk menampilkan daftar buku
 class ListBook extends StatelessWidget {
   ListBook({super.key});
 
