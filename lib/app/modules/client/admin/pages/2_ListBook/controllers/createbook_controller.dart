@@ -6,7 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:library_app/app/models/book_model.dart';
 
 class CreatebookController extends GetxController {
-  // Controller untuk input form buku
+  // Controller untuk input form buku baru
   final judulC = TextEditingController();
   final penulisC = TextEditingController();
   final penerbitC = TextEditingController();
