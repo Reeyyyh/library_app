@@ -17,7 +17,7 @@ class ListBookController extends GetxController {
     });
   }
 
-  // Menghapus data buku berdasarkan ID
+  // Menghapus data buku berdasarkan ID dokumen
   Future<void> deleteBook(String id) async {
     await FirebaseFirestore.instance.collection('books').doc(id).delete();
   }
