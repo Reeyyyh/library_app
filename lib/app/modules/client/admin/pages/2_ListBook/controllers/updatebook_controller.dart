@@ -12,7 +12,7 @@ class UpdatebookController extends GetxController {
   late TextEditingController stokC;
   late TextEditingController deskripsiC;
 
-  // Status ketersediaan buku
+  // Status ketersediaan buku (tersedia / dipinjam)
   Rx<BookStatus> status = BookStatus.tersedia.obs;
 
   // Daftar kategori dan kategori terpilih
