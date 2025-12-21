@@ -5,7 +5,7 @@ import 'package:library_app/app/modules/client/admin/widgets/admin_appbar.dart';
 import 'package:library_app/app/modules/config/custom_app_theme.dart';
 import 'package:library_app/app/widgets/custom_input.dart';
 import '../controllers/updatebook_controller.dart';
-
+// Halaman untuk mengedit data buku
 class UpdatebookView extends StatelessWidget {
   final BookModel book; // Method Menampung data buku yang akan diedit
 
