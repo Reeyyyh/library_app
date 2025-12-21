@@ -78,7 +78,7 @@ class BookCard extends StatelessWidget {
       ),
     );
   }
-
+  // Build method untuk membangun tampilan BookCard
   @override
   Widget build(BuildContext context) {
     // Mengambil status buku langsung dari model
