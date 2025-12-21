@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
-
+// Controller untuk mengelola daftar kategori
 class ListCategoryController extends GetxController {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
