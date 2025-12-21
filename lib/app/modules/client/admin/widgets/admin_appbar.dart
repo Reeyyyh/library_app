@@ -26,7 +26,7 @@ class AdminAppBar extends StatelessWidget implements PreferredSizeWidget {
   // Mengatur tinggi AppBar (standar toolbar)
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
-
+  // Membangun tampilan AppBar
   @override
   Widget build(BuildContext context) {
     // Mengambil DashboardController jika sudah terdaftar di GetX
