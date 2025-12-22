@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 // Widget untuk menampilkan kondisi kosong
-// ketika belum ada pengajuan peminjaman buku
+// Status belum ada pengajuan peminjaman buku
 class LoadRequestEmpty extends StatelessWidget {
   const LoadRequestEmpty({super.key});
 
