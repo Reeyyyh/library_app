@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-
+// Widget untuk menampilkan satu kategori dengan aksi edit & delete
 class CategoryCard extends StatelessWidget {
-  // Widget untuk menampilkan satu kategori dengan aksi edit & delete
+  
   final String categoryName;
   final VoidCallback? onEdit;   // Fungsi ketika tombol edit ditekan
   final VoidCallback? onDelete; // Fungsi ketika tombol hapus ditekan
