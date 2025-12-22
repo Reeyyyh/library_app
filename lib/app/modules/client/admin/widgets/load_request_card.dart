@@ -36,14 +36,14 @@ class LoanRequestCard extends StatelessWidget {
               const SizedBox(height: 8),
               const Divider(thickness: 1, color: Colors.grey),
 
-              // Detail pinjam
+              // Detail pinjaman
               Text('Detail Pinjaman:', style: CustomAppTheme.heading4),
               Text('Pinjam: ${data.tanggalPinjam}', style: CustomAppTheme.caption),
               Text('Kembali: ${data.tanggalKembali}', style: CustomAppTheme.caption),
               const SizedBox(height: 8),
               const Divider(thickness: 1, color: Colors.grey),
 
-              // Status
+              // Status pinjaman
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
