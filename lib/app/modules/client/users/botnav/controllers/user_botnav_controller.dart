@@ -7,7 +7,7 @@ import 'package:library_app/app/modules/client/users/pages/4_Profile/views/profi
 // Controller untuk navigasi bawah pengguna
 class UserBotNavController extends GetxController {
   RxInt selectedIndex = 0.obs;
-
+// Daftar menu navigasi bawah pengguna
   final List<Map<String, dynamic>> userMenus = [
     {
       'title': 'Beranda',
