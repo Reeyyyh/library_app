@@ -10,7 +10,7 @@ class HomeController extends GetxController {
   RxString errorMessage = "".obs;
 
   DocumentSnapshot? lastBookDocument;
-
+// Inisialisasi controller dan memuat kategori saat controller dibuat
   @override
   void onInit() {
     super.onInit();
