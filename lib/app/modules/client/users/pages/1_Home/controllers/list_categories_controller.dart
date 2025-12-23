@@ -9,7 +9,7 @@ class ListCategoriesController extends GetxController {
   // Status loading saat mengambil data kategori.
   var isLoading = true.obs;
   var errorMessage = "".obs;
-
+// Inisialisasi controller dan memuat kategori saat controller dibuat
   @override
   void onInit() {
     super.onInit();
