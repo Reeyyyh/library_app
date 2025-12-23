@@ -6,7 +6,7 @@ import 'package:library_app/app/modules/config/custom_app_theme.dart';
 // View utama untuk Bottom Navigation Bar user
 class UserBotNavView extends StatelessWidget {
   const UserBotNavView({super.key});
-
+// Build method untuk menampilkan UI
   @override
   Widget build(BuildContext context) {
     // Inisialisasi controller navigasi user menggunakan GetX
