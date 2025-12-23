@@ -11,7 +11,9 @@ void showCustomDeleteDialog({
   String confirmText = 'OK',    // Teks tombol konfirmasi
   Color confirmColor = CustomAppTheme.primaryColor, // Warna tombol konfirmasi
   bool showCancel = true,       // Menampilkan tombol batal atau tidak
-}) {
+}) 
+// Fungsi untuk menampilkan dialog konfirmasi
+{
   Get.dialog(
     Dialog(
       shape: RoundedRectangleBorder(

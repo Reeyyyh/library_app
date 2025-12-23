@@ -5,5 +5,6 @@
     "explorer.compactFolders": false,
 
     "dart.previewFlutterUiGuides": true,
-    "dart.previewFlutterUiGuidesCustomTracking": true
+    "dart.previewFlutterUiGuidesCustomTracking": true,
+    "cmake.sourceDirectory": "D:/RI semester 7/library_app/linux"
 }
