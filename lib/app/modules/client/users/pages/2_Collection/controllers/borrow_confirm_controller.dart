@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:library_app/app/models/loan_request_model.dart';
 import 'package:library_app/app/modules/auth/services/auth_service.dart';
-
+// Controller untuk mengelola konfirmasi peminjaman buku
 class BorrowConfirmController extends GetxController {
   final AuthService authService = Get.find<AuthService>();
 
   var borrowDate = DateTime.now().obs;
   var duration = 7.obs;
   var userName = ''.obs;
-
+// Inisialisasi controller dan memuat data pengguna saat controller dibuat
   @override
   void onInit() {
     super.onInit();
