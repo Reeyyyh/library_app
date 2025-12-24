@@ -20,7 +20,7 @@ class ListCategoriesController extends GetxController {
   // FETCH (GET SEKALI)
   // -------------------------------------------------------------------
   Future<void> fetchCategories() async {
-    // Mengambil semua kategori dari Firestore (urutan berdasarkan posisi).
+    // Mengambil semua kategori dari Firestore Database (urutan berdasarkan posisi).
 
     try {
       isLoading.value = true;
