@@ -12,7 +12,7 @@ import 'package:library_app/app/modules/client/users/widgets/category_empty.dart
 import 'package:library_app/app/modules/client/users/widgets/lates_book_card.dart';
 import 'package:library_app/app/modules/config/custom_app_theme.dart';
 import 'package:library_app/app/widgets/image_carousel.dart';
-
+// HomeView menampilkan halaman utama aplikasi dengan sambutan pengguna
 class HomeView extends StatelessWidget {
   HomeView({super.key});
 
