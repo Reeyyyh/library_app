@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:library_app/app/modules/client/users/pages/1_Home/controllers/list_categories_controller.dart';
 import 'package:library_app/app/modules/client/users/widgets/category_empty.dart';
 import 'package:library_app/app/modules/config/custom_app_theme.dart';
-
+// View untuk menampilkan daftar kategori buku
 class ListCategoriesView extends StatelessWidget {
   final ListCategoriesController controller = Get.put(ListCategoriesController());
 
