@@ -11,7 +11,7 @@ class CollectionController extends GetxController {
   var searchQuery = ''.obs;
 
   final searchController = TextEditingController();
-
+// Inisialisasi controller dan memuat data buku saat controller dibuat
   @override
   void onInit() {
     super.onInit();
