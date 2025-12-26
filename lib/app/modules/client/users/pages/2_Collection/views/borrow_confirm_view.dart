@@ -10,7 +10,7 @@ import 'package:library_app/app/widgets/custom_appbar.dart';
 import 'package:library_app/app/widgets/custom_button.dart';
 import 'package:library_app/app/widgets/custom_date_input.dart';
 import '../controllers/borrow_confirm_controller.dart';
-
+// Tampilan konfirmasi peminjaman buku yang memungkinkan pengguna untuk memilih tanggal pinjam
 class BorrowConfirmView extends StatelessWidget {
   final BookModel book;
   BorrowConfirmView({super.key, required this.book});
