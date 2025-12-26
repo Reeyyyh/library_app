@@ -4,7 +4,7 @@ import 'package:library_app/app/modules/client/users/pages/2_Collection/controll
 import 'package:library_app/app/modules/client/users/pages/2_Collection/views/book_detail_view.dart';
 import 'package:library_app/app/modules/client/users/widgets/collection_card.dart';
 import 'package:library_app/app/modules/config/custom_app_theme.dart';
-
+// Tampilan utama untuk menampilkan koleksi buku dengan fitur pencarian
 class CollectionView extends StatelessWidget {
   const CollectionView({super.key});
 
