@@ -6,7 +6,7 @@ import 'package:library_app/app/modules/client/users/pages/2_Collection/views/bo
 import 'package:library_app/app/modules/config/custom_app_theme.dart';
 import 'package:library_app/app/widgets/custom_appbar.dart';
 import 'package:library_app/app/widgets/custom_button.dart';
-
+// Tampilan detail buku yang menampilkan informasi lengkap tentang buku yang dipilih
 class BookDetailView extends StatelessWidget {
   final BookModel book;
 
