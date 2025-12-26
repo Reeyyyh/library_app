@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:flutter/services.dart';
 import 'package:library_app/app/modules/client/users/botnav/views/user_botnav_view.dart';
 import 'package:library_app/app/modules/config/custom_app_theme.dart';
-
+// tampilan sukses peminjaman buku yang menampilkan kode sewa kepada pengguna
 class SuccessBorrowView extends StatelessWidget {
   final String borrowCode;
 
