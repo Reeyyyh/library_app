@@ -2,11 +2,11 @@ import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:library_app/app/models/loan_request_model.dart';
-
+// controller untuk mengelola data riwayat peminjaman buku pengguna
 class HistoryController extends GetxController {
   var isLoading = true.obs;
   var borrowHistory = <LoanRequest>[].obs;
-
+// menginisialisasi controller dan memulai pengambilan data riwayat peminjaman
   @override
   void onInit() {
     fetchHistory();
