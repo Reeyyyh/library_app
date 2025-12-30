@@ -9,7 +9,7 @@ class HistoryView extends StatelessWidget {
   HistoryView({super.key});
   //fungsi untuk menampilkan history peminjaman buku
   final HistoryController controller = Get.put(HistoryController());
-
+// membangun tampilan riwayat peminjaman buku
   @override
   Widget build(BuildContext context) {
     return Scaffold(
