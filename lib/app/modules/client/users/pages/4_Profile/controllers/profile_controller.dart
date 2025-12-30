@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:library_app/app/modules/auth/services/auth_service.dart';
 import 'package:library_app/app/modules/auth/views/login_view.dart';
-
+// controller untuk mengelola data profil pengguna
 class ProfileController extends GetxController {
   final AuthService auth = Get.find<AuthService>();
 
