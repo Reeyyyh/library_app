@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:library_app/app/modules/config/custom_app_theme.dart';
 import '../controllers/profile_controller.dart';
-
+// tampilan profil pengguna yang menampilkan informasi dan opsi logout
 class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
   // next job
