@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:library_app/app/modules/config/custom_app_theme.dart';
-
+// widget yang menampilkan pesan ketika tidak ada riwayat peminjaman buku
 class HistoryEmpty extends StatelessWidget {
   const HistoryEmpty({super.key});
 
