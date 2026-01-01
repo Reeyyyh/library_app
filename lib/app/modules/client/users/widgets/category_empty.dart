@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+// widget yang menampilkan pesan ketika tidak ada kategori yang tersedia
 class CategoryEmpty extends StatelessWidget {
   const CategoryEmpty({super.key});
 
