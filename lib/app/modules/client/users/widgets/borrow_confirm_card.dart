@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:library_app/app/models/book_model.dart';
 import 'package:library_app/app/modules/config/custom_app_theme.dart';
-
+// widget yang menampilkan kartu konfirmasi peminjaman buku
 class BorrowConfirmCard extends StatelessWidget {
   final BookModel book;
 
