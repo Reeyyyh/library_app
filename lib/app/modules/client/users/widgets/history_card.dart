@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:library_app/app/models/loan_request_model.dart';
-
+// widget yang menampilkan kartu riwayat peminjaman buku
 class HistoryCard extends StatelessWidget {
   final LoanRequest data;
 
