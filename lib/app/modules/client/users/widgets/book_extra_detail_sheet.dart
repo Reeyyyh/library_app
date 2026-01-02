@@ -7,6 +7,13 @@ class BookExtraDetailSheet extends StatelessWidget {
 
   const BookExtraDetailSheet({super.key, required this.loan});
 
+  // ===== HELPER UNTUK NULL HANDLING =====
+  String safeText(dynamic value) {
+    if (value == null) return "-";
+    if (value is String && value.trim().isEmpty) return "-";
+    return value.toString();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -49,11 +56,11 @@ class BookExtraDetailSheet extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _info("ISBN", loan.book.book.isbn.toString()),
-                _info(
-                    "Jumlah Halaman", loan.book.book.jumlahHalaman.toString()),
-                _info("Bahasa", loan.book.book.bahasa.toString()),
-                _info("Lokasi Rak", loan.book.book.lokasiRak.toString()),
+                _info("ISBN", safeText(loan.book.book.isbn)),
+                _info("Jumlah Halaman",
+                    safeText(loan.book.book.jumlahHalaman)),
+                _info("Bahasa", safeText(loan.book.book.bahasa)),
+                _info("Lokasi Rak", safeText(loan.book.book.lokasiRak)),
               ],
             ),
           ),

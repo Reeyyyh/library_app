@@ -135,7 +135,7 @@ class BookDetailView extends StatelessWidget {
 
   Widget _buildBookInfoTable(BookWithCategoryModel book, String statusLabel) {
     final List<TableRow> rows = [
-      _buildTableRow('Penulis', book.book.judul, 0),
+      _buildTableRow('Penulis', book.book.penulis, 0),
       _buildTableRow('Penerbit', book.book.penerbit, 1),
       _buildTableRow('Tahun Terbit', book.book.tahun, 2),
       _buildTableRow('Stok', book.book.stok.toString(), 3),
