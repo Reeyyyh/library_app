@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:library_app/app/models/book_model.dart';
 import 'package:library_app/app/modules/config/custom_app_theme.dart';
-
+// widget yang menampilkan kartu buku terbaru
 class LatesBookCard extends StatelessWidget {
   final BookModel book;
 
