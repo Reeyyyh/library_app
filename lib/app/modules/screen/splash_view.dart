@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:library_app/app/modules/config/custom_app_theme.dart';
 import 'package:library_app/app/modules/screen/controllers/splash_controller.dart';
-
+// tampilan splash screen aplikasi
 class SplashView extends GetView<SplashController> {
   const SplashView({super.key});
 
