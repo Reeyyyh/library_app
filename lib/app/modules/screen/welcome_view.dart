@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:library_app/app/modules/auth/views/login_view.dart';
 import 'package:library_app/app/modules/config/custom_app_theme.dart';
-
+// tampilan halaman selamat datang aplikasi
 class WelcomeView extends StatelessWidget {
   const WelcomeView({super.key});
   @override
