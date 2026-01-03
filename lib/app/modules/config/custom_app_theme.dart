@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+// Kelas yang berisi tema kustom untuk aplikasi perpustakaan
 class CustomAppTheme {
   // Warna utama aplikasi
   static const Color primaryColor = Color(0xFF009140);
