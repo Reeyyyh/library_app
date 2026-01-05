@@ -67,7 +67,7 @@ Milestone:
 
 ---
 
-## Sprint 1 — Setup + Auth + Home (MVP dasar)
+## Sprint 1 - Setup + Auth + Home (MVP dasar)
 
 ### 1) Setup proyek + arsitektur + base UI (EPIC)
 **PIC:** @marifirfannn  
@@ -106,7 +106,7 @@ Milestone:
 
 ---
 
-## Sprint 2 — Search + Category + Borrow (Core user features)
+## Sprint 2 - Search + Category + Borrow (Core user features)
 
 ### 5) Search buku (judul/penulis/ISBN + debounce)
 **PIC:** @Reeyyyh  
@@ -155,7 +155,7 @@ Milestone:
 
 ---
 
-## Sprint 3 — Admin CRUD + Borrow Admin
+## Sprint 3 - Admin CRUD + Borrow Admin
 
 ### 10) Role admin + guard menu
 **PIC:** @Reeyyyh  
@@ -188,7 +188,7 @@ Milestone:
 
 ---
 
-## Sprint 4 — Dashboard + Security + Release
+## Sprint 4 - Dashboard + Security + Release
 
 ### 14) Admin Dashboard (statistik)
 **PIC:** @rakarajinibadah  
