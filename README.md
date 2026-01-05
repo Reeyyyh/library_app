@@ -51,7 +51,7 @@ Library App adalah aplikasi mobile untuk:
 2. **GetX** – State management, navigasi, dan dependency injection.  
 3. **UI/UX** – Implementasi desain sesuai Figma.  
 
-# Library App — GitHub Backlog
+# Library App - GitHub Backlog
 
 Anggota:
 - @rakarajinibadah (Raka)
