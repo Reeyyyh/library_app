@@ -15,9 +15,25 @@ class AdminLoanRequestDetailController extends GetxController {
     try {
       isLoading.value = true;
 
+      final bookId = loan.value!.book.book.id;
+
+      final book =
+          await supabase.from('books').select('stok').eq('id', bookId).single();
+
+      final int stok = book['stok'];
+
+      if (stok <= 0) {
+        Get.snackbar("Stok Habis", "Buku tidak tersedia");
+        return;
+      }
+
       await supabase.from('loan_requests').update({
         'request_status': 'accepted',
       }).eq('id', loan.value!.request.id);
+
+      await supabase.from('books').update({
+        'stok': stok - 1,
+      }).eq('id', bookId);
 
       loan.value = loan.value!.copyWith(
         request: loan.value!.request.copyWith(
@@ -57,10 +73,21 @@ class AdminLoanRequestDetailController extends GetxController {
     try {
       isLoading.value = true;
 
+      final bookId = loan.value!.book.book.id;
+
       await supabase.from('loan_requests').update({
         'request_status': 'returned',
         'return_date': DateTime.now().toIso8601String(),
       }).eq('id', loan.value!.request.id);
+
+      final book =
+          await supabase.from('books').select('stok').eq('id', bookId).single();
+
+      final int stok = book['stok'];
+
+      await supabase.from('books').update({
+        'stok': stok + 1,
+      }).eq('id', bookId);
 
       loan.value = loan.value!.copyWith(
         request: loan.value!.request.copyWith(
