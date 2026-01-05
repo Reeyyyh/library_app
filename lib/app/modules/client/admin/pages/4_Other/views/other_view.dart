@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:library_app/app/modules/client/admin/pages/4_Other/views/admin_loan_request_list_view.dart';
+import 'package:library_app/app/modules/client/admin/pages/4_Other/views/admin_user_management_view.dart';
 import 'package:library_app/app/modules/client/admin/widgets/admin_appbar.dart';
 
 class Other extends StatelessWidget {
@@ -29,7 +30,7 @@ class Other extends StatelessWidget {
             title: "Kelola Pengguna",
             subtitle: "Manajemen akun pengguna",
             onTap: () {
-              // Get.to(() => AdminUserManagementView());
+              Get.to(() => AdminUserManagementView());
             },
           ),
           _menuTile(

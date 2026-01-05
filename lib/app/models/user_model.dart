@@ -48,4 +48,28 @@ class UserModel {
       "image": image,
     };
   }
+
+  UserModel copyWith({
+    String? id,
+    String? name,
+    String? email,
+    String? kelas,
+    String? kontak,
+    String? role,
+    bool? isActive,
+    String? image,
+    DateTime? createdAt,
+  }) {
+    return UserModel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      email: email ?? this.email,
+      kelas: kelas ?? this.kelas,
+      kontak: kontak ?? this.kontak,
+      role: role ?? this.role,
+      isActive: isActive ?? this.isActive,
+      image: image ?? this.image,
+      createdAt: createdAt ?? this.createdAt,
+    );
+  }
 }

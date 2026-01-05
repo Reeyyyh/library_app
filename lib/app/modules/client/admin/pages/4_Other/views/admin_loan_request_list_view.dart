@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:library_app/app/modules/client/admin/pages/4_Other/controllers/admin_loan_request_controller.dart';
 import 'package:library_app/app/modules/client/admin/pages/4_Other/views/admin_loan_request_detail_view.dart';
 import 'package:library_app/app/modules/client/admin/widgets/admin_appbar.dart';
-import 'package:library_app/app/modules/client/users/widgets/request_empty.dart';
+import 'package:library_app/app/modules/client/admin/widgets/request_empty.dart';
 
 class AdminLoanRequestListView extends StatelessWidget {
   AdminLoanRequestListView({super.key});
