@@ -30,17 +30,11 @@ Library App adalah aplikasi mobile untuk:
 🔗 https://www.figma.com/design/iuzxcSUNA0KG80KBrCfyoF/perpustakaan?node-id=604-3604&t=YmIVhXjPpWetmwjg-1
 
 ---
-
----
 ## 🗃️ **Link worksheet dan Low Fidelity Prototype **
 🔗 https://drive.google.com/file/d/1Wzok75tM1h_eONDp1Rex-CKp1eN9PJ5w/view?usp=sharing
 
 ---
-
----
 ## Tabel pembagian tugas
-
----
 
 ### A. Fitur Pengguna (User)
 1. **Melihat Buku Terbaru** – Menampilkan daftar buku terbaru beserta cover dan ringkasan singkat.  
