@@ -37,6 +37,11 @@ Library App adalah aplikasi mobile untuk:
 
 ---
 
+---
+## Tabel pembagian tugas
+
+---
+
 ### A. Fitur Pengguna (User)
 1. **Melihat Buku Terbaru** – Menampilkan daftar buku terbaru beserta cover dan ringkasan singkat.  
 2. **Pencarian Buku** – Mencari buku berdasarkan judul, penulis, atau ISBN.  
@@ -56,8 +61,6 @@ Library App adalah aplikasi mobile untuk:
 1. **Supabase** – Auth (email/password), Firestore untuk data buku, kategori, peminjaman, dan pengguna.  
 2. **GetX** – State management, navigasi, dan dependency injection.  
 3. **UI/UX** – Implementasi desain sesuai Figma.  
-
-# Library App - GitHub Backlog
 
 Anggota:
 - @rakarajinibadah (Raka)
