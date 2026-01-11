@@ -1,32 +1,37 @@
 import 'dart:io';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+// Service untuk menangani interaksi dengan Supabase Storage
 class SupabaseService {
+  // Instance client Supabase
   final supabase = Supabase.instance.client;
 
+  // Fungsi untuk meng-upload file ke Supabase Storage
+  // Mengembalikan URL publik file jika berhasil, null jika gagal
   Future<String?> uploadFile(File file, String fileName) async {
     try {
-      // Upload ke Supabase
+      // Proses upload file ke bucket "pdf-storage"
+      // File disimpan di folder "uploads/" dengan nama fileName
       final response = await supabase.storage.from('pdf-storage').upload(
-            'uploads/$fileName', // Path dalam bucket
+            'uploads/$fileName',
             file,
           );
+
+      // Log response upload (debugging)
       print('Upload response: $response');
+
+      // Mendapatkan URL publik dari file yang telah di-upload
       final publicUrl = supabase.storage
           .from('pdf-storage')
           .getPublicUrl('uploads/$fileName');
+
+      // Log URL publik (debugging)
       print('Public URL: $publicUrl');
-      return publicUrl; // URL file
-      // if (response.isEmpty) {
-      //   // Upload berhasil, dapatkan URL publik
-      //   print('File uploaded: $publicUrl');
-      // } else {
-      //   // Upload gagal
-      //   print('Error: Upload response is not empty');
-      //   return null;
-      // }
+
+      // Mengembalikan URL publik file
+      return publicUrl;
     } catch (e) {
-      // Tangani exception
+      // Menangani error jika upload gagal
       print('Error uploading file: $e');
       return null;
     }
