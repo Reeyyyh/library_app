@@ -191,16 +191,35 @@ class BorrowConfirmView extends StatelessWidget {
     );
   }
 
-  Row _buildRow(String label, String value) {
+  Widget _buildRow(String label, String value) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label,
-            style: CustomAppTheme.mutedText
-                .copyWith(fontSize: 16, fontWeight: FontWeight.w600)),
-        Text(value,
-            style:
-                CustomAppTheme.bodyText.copyWith(fontWeight: FontWeight.w600)),
+        // LABEL
+        SizedBox(
+          width: 120, // kunci lebar label biar rapi
+          child: Text(
+            label,
+            style: CustomAppTheme.mutedText.copyWith(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+
+        const SizedBox(width: 8),
+
+        // VALUE
+        Expanded(
+          child: Text(
+            value,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: CustomAppTheme.bodyText.copyWith(
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
       ],
     );
   }

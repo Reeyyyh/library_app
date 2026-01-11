@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:library_app/app/dtos/loan_request_with_detail.dart';
 import 'package:library_app/app/modules/client/users/pages/3_History/controllers/history_detail_controller.dart';
+import 'package:library_app/app/modules/client/users/widgets/book_extra_detail_sheet.dart';
 import 'package:library_app/app/modules/client/users/widgets/borrow_status_card.dart';
 import 'package:library_app/app/modules/client/users/widgets/history_detail_card.dart';
 import 'package:library_app/app/modules/config/custom_app_theme.dart';
@@ -21,8 +22,10 @@ class HistoryDetailView extends StatelessWidget {
     // SET DATA KE CONTROLLER (Reactive)
     controller.setLoan(loan);
 
-    final String tanggalPinjamStr = formatter.format(loan.request.tanggalPinjam);
-    final String tanggalKembaliStr = formatter.format(loan.request.tanggalKembali);
+    final String tanggalPinjamStr =
+        formatter.format(loan.request.tanggalPinjam);
+    final String tanggalKembaliStr =
+        formatter.format(loan.request.tanggalKembali);
     final int durasiPinjam =
         loan.request.tanggalKembali.difference(DateTime.now()).inDays;
 
@@ -44,7 +47,18 @@ class HistoryDetailView extends StatelessWidget {
             const SizedBox(height: 10),
             HistoryDetailCard(
               loan: loan,
-              onDetailTap: () {},
+              onDetailTap: () {
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  backgroundColor: Colors.transparent,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(20)),
+                  ),
+                  builder: (_) => BookExtraDetailSheet(loan: loan),
+                );
+              },
             ),
             const SizedBox(height: 28),
 
@@ -57,10 +71,14 @@ class HistoryDetailView extends StatelessWidget {
             Obx(
               () => _whiteBox(
                 children: [
-                  _infoRow("Nama", controller.userData['name'] ?? loan.user.name),
-                  _infoRow("Email", controller.userData['email'] ?? loan.user.email),
-                  _infoRow("Kelas", controller.userData['kelas'] ?? loan.user.kelas),
-                  _infoRow("Kontak", controller.userData['kontak'] ?? loan.user.kontak),
+                  _infoRow(
+                      "Nama", controller.userData['name'] ?? loan.user.name),
+                  _infoRow(
+                      "Email", controller.userData['email'] ?? loan.user.email),
+                  _infoRow(
+                      "Kelas", controller.userData['kelas'] ?? loan.user.kelas),
+                  _infoRow("Kontak",
+                      controller.userData['kontak'] ?? loan.user.kontak),
                 ],
               ),
             ),
@@ -81,8 +99,8 @@ class HistoryDetailView extends StatelessWidget {
                   style: CustomAppTheme.mutedText,
                 ),
                 const SizedBox(height: 6),
-                Obx(() => _infoRow(
-                    "Request Status", controller.loan.value.request.requestStatus)),
+                Obx(() => _infoRow("Request Status",
+                    controller.loan.value.request.requestStatus)),
               ],
             ),
             const SizedBox(height: 40),

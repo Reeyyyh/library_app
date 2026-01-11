@@ -100,9 +100,8 @@ class BorrowConfirmController extends GetxController {
       final response = await supabase
           .from('loan_requests')
           .insert(request.toMap())
-          .select(); // <- pastikan .select() biar return data terbaru
+          .select(); 
 
-      // Cek apakah response kosong
       if ((response.isEmpty)) {
         throw "Gagal mengirim peminjaman";
       }
